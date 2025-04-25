@@ -1,0 +1,595 @@
+@import url('../../fonts.css');
+
+*{
+  font-family: 'Poppins', sans-serif;
+}
+/* Overlay styling */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Transparent black */
+  z-index: 1050;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Spinner styling */
+.sk-chase {
+  z-index: 1060; /* Ensure it appears above the overlay */
+}
+
+/* Utility class to hide elements */
+.d-none {
+  display: none;
+}
+
+.warning-messages{
+  font-family: 'Poppins-light';
+}
+
+.form-control, .form-select {
+  border: 1px solid #ced4da !important;
+  padding: 1em 1em !important;
+}
+#sidenav-main {
+  background: linear-gradient(145deg, #000428, #004e92);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 6px 20px rgba(0, 0, 0, 0.19);
+}
+
+.iti {
+  width: 100%;
+}
+
+
+.feedback-text{
+  font-size: 1.5rem;
+}
+
+.error-text {
+  display: none;
+}
+
+.table-emphasized {
+  background-color: #ced4da ;
+}
+
+.remove-icon {
+  display: none;
+  cursor: pointer;
+}
+
+.show-remove .remove-icon {
+  display: inline;
+}
+
+
+.phone-input {
+  padding: 1em 1em;
+  border: 1px solid #ced4da !important;
+  border-radius: 4px;
+  font-size: 16px;
+  width: 100%;
+  background-color: transparent;
+}
+
+.intl-tel-input .form-control {
+  margin-left: 50px;
+}
+
+.intl-tel-input .iti--allow-dropdown input {
+  padding-right: 38px;
+}
+
+.intl-tel-input input[type="tel"] {
+  width: 100%;
+}
+
+.iti__flag-container {
+  top: 50%;
+  transform: translateY(-50%);
+  left: 10px;
+  position: absolute;
+}
+#searchResultsDropdown {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  border-radius: .25rem;
+}
+
+.search-result {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin: 5px 0;
+}
+.search-result:hover {
+  background-color: #f0f0f0;
+}
+.search-result-options {
+  display: none;
+}
+.search-result:hover .search-result-expander {
+  display: block;
+}
+.highlight {
+  background-color: rgb(255, 0, 157);
+  color: #fff;
+  padding:0.2em 0.2em;
+  border-radius:8px;
+}
+
+
+.no-results {
+  text-align: center;
+  margin-top: 20px;
+}
+.hidden {
+  display: none;
+}
+.close-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.logo-square{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f9fa;
+  padding:8px;
+  border-radius: 8px;
+  width: 80px;
+  height: 80px;
+}
+
+.logo-square img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.profile-image-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-img{
+  width: 38px; 
+  height: 38px;
+  object-fit: cover; 
+  border-radius: 50%;
+}
+
+.profile-user-name{
+  font-size: 0.87rem;
+}
+
+.profile-image-wrapper img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+#profileImageInput {
+  display: none;
+}
+
+/* CSS for disabled button */
+button:disabled {
+  background-color: #e0e0e0; /* Light gray background */
+  color: #a0a0a0; /* Gray text */
+  cursor: not-allowed;
+  border-color: #d0d0d0; /* Light gray border */
+}
+
+button:disabled:hover {
+  background-color: #e0e0e0; /* Ensure no change on hover */
+  color: #a0a0a0; /* Ensure no change on hover */
+}
+
+/* Hover effect for list-group items */
+.list-group-item.hoverable:hover {
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+.img-thumbnail.custom-thumbnail {
+  max-width: 100px;
+  max-height: 100px;
+  object-fit: cover;
+}
+
+#searchResults {
+  top: 100%; /* Push the results below the search bar */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add some shadow to the results */
+  background-color: white; /* Optional: Ensure the background is white */
+  border-radius: 0 0 5px 5px; /* Optional: Add rounded corners to the bottom of the container */
+  max-height: 300px; /* Optional: Set a max height */
+  overflow-y: auto; /* Optional: Add scroll if content overflows */
+}
+
+/**
+Nice pattern to make the 
+place more comfortable
+**/
+
+.pattern-1{
+  background-image: url('../../../img/patterns/dashboard_pattern.png');
+  padding: 3em 5em;
+}
+
+.pattern-2{
+  background-image: url('../../../img/patterns/dashboard_pattern.png');
+  padding:8em 5em;
+  background-position-x: center;
+
+}
+
+/* Profile image styling */
+.profile-image {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* Placeholder styling */
+.profile-placeholder {
+  width: 150px;
+  height: 150px;
+}
+
+/* Pencil icon styling */
+#editImageBtn {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid #ddd;
+}
+
+#editImageBtn:hover {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.drag-file-area {
+  border: 2px dashed #ddd;
+  padding: 40px;
+  text-align: center;
+  background-color: #f9f9f9;
+  border-radius: 15px;
+  transition: border-color 0.3s ease;
+}
+
+.drag-file-area:hover {
+  border-color: #007bff;
+}
+
+.upload-icon {
+  font-size: 48px;
+  color: #007bff;
+}
+
+.dynamic-message {
+  font-size: 1.2rem;
+  color: #555;
+  margin: 15px 0;
+}
+
+.browse-files {
+  display: inline-block;
+  font-size: 1rem;
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.browse-files input {
+  display: none;
+}
+
+    
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .drag-file-area {
+    padding: 20px;
+  }
+
+  .dynamic-message {
+    font-size: 1rem;
+  }
+
+  .upload-icon {
+    font-size: 36px;
+  }
+
+  .provider-logo {
+    width: 35px;
+    height: 35px;
+  }
+
+  .provider-text {
+    font-size: 0.8rem;
+  }
+}
+
+.border-blue-dots {
+  border: 2px dotted #007bff;
+  border-radius: 15px;
+}
+
+.upload-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.cannot-upload-message {
+  color: red;
+  display: none;
+}
+
+.file-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.progress-bar {
+  width: 0;
+  height: 5px;
+  background-color: #28a745;
+  margin-top: 10px;
+}
+
+
+.dropdown-item img {
+  margin-right: 10px;
+}
+
+.dashboard-toggler{
+  margin:0.85rem 1.8rem;
+}
+
+select option img {
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.list-group-item span {
+  font-size: 16px;
+  margin-right: 2px;
+}
+
+#TransportCompanySuggestions {
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 0;
+}
+#TransportCompanySuggestions .list-group-item {
+  padding: 10px;
+}
+#TransportCompanySuggestions .list-group-item:hover {
+  background-color: #f8f9fa;
+}
+
+/****************************
+view email
+*****************************/
+/* Email list styling */
+.email-item {
+  padding: 0.75rem 1rem;
+}
+
+.email-sender {
+  font-size: 0.2rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  word-break: break-word;
+}
+
+.email-subject {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #495057;
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.email-preview {
+  font-size: 0.75rem;
+  color: #6c757d;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 0.25rem;
+}
+
+.email-time {
+  font-size: 0.7rem;
+  color: #adb5bd;
+  white-space: nowrap;
+}
+
+/* Modal content styling */
+.email-modal-body {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .email-item {
+    padding: 0.5rem;
+  }
+}
+
+
+/*********end view email******************/
+
+
+
+/***************************************
+emailing for container release letter
+system
+**************************************
+*/
+
+.client-fields { transition: all 0.3s ease; }
+.card { border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+.card-title { color: #2c3e50; font-weight: 600; }
+.btn-outline-primary.active { background-color: var(--bs-primary); color: white; }
+
+
+.contact-selector {
+  position: relative;
+}
+.contact-input-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  padding: 8px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  min-height: 45px;
+}
+.contact-tag {
+  display: flex;
+  align-items: center;
+  background-color: #e9ecef;
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+.contact-tag-remove {
+  margin-left: 5px;
+  cursor: pointer;
+  color: #6c757d;
+}
+.contact-input {
+  flex: 1;
+  min-width: 150px;
+  border: none;
+  outline: none;
+  padding: 5px;
+}
+.contact-suggestions {
+  position: absolute;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  background: white;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: none;
+}
+.contact-suggestion {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.contact-suggestion:hover {
+  background-color: #f8f9fa;
+}
+#editor {
+  height: 300px;
+}
+.file-attachments {
+  margin-top: 15px;
+}
+.attachment-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 5px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+.attachment-remove {
+  margin-left: 10px;
+  cursor: pointer;
+  color: #dc3545;
+}
+
+/********************************************
+end emailing for container release letter
+system
+**********************************************/
+
+
+/**
+*********************************************
+********************************************
+email signatures styling
+
+*/
+
+.signature-preview {
+  border: 1px solid #ddd;
+  padding: 20px;
+  background: #f9f9f9;
+  min-height: 200px;
+}
+.signature-row {
+  margin-bottom: 10px;
+}
+.signature-word {
+  font-style: italic;
+}
+.signature-name {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+.signature-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+.company-logo {
+  max-height: 50px;
+}
+.badges-container {
+  display: flex;
+  gap: 10px;
+}
+.signature-badge {
+  width: 100px;
+  max-height: 200px;
+}
+.preview-header {
+  font-weight: bold;
+  color: #555;
+}
+
+/******************
+****************
+end email signatires styling
+/****************

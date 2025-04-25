@@ -1,0 +1,26 @@
+<div class="text-center">
+  <div>
+    <div>
+      <img src="{{ url_for('static', filename='img/feedbacks/messages.png') }}" alt="{{ _('Aucun message') }}" class="img-fluid" width="200">              
+    </div>
+  </div>
+  <h6 class="text-body-emphasis mt-2 ">{{ _('Aucun message à afficher') }}</h6>
+  <div>
+    <p >
+      {{ _('Tous vos messages vont s\'afficher ici') }}
+    </p>
+    <div class="mb-5">
+      {% if current_user.email_provider %}
+      <button type="button" class="btn btn-info me-sm-3" data-bs-toggle="modal" data-bs-target="#createEmailModal">
+        <i class="bi bi-plus-circle-dotted"></i>
+        {{ _('Nouveau message') }}
+      </button>
+    {% else %}
+      <!-- Button to redirect to settings -->
+      <a href="{{ url_for('user.settings', company_id=company.id) }}" class="btn btn-info me-sm-3">
+        {{ _('Commencer') }}
+      </a>
+    {% endif %}
+    </div>
+  </div>
+</div>

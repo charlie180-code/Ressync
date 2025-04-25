@@ -1,0 +1,69 @@
+{% extends 'dashboard/dashboard.html' %}
+{% block title %}<title>{{ _("Nouvelles offres d'emploi : Ressync") }}</title>{% endblock %}
+{% block content %}
+<div class="container">
+  
+  <div class="d-flex">
+    <div class="my-3">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3">
+          <li class="breadcrumb-item">
+            <a class="link-body-emphasis" href="{{ url_for('user.user_home', company_id=company.id) }}">
+              <i class="bi bi-house-fill"></i>
+              <span class="visually-hidden">{{ _('Accueil') }}</span>
+            </a>
+          </li>
+          <li class="breadcrumb-item" aria-current="page">
+            {{ _('Careers') }}
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            {{ _('Nouvelles offres') }}
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <h2>
+  {{ _("Nouvelles offres d'emploi") }}
+  </h2>
+
+  {% if jobs %}
+        <table class="table align-items-center mb-0 border-bottom">
+            <thead class="bg-light">
+                <tr>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ _('ID') }}</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _('Titre') }}</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _('Desc') }}</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _('Salaire') }}</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _('Lieu') }}</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ _('Date de clôture') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for job in jobs %}
+                    <tr>
+                        <td>{{ job.id }}</td>
+                        <td>{{ job.title }}</td>
+                        <td>{{ job.description }}</td>
+                        <td>{{ job.salary }}</td>
+                        <td>{{ job.location }}</td>
+                        <td>{{ job.closing_date }}</td>
+                        <td>
+                          <a href="{{ url_for('career.apply_job') }}/{{ job.id }}" class="btn-info">
+                            {{ _('postuler') }}
+                          </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+      {% include 'dashboard/empty/no_job.html' %}
+    {% endif %}
+
+
+<div class="py-5"></div>
+
+</div>
+{% endblock %}

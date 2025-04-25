@@ -1,0 +1,334 @@
+{% extends 'dashboard/dashboard.html' %}
+{% block title %}
+    <title>{{ _('Gestion des livres : Ressync') }}</title>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>{{ _('Gestion des livres') }}</h2>
+        <div class="btn-group" role="group">
+            <!-- Plus Button -->
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addBookModal">
+                <i class="bi bi-plus-lg"></i> 
+            </button>
+            
+            <!-- Sorting Dropdown -->
+            <div class="btn-group" role="group">
+                <button id="btnGroupDrop1" type="button" class="btn btn-outline-secondary" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-sort-alpha-down"></i> <!-- Bootstrap icon for sorting -->
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                    <li><a class="dropdown-item" href="{{ url_for('archive.manage_books', company_id=company.id, sort='title', page=page) }}">{{ _('Par titre') }}</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('archive.manage_books', company_id=company.id, sort='newest', page=page) }}">{{ _('Les plus récents') }}</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('archive.manage_books', company_id=company.id, sort='author', page=page) }}">{{ _('Par auteur') }}</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div> 
+    
+    <div class="row justify-content-start my-3">
+        <div class="my-3 col-md-8 position-relative">
+            <input type="text" id="searchBar" class="form-control" placeholder="{{ _('Rechercher un livre...') }}">
+            <div id="searchResults" class="list-group position-absolute w-100 d-none" style="z-index: 1000;">
+                <!-- Search results will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+    
+
+    {% if books %}
+        <div class="list-group">
+            {% for book in books %}
+            <div class="list-group-item d-flex align-items-center mb-3 hoverable">
+                {% if book.ebook_url %}
+                    <a href="{{ book.ebook_url }}" target="_blank" class="d-flex align-items-center w-100 text-decoration-none text-dark">
+                {% else %}
+                    <div class="d-flex align-items-center w-100">
+                {% endif %}
+                        <img src="{{ book.image_url or url_for('static', filename='img/placeholders/picture.png') }}" alt="{{ book.title }}" class="img-thumbnail me-3 custom-thumbnail">
+                        <div class="flex-grow-1">
+                            <h5 class="mb-1">{{ book.title }}</h5>
+                            <p class="mb-1">{{ book.author }}</p>
+                            <small class="text-muted">{{ book.category }}</small>
+                        </div>
+                        <div>
+                            <button type="button" class="btn shadow-lg btn-sm" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ _('...') }}
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editBookModal-{{ book.id }}">
+                                    <i class="bi bi-pencil"></i> 
+                                    {{ _('Modifier') }}
+                                </li>
+                                <li class="dropdown-item">
+                                    <form action="{{ url_for('archive.manage_books', company_id=company.id) }}" method="POST" class="delete-book-form" data-book-id="{{ book.id }}">
+                                        <button type="submit" class="btn btn-link p-0">
+                                            <i class="bi bi-trash"></i>
+                                            {{ _('Supprimer') }}
+                                        </button>
+                                    </form>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a href="#" class="generate-qr" data-book-id="{{ book.id }}">
+                                        <i class="bi bi-qr-code"></i> 
+                                        {{ _('Generate QR Code') }}
+                                    </a>
+                                </li>
+                                {% if not book.ebook_url %}
+                                <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#lendBookModal-{{ book.id }}">
+                                    <i class="bi bi-book-half"></i>
+                                    {{ _('Gérer les emprunts') }}
+                                </li>
+                                {% endif %}
+                                <li class="dropdown-item">
+                                    <a href="#" class="generate-barcode" data-book-id="{{ book.id }}">
+                                        <i class="bi bi-upc"></i> 
+                                        {{ _('Generate Barcode') }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                {% if book.ebook_url %}
+                    </a>
+                {% else %}
+                    </div>
+                {% endif %}
+            </div>
+            
+                <!-- Edit Book Modal -->
+                <div class="modal fade" id="editBookModal-{{ book.id }}" tabindex="-1" aria-labelledby="editBookModalLabel-{{ book.id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form action="{{ url_for('archive.manage_books', book_id=book.id, company_id=company.id) }}" method="POST">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editBookModalLabel-{{ book.id }}">{{ _('Modifier le livre') }}</h5>
+                                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="title-{{ book.id }}" class="form-label">{{ _('Titre') }}</label>
+                                        <input type="text" class="form-control" id="title-{{ book.id }}" name="title" value="{{ book.title }}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="author-{{ book.id }}" class="form-label">{{ _('Auteur') }}</label>
+                                        <input type="text" class="form-control" id="author-{{ book.id }}" name="author" value="{{ book.author }}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="category-{{ book.id }}" class="form-label">{{ _('Categorie') }}</label>
+                                        <input type="text" class="form-control" id="category-{{ book.id }}" name="category" value="{{ book.category }}" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Fermer') }}</button>
+                                    <button type="submit" class="btn btn-info">
+                                        <span id="spinner" class="spinner-border-sm spinner-border d-none"></span>
+                                        <span id="ButtonText">
+                                            {{ _('Enregistrer') }}
+                                        </span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lending options -->
+                <div class="modal fade" id="lendBookModal-{{ book.id }}" tabindex="-1" aria-labelledby="lendBookModalLabel-{{ book.id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form action="{{ url_for('archive.lend_book', book_id=book.id, company_id=company.id) }}" method="POST" class="Lendbookforms" data-book-id="{{ book.id }}">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="lendBookModalLabel-{{ book.id }}">{{ _('Emprunter') }} "{{ book.title }}"</h5>
+                                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="borrowerName-{{ book.id }}" class="form-label">{{ _('Nom/Email de l\'emprunteur') }}</label>
+                                        <input list="borrowers-{{ book.id }}" id="borrowerName-{{ book.id }}" name="borrower_name" class="form-control" required>
+                                        <datalist id="borrowers-{{ book.id }}">
+                                            {% for user in company.users %}
+                                                {% if user.role.name != 'Librarian' %}
+                                                    <option value="{{ user.id }}">
+                                                        {% if user.first_name or user.last_name %}
+                                                            {{ user.first_name or '' }} {{ user.last_name or '' }}
+                                                        {% else %}
+                                                            {{ user.email }}
+                                                        {% endif %}
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </datalist>
+                                    </div>                                                                                                       
+                                    <div class="mb-3">
+                                        <label for="returnDate-{{ book.id }}" class="form-label">{{ _('Date de retour') }}</label>
+                                        <input type="date" class="form-control" id="returnDate-{{ book.id }}" name="return_date" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Annuler') }}</button>
+                                    <button type="submit" class="btn btn-info">
+                                        <span id="spinner" class="spinner-border spinner-border-sm d-none"></span>
+                                        <span id="ButtonText">
+                                            {{ _('Continuer') }}
+                                        </span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>                
+            {% endfor %}
+        </div>
+
+        <!-- Pagination Controls -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center mt-4">
+                {% if page > 1 %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('archive.manage_books', company_id=company.id, page=page-1) }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+                {% for p in range(1, total_pages + 1) %}
+                    <li class="page-item {{ 'active' if p == page else '' }}">
+                        <a class="page-link" href="{{ url_for('archive.manage_books', company_id=company.id, page=p) }}">{{ p }}</a>
+                    </li>
+                {% endfor %}
+                {% if page < total_pages %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('archive.manage_books', company_id=company.id, page=page+1) }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% else %}
+        {% include 'dashboard/@support_team/empty/no_book.html' %}
+    {% endif %}
+</div>
+
+<!-- Add Book Modal -->
+<div class="modal fade" id="addBookModal" tabindex="-1" aria-labelledby="addBookModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{{ url_for('archive.manage_books', company_id=company.id) }}" method="POST" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addBookModalLabel">{{ _('Ajouter un livre') }}</h5>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">{{ _('Titre') }}<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="title" name="title" placeholder="{{ _('Harry Potter') }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="author" class="form-label">{{ _('Auteur') }}<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="author" name="author" placeholder="{{ _('J.K Rowling') }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="category" class="form-label">{{ _('Catégorie') }}<span class="text-danger">*</span></label>
+                        <select class="form-select" id="category" name="category" required>
+                            <option value="" disabled selected>{{ _('Choisir une catégorie') }}</option>
+                            <option value="fiction">{{ _('Fiction') }}</option>
+                            <option value="non-fiction">{{ _('Non-Fiction') }}</option>
+                            <option value="science">{{ _('Science') }}</option>
+                            <option value="history">{{ _('Histoire') }}</option>
+                            <option value="biography">{{ _('Biographie') }}</option>
+                            <option value="fantasy">{{ _('Fantasy') }}</option>
+                            <option value="mystery">{{ _('Mystery') }}</option>
+                            <option value="romance">{{ _('Romance') }}</option>
+                            <option value="children">{{ _('Enfants') }}</option>
+                            <option value="reference">{{ _('Référence') }}</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label">{{ _('Image du livre') }}</label>
+                        <input type="file" class="form-control" id="image" name="image">
+                    </div>
+                    <div class="mb-3">
+                        <label for="ebook" class="form-label">{{ _('Version électronique (facultatif)') }}</label>
+                        <input type="file" class="form-control" id="ebook" name="ebook">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Fermer') }}</button>
+                    <button type="submit" class="btn btn-info">
+                        <span id="spinner" class="d-none spinner-border spinner-border-sm"></span>
+                        <span id="ButtonText">
+                            <i class="bi bi-plus-circle-dotted"></i>
+                            {{ _('Ajouter le livre') }}
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- QR Code Modal -->
+<div class="modal fade" id="qrCodeModal" tabindex="-1" aria-labelledby="qrCodeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="qrCodeModalLabel">{{ _('QR Code') }}</h5>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="qrCodeImage" src="" alt="QR Code" />
+                <a id="downloadQrCode" class="btn btn-info mt-3" download="qrcode.png">
+                    <i class="bi bi-download"></i>
+                    {{ _('Télécharger') }}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Barcode Modal -->
+<div class="modal fade" id="barcodeModal" tabindex="-1" aria-labelledby="barcodeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="barcodeModalLabel">{{ _('Barcode') }}</h5>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <svg id="barcodeImage"></svg>
+                <a id="downloadBarcode" class="btn btn-info mt-3" download="barcode.png">
+                    <i class="bi bi-download"></i>
+                    {{ _('Télécharger') }}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Include QRCode Library -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode@latest/build/qrcode.min.js"></script>
+<!-- Include JsBarcode Library -->
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@latest/dist/JsBarcode.all.min.js"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Book/GenerateBarCode.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Book/GenerateQRCode.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Book/CreateBook.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Book/EditBook.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Book/DeleteBook.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Book/SearchBook.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Book/LendBook.js') }}"></script>
+
+{% endblock %}

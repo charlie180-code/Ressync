@@ -1,0 +1,151 @@
+{% extends 'dashboard/dashboard.html' %}
+
+{% block title %}
+    <title>{{ _('Gestion des frais des étudiants : Ressync') }}</title>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>{{ _('Gestion des frais des étudiants') }}</h2>
+        <div class="btn-group" role="group">
+            <!-- Sorting Dropdown -->
+            <div class="btn-group" role="group">
+                <button id="btnGroupDrop1" type="button" class="btn btn-outline-secondary" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-sort-alpha-down"></i>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                    <li><a class="dropdown-item" href="?sort=last_name">{{ _('Par nom de famille') }}</a></li>
+                    <li><a class="dropdown-item" href="?sort=first_name">{{ _('Par prénom') }}</a></li>
+                    <li><a class="dropdown-item" href="?sort=remaining_fees">{{ _('Par frais restants') }}</a></li>
+                </ul>
+            </div>
+            <!-- Filters for Sessions and Academic Years -->
+            <div class="btn-group" role="group">
+                <button id="filterDropdown" type="button" class="btn btn-outline-secondary" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-funnel"></i>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+                    <form action="{{ url_for('accounting.manage_student_fees', company_id=company.id) }}" method="get">
+                        <div class="px-3 py-2">
+                            <label for="sessionFilter" class="form-label">{{ _('Par session') }}</label>
+                            <select id="sessionFilter" name="session_id" class="form-select mb-2 custom-width">
+                                <option value="">{{ _('Toutes les sessions') }}</option>
+                                {% for session in sessions %}
+                                    <option value="{{ session.id }}" {% if request.args.get('session_id') == session.id|string %} selected {% endif %}>
+                                        {{ session.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            
+                            <label for="academicYearFilter" class="form-label">{{ _('Par année') }}</label>
+                            <select id="academicYearFilter" name="academic_year_id" class="form-select custom-width">
+                                <option value="">{{ _('Toutes les années') }}</option>
+                                {% for year in academic_years %}
+                                    <option value="{{ year.id }}" {% if request.args.get('academic_year_id') == year.id|string %} selected {% endif %}>
+                                        {{ year.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        
+                            <button type="submit" class="btn btn-info mt-2 custom-width">{{ _('Appliquer') }}</button>
+                        </div>                        
+                    </form>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {% if students %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>{{ _('Prénom') }}</th>
+                        <th>{{ _('Nom de famille') }}</th>
+                        <th>{{ _('Classe') }}</th>
+                        <th>{{ _('Sexe') }}</th>
+                        <th>{{ _('Frais restants') }}</th>
+                        <th>{{ _('Pourcentage payé') }}</th>
+                        <th>{{ _('Actions') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <td>{{ student.user.first_name }}</td>
+                        <td>{{ student.user.last_name }}</td>
+                        <td>{{ class_dict[student.class_id]['name'] if student.class_id in class_dict else 'N/A' }}</td>
+                        <td>{{ student.user.gender }}</td>
+
+                        {# Calculate remaining fees #}
+                        {% set tuition_fees = academic_year.tuition_fees if academic_year and academic_year.tuition_fees and academic_year.tuition_fees > 0 else class_dict[student.class_id]['tuition'] if student.class_id in class_dict else 0 %}
+                        {% set paid_fees = student.installments | selectattr('is_paid', 'equalto', True) | map(attribute='amount') | sum %}
+                        {% set remaining_fees = tuition_fees - paid_fees %}
+
+                        <td>{{ remaining_fees }} {{ academic_year.currency if academic_year and academic_year.currency else class_dict[student.class_id]['currency'] if student.class_id in class_dict else '' }}</td>
+                        <td>
+                            {% set percentage_paid = (paid_fees / tuition_fees) * 100 if tuition_fees > 0 else 0 %}
+                            {{ percentage_paid | round(2) }}%
+                        </td>
+                        <td>
+                            <button class="btn btn-info btn-sm remind-parent" data-student-id="{{ student.id }}">
+                                {{ _('Rappel') }}
+                            </button>
+                            <button class="btn btn-secondary btn-sm view-details" data-student-id="{{ student.id }}">
+                                {{ _('Voir les détails') }}
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination Controls -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center mt-4">
+                {% if page > 1 %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('accounting.manage_student_fees', company_id=company.id, page=page-1, session_id=request.args.get('session_id'), academic_year_id=request.args.get('academic_year_id')) }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+                {% for p in range(1, total_pages + 1) %}
+                    <li class="page-item {{ 'active' if p == page else '' }}">
+                        <a class="page-link" href="{{ url_for('accounting.manage_student_fees', company_id=company.id, page=p, session_id=request.args.get('session_id'), academic_year_id=request.args.get('academic_year_id')) }}">{{ p }}</a>
+                    </li>
+                {% endfor %}
+                {% if page < total_pages %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('accounting.manage_student_fees', company_id=company.id, page=page+1, session_id=request.args.get('session_id'), academic_year_id=request.args.get('academic_year_id')) }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% else %}
+        <p>{{ _('Aucun étudiant trouvé.') }}</p>
+    {% endif %}
+</div>
+
+<script type="module">
+    document.querySelectorAll('.remind-parent').forEach(button => {
+        button.addEventListener('click', function() {
+            const studentId = this.getAttribute('data-student-id');
+            // Code to send a reminder to parents (AJAX request)
+            alert(`Reminder sent to parents of student ID: ${studentId}`);
+        });
+    });
+
+    document.querySelectorAll('.view-details').forEach(button => {
+        button.addEventListener('click', function() {
+            const studentId = this.getAttribute('data-student-id');
+            // Code to view student fee details (AJAX request or modal)
+            alert(`Viewing details for student ID: ${studentId}`);
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,172 @@
+{% extends 'dashboard/dashboard.html' %}
+{% block title %}<title>{{ _('Gestion des matières: Ressync') }}</title>{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="my-5 d-flex align-items-center justify-content-between">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                <li class="breadcrumb-item">
+                    <a class="link-body-emphasis" href="{{ url_for('user.user_home', company_id=company.id) }}">
+                        <i class="bi bi-house-door-fill"></i>
+                        <span class="visually-hidden">{{ _('Accueil') }}</span>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">{{ _('Gestion des matières') }}</li>
+            </ol>
+        </nav>
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#createNewSubjectModal" title="{{ _('Créer une nouvelle matière') }}">
+                <i class="bi bi-plus-circle"></i>
+            </button>
+            <!--
+                <button type="button" class="btn btn-outline-secondary" id="EditButton" title="{{ _('Modifier les matières') }}">
+                <i class="bi bi-pencil"></i>
+                </button>
+                <button type="button" class="btn btn-outline-secondary dropdown-toggle" id="SortSubjectsButton" data-bs-toggle="dropdown" aria-expanded="false" title="{{ _('Trier les matières') }}">
+                    <i class="bi bi-sort-up"></i>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">{{ _('Organiser par nom') }}</a></li>
+                </ul>
+            -->
+        </div>
+    </div>
+
+    <h2>{{ _('Matières') }}</h2>
+
+    <!-- Table for Subjects -->
+    <form method="POST" action="{{ url_for('classroom.manage_subjects', company_id=company.id) }}" id="UpdateSubjectForm">
+        {% if subjects %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>{{ _('Nom') }}</th>
+                        <th>{{ _('Enseignants') }}</th>
+                        <th>{{ _('Actions') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for subject in subjects %}
+                        <tr>
+                            <td><input type="text" name="name_{{ subject.id }}" value="{{ subject.name }}" class="form-control"></td>
+                            <td>
+                                <select name="teacher_{{ subject.id }}" class="form-select">
+                                    {% for teacher in subject.teachers %}
+                                        <option value="{{ teacher.id }}" {% if teacher.id == subject.teacher_id %}selected{% endif %}>
+                                            {{ teacher.user.first_name }} {{ teacher.user.last_name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </td>                                                       
+                            <td>
+                                <form action="{{ url_for('classroom.manage_subjects', company_id=company.id) }}" id="DeleteSubjectForm">
+                                    <button type="button" class="btn btn-danger btn-sm delete-subject-btn" data-subject-id="{{ subject.id }}" title="{{ _('Supprimer') }}">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="d-flex justify-content-end my-5 gap-2">
+                <button type="button" class="btn btn-secondary" id="discardButton" style="display: none;">
+                    {{ _('Annuler') }}
+                </button>
+                <button type="submit" class="btn btn-info" id="saveButton" disabled>
+                    <span id="Spinner" class="spinner-border-sm spinner-border d-none"></span>
+                    <span id="ButtonText">{{ _('Enregistrer') }}</span>
+                </button>
+            </div>   
+
+            <!-- Pagination Controls -->
+            <nav aria-label="Page navigation" class="justify-content-center d-flex gap-2 my-2">
+                <ul class="pagination">
+                    {% if pagination.has_prev %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('classroom.manage_subjects', company_id=company.id, page=pagination.prev_num) }}" aria-label="{{ _('Previous') }}">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% for page_num in pagination.iter_pages() %}
+                        {% if page_num %}
+                            <li class="page-item {% if page_num == pagination.page %}active{% endif %}">
+                                <a class="page-link" href="{{ url_for('classroom.manage_subjects', company_id=company.id, page=page_num) }}">{{ page_num }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if pagination.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('classroom.manage_subjects', company_id=company.id, page=pagination.next_num) }}" aria-label="{{ _('Next') }}">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% else %}
+            <p class="text-center">{{ _('Aucune matière trouvée.') }}</p>
+        {% endif %}
+    </form>
+
+    <!-- Modal for Creating a New Subject -->
+    <div class="modal fade" id="createNewSubjectModal" tabindex="-1" aria-labelledby="createNewSubjectLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createNewSubjectLabel">{{ _('Créer une nouvelle matière') }}</h5>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="createSubjectForm">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">{{ _('Nom de la matière') }} <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="{{ _('Maths') }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="weight" class="form-label">{{ _('Coefficient de la matière') }}<span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="weight" name="weight" required>
+                            <small>
+                                {{ _('Ecrivez (1) si la matière n\'a pas de coefficient') }}
+                            </small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="teacher" class="form-label">{{ _('Enseignant') }}<span class="text-danger">*</span></label>
+                            <select class="form-select" name="teacher" id="teacher" required>
+                                <option value="" disabled selected>{{ _('Choisissez l\'enseignant') }}</option>
+                                {% for teacher in teachers %}
+                                    <option value="{{ teacher.id }}">{{ teacher.user.first_name }} {{ teacher.user.last_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="classes" class="form-label">{{ _('Classes') }}<span class="text-danger">*</span></label>
+                            <select class="form-select" id="classes" name="classes[]" multiple required>
+                                <option value="" disabled selected>{{ _('Sélectionnez les classes') }}</option>
+                                {% for class in classes %}
+                                    <option value="{{ class.id }}">{{ class.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">{{ _('Annuler') }}</button>
+                            <button type="submit" class="btn btn-info">
+                                <i class="bi bi-plus-circle-dotted"></i>
+                                {{ _('Créer') }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Subject/DeleteSubject.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Subject/UpdateSubject.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Subject/CreateSubject.js') }}"></script>
+{% endblock %}

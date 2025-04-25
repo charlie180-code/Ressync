@@ -1,0 +1,665 @@
+{% extends 'dashboard/dashboard.html' %}
+
+{% block title %}
+    <title>{{ _('Demandes de procurations : Ressync') }}</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex align-items-center justify-content-between">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                <li class="breadcrumb-item">
+                    <a class="link-body-emphasis" href="#">
+                        <i class="bi bi-house-door-fill"></i>
+                        <span class="visually-hidden">{{ _('Accueil') }}</span>
+                    </a>
+                </li>
+                <li class="breadcrumb-item active">{{ _('Demandes de procurations') }}</li>
+            </ol>
+        </nav>
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#createNewLetter" title="{{ _('Ajouter un nouvel administrateur') }}">
+                <i class="bi bi-plus-circle"></i>
+            </button>
+        </div>
+    </div>
+    
+    <h2>
+        <span>{{ _('Nouvelles requêtes') }}</span>
+    </h2>
+
+    <div class="mb-3 col-md-4">
+        <label for="bills-search" class="form-label">{{ _('Taper un Client, Transitaire, N° BL...') }}</label>
+        <input type="text" class="form-control" id="bills-search" oninput="filterQuotes()" placeholder="{{ _('Taper un Client, Transitaire, N° BL...') }}">
+    </div>
+
+    {% if quotes %}
+        <div class="table-responsive">
+            <table class="table align-items-center mb-0 border-bottom">
+                <thead class="bg-light">
+                    <tr class="border-bottom">
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">#</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _('ID') }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _('Client') }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _('Compagnie') }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _('N° Container') }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _('Options') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for quote in quotes %}
+                        <tr>
+                            <td>
+                                {% if quote.is_company %}
+                                    <i class="bi bi-building text-primary" title="{{ _('Entreprise')}}"></i>
+                                {% else %}
+                                    <i class="bi bi-person text-info" title="{{ _('Particulier') }}"></i>
+                                {% endif %}
+                            </td>
+                            <td class="text-xxs font-weight-bolder opacity-7 ps-2">{{ quote.id }}</td>
+                            {% if quote.is_company %}
+                                <td class="text-xs ps-2">
+                                    {{ quote.company_name }}
+                                </td>
+                            {% else %}
+                                <td class="text-xs ps-2">
+                                    {{ quote.client_first_name }} {{ quote.client_last_name }}
+                                </td>
+                            {% endif %}
+                            <td class="text-xs ps-2">{{ quote.shipping_company_title }}</td>
+                            <td class="text-xs ps-2">{{ quote.lading_bills_identifier }}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-md shadow-lg" type="button" id="actionDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        ...
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ quote.id }}">
+                                        <li>
+                                            <button type="button" data-quote-id="{{ quote.id }}" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#quoteDetailsModal{{ quote.id }}">{{ _('Voir les détails') }}</button>
+                                        </li>
+                                        <li>
+                                            <button type="button" data-quote-id="{{ quote.id }}" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editQuoteModal{{ quote.id }}">
+                                                <i class="bi bi-pencil"></i>
+                                                {{ _('Modifier') }}
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{ url_for('order.prepare_send_container_release_letter', quote_id=quote.id, company_id=company.id) }}">
+                                                <i class="bi bi-send me-2"></i>
+                                                {{ _('Envoyer') }}
+                                            </a>
+                                        </li>
+                                        <hr class="dropdown-divider">
+                                        <li>
+                                            <button type="button" data-quote-id="{{ quote.id }}" class="dropdown-item text-danger delete-btn">
+                                                <i class="bi bi-trash"></i> {{ _('Supprimer') }}
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- View details modal -->
+                                <div class="modal fade" id="quoteDetailsModal{{ quote.id }}" tabindex="-1" aria-labelledby="quoteDetailsModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="quoteDetailsModalLabel">{{ _('Détails de la demande') }}</h5>
+                                                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        {% if quote.is_company %}
+                                                            <!-- Company Information -->
+                                                            <div class="form-group">
+                                                                <label class="form-label">{{ _('Nom de la société') }}:</label>
+                                                                <input type="text" class="form-control" value="{{ quote.company_name }}" readonly>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">{{ _('RCCM') }}:</label>
+                                                                <input type="text" class="form-control" value="{{ quote.company_proof_rccm }}" readonly>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">{{ _('NIF') }}:</label>
+                                                                <input type="text" class="form-control" value="{{ quote.company_proof_nif }}" readonly>
+                                                            </div>
+                                                        {% else %}
+                                                            <!-- Individual Information -->
+                                                            <div class="form-group">
+                                                                <label class="form-label">{{ _('Prénom du client') }}:</label>
+                                                                <input type="text" class="form-control" value="{{ quote.client_first_name }}" readonly>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">{{ _('Nom du client') }}:</label>
+                                                                <input type="text" class="form-control" value="{{ quote.client_last_name }}" readonly>
+                                                            </div>
+                                                        {% endif %}
+                                                        
+                                                        <div class="form-group">
+                                                            <label class="form-label">{{ _('Numéro de téléphone') }}:</label>
+                                                            <input type="text" class="form-control" value="{{ quote.client_phone_number }}" readonly>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-label">{{ _('Adresse e-mail') }}:</label>
+                                                            <input type="text" class="form-control" value="{{ quote.client_email_address }}" readonly>
+                                                        </div>
+                                                        
+                                                        <!-- Agent Information -->
+                                                        <div class="mt-3 pt-3 border-top">
+                                                            <h6 class="text-sm">{{ _('Information Agent') }}</h6>
+                                                            <div class="form-group">
+                                                                <label class="form-label">{{ _('Nom Agent') }}:</label>
+                                                                <input type="text" class="form-control" value="{{ quote.agent_first_name }} {{ quote.agent_last_name }}" readonly>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">{{ _('Email Agent') }}:</label>
+                                                                <input type="text" class="form-control" value="{{ quote.agent_email_address }}" readonly>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-6">
+                                                        <!-- Shipping Information -->
+                                                        <div class="form-group">
+                                                            <label class="form-label">{{ _('Compagnie de transport') }}:</label>
+                                                            <input type="text" class="form-control" value="{{ quote.shipping_company_title }}" readonly>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-label">{{ _('N° BL/Document') }}:</label>
+                                                            <input type="text" class="form-control" value="{{ quote.lading_bills_identifier }}" readonly>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-label">{{ _('Frais de service') }}:</label>
+                                                            <input type="text" class="form-control" value="{{ quote.service_fees }}" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Fermer') }}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Edit quote modal -->
+                                <div class="modal fade" id="editQuoteModal{{ quote.id }}" tabindex="-1" aria-labelledby="editQuoteModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="editQuoteModalLabel">{{ _('Modifier la demande') }}</h5>
+                                                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form id="editQuoteForm">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            {% if quote.is_company %}
+                                                                <!-- Company Information -->
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">{{ _('Nom de la société') }} <span class="text-danger">*</span></label>
+                                                                    <input type="text" class="form-control" name="company_name" value="{{ quote.company_name }}" required>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">{{ _('RCCM') }}</label>
+                                                                    <input type="text" class="form-control" name="company_proof_rccm" value="{{ quote.company_proof_rccm }}">
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">{{ _('NIF') }}</label>
+                                                                    <input type="text" class="form-control" name="company_proof_nif" value="{{ quote.company_proof_nif }}">
+                                                                </div>
+                                                            {% else %}
+                                                                <!-- Individual Information -->
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">{{ _('Prénom du client') }} <span class="text-danger">*</span></label>
+                                                                    <input type="text" class="form-control" name="client_first_name" value="{{ quote.client_first_name }}" required>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">{{ _('Nom du client') }} <span class="text-danger">*</span></label>
+                                                                    <input type="text" class="form-control" name="client_last_name" value="{{ quote.client_last_name }}" required>
+                                                                </div>
+                                                            {% endif %}
+                                                            
+                                                            <div class="mb-3">
+                                                                <label class="form-label">{{ _('Numéro de téléphone') }} <span class="text-danger">*</span></label>
+                                                                <input type="text" class="form-control" name="client_phone_number" value="{{ quote.client_phone_number }}" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label">{{ _('Adresse e-mail') }}</label>
+                                                                <input type="email" class="form-control" name="client_email_address" value="{{ quote.client_email_address }}">
+                                                            </div>
+                                                            
+                                                            <!-- Agent Information -->
+                                                            <div class="mt-3 pt-3 border-top">
+                                                                <h6 class="text-sm">{{ _('Information Agent') }}</h6>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">{{ _('Prénom Agent') }} <span class="text-danger">*</span></label>
+                                                                    <input type="text" class="form-control" name="agent_first_name" value="{{ quote.agent_first_name }}" required>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">{{ _('Nom Agent') }} <span class="text-danger">*</span></label>
+                                                                    <input type="text" class="form-control" name="agent_last_name" value="{{ quote.agent_last_name }}" required>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">{{ _('Email Agent') }}</label>
+                                                                    <input type="email" class="form-control" name="agent_email_address" value="{{ quote.agent_email_address }}">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-6">
+                                                            <!-- Shipping Information -->
+                                                            <div class="mb-3">
+                                                                <label class="form-label">{{ _('Compagnie de transport') }} <span class="text-danger">*</span></label>
+                                                                <input type="text" class="form-control" name="shipping_company_title" value="{{ quote.shipping_company_title }}" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label">{{ _('N° BL/Document') }} <span class="text-danger">*</span></label>
+                                                                <input type="text" class="form-control" name="lading_bills_identifier" value="{{ quote.lading_bills_identifier }}" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label">{{ _('Frais de service') }} <span class="text-danger">*</span></label>
+                                                                <input type="number" step="0.01" class="form-control" name="service_fees" value="{{ quote.service_fees }}" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="mt-4 text-end">
+                                                        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">{{ _('Annuler') }}</button>
+                                                        <button type="button" id="editQuoteSubmit" data-quote-id="{{ quote.id }}" class="btn btn-info">{{ _('Enregistrer') }}</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+          {% include 'dashboard/@support_team/empty/no_quote.html' %}
+        {% endif %}
+            <div class="modal fade" id="createNewLetter" tabindex="-1" aria-labelledby="createNewLetterModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="createNewLetterLabel">{{ _('Créer une nouvelle demande') }}</h5>
+                            <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="createLetterForm" method="POST">
+                                <input type="hidden" name="company_id" id="company_id" value="{{ company.id }}">
+                                
+                                <!-- Client Type Selection -->
+                                <div class="row mb-4">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ _('Type de Client') }}</h5>
+                                                <div class="row">
+                                                    <div class="col-md-12 mb-3">
+                                                        <div class="btn-group w-100" role="group">
+                                                            <input type="radio" class="btn-check" name="client_type" id="clientTypePerson" value="person" checked>
+                                                            <label class="btn btn-outline-primary" for="clientTypePerson">
+                                                                <i class="bi bi-person-fill me-2"></i>{{ _('Particulier') }}
+                                                            </label>
+                                                            
+                                                            <input type="radio" class="btn-check" name="client_type" id="clientTypeCompany" value="company">
+                                                            <label class="btn btn-outline-primary" for="clientTypeCompany">
+                                                                <i class="bi bi-building me-2"></i>{{ _('Entreprise') }}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <!-- Bill of Lading -->
+                                <div class="row mb-4">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ _('Informations du Connaissement') }}</h5>
+                                                <div class="row">
+                                                    <div class="col-md-12 mb-3">
+                                                        <label class="form-label">{{ _('Numéro de Connaissement') }}<span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" id="billsOfLading" name="lading_bills_identifier" placeholder="{{ _('MEDUXXXXX') }}" list="billsOfLadingSuggestions" autocomplete="off" required>
+                                                        <div class="invalid-feedback" id="billsOfLadingError" style="display: none;">
+                                                            {{ _('Le numéro de connaissement est requis') }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Individual Client Fields -->
+                                <div id="personFields" class="client-fields">
+                                    <div class="row mb-4">
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">{{ _('Informations du Client (Particulier)') }}</h5>
+                                                    <div class="row">
+                                                        <div class="col-md-4 mb-3">
+                                                            <label class="form-label">{{ _('Nom') }}<span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control" id="clientLastName" name="client_last_name" placeholder="{{ _('Doe') }}" list="clientLastNameSuggestions" autocomplete="off" required>
+                                                            <datalist id="clientLastNameSuggestions"></datalist>
+                                                            <div class="invalid-feedback" id="clientLastNameError" style="display: none;">
+                                                                {{ _('Le nom est requis') }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 mb-3">
+                                                            <label class="form-label">{{ _('Prénom') }}<span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control" id="clientFirstName" name="client_first_name" placeholder="{{ _('John') }}" list="clientFirstNameSuggestions" autocomplete="off" required>
+                                                            <datalist id="clientFirstNameSuggestions"></datalist>
+                                                            <div class="invalid-feedback" id="clientFirstNameError" style="display: none;">
+                                                                {{ _('Le prénom est requis') }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 mb-3">
+                                                            <label class="form-label">{{ _('Téléphone') }}<span class="text-danger">*</span></label>
+                                                            <input type="tel" class="form-control" id="clientPhone" name="client_phone_number" placeholder="+227 74411794" autocomplete="off" list="clientPhoneSuggestions" required>
+                                                            <datalist id="clientPhoneSuggestions"></datalist>
+                                                            <div class="invalid-feedback" id="clientPhoneError" style="display: none;">
+                                                                {{ _('Le numéro de téléphone est requis') }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label">{{ _('Email') }}</label>
+                                                            <input type="email" class="form-control" id="clientEmail" name="client_email_address" autocomplete="off" placeholder="exemple@gmail.com">
+                                                            <div class="invalid-feedback" id="clientEmailError" style="display: none;">
+                                                                {{ _('Veuillez entrer un email valide') }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label">{{ _('Adresse') }}<span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control" id="clientLocation" name="client_location" autocomplete="off" placeholder="Niamey Niger" list="clientLocationSuggestions" required>
+                                                            <datalist id="clientLocationSuggestions"></datalist>
+                                                            <div class="invalid-feedback" id="clientLocationError" style="display: none;">
+                                                                {{ _('L\'adresse est requise') }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <!-- Company Client Fields -->
+                                <div id="companyFields" class="client-fields" style="display: none;">
+                                    <div class="row mb-4">
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">{{ _('Informations de l\'Entreprise') }}</h5>
+                                                    <div class="row">
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label">{{ _('Nom de l\'Entreprise') }}<span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control" id="companyName" name="company_name" autocomplete="off" placeholder="{{ _('Entreprise XYZ') }}" list="companyNameSuggestions" required>
+                                                            <datalist id="companyNameSuggestions"></datalist>
+                                                            <div class="invalid-feedback" id="companyNameError" style="display: none;">
+                                                                {{ _('Le nom de l\'entreprise est requis') }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-4 mb-3">
+                                                            <label class="form-label">{{ _('Téléphone') }}<span class="text-danger">*</span></label>
+                                                            <input type="tel" class="form-control" id="companyPhone" name="company_phone_number" autocomplete="off" placeholder="+227 74411794" required list="companyPhoneSuggestions">
+                                                            <datalist id="companyPhoneSuggestions"></datalist>
+                                                            <div class="invalid-feedback" id="clientPhoneError" style="display: none;">
+                                                                {{ _('Le numéro de téléphone est requis') }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 mb-3">
+                                                            <label class="form-label">{{ _('Email') }}</label>
+                                                            <input type="email" class="form-control" id="clientEmail" name="company_email_address" autocomplete="off" placeholder="contact@entreprise.com">
+                                                            <div class="invalid-feedback" id="clientEmailError" style="display: none;">
+                                                                {{ _('Veuillez entrer un email valide') }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 mb-3">
+                                                            <label class="form-label">{{ _('Adresse') }}<span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control" id="companyLocation" name="company_location" autocomplete="off" placeholder="Siège social" required>
+                                                            <div class="invalid-feedback" id="clientLocationError" style="display: none;">
+                                                                {{ _('L\'adresse est requise') }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label" for="companyNif">{{ _('NIF') }}</label>
+                                                            <input class="form-control" type="text" name="company_proof_nif" id="companyNif" autocomplete="off" list="companyNifSuggestions" placeholder="4150/P">
+                                                            <datalist id="companyNifSuggestions"></datalist>
+                                                            <div class="invalid-feedback" id="companyNifError" style="display: none;">
+                                                                {{ _('Le NIF est requis') }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label" for="companyRccm">{{ _('RCCM') }}</label>
+                                                            <input class="form-control" type="text" name="company_proof_rccm" id="companyRccm" autocomplete="off" list="companyRccmSuggestions" placeholder="NE/NIM/....">
+                                                            <datalist id="companyRccmSuggestions"></datalist>
+                                                            <div class="invalid-feedback" id="companyRccmError" style="display: none;">
+                                                                {{ _('Le RCCM est requis') }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <!-- Agent Information -->
+                                <div class="row mb-4">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ _('Informations de l\'Agent') }}</h5>
+                                                <div class="row">
+                                                    <div class="col-md-4 mb-3">
+                                                        <label class="form-label">{{ _('Nom') }}<span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" id="agentLastName" name="agent_last_name" autocomplete="off" placeholder="{{ _('Smith') }}" list="agentLastNameSuggestions" required>
+                                                        <datalist id="agentLastNameSuggestions"></datalist>
+                                                        <div class="invalid-feedback" id="agentLastNameError" style="display: none;">
+                                                            {{ _('Le nom de l\'agent est requis') }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 mb-3">
+                                                        <label class="form-label">{{ _('Prénom') }}<span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" id="agentFirstName" name="agent_first_name" autocomplete="off" placeholder="{{ _('Kimberly') }}" list="agentFirstNameSuggestions" required>
+                                                        <datalist id="agentFirstNameSuggestions"></datalist>
+                                                        <div class="invalid-feedback" id="agentFirstNameError" style="display: none;">
+                                                            {{ _('Le prénom de l\'agent est requis') }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 mb-3">
+                                                        <label class="form-label">{{ _('Email') }}</label>
+                                                        <input type="email" class="form-control" id="agentEmail" name="agent_email_address" autocomplete="off" placeholder="agent@example.com">
+                                                        <div class="invalid-feedback" id="agentEmailError" style="display: none;">
+                                                            {{ _('Veuillez entrer un email valide') }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <!-- Shipping Information -->
+                                <div class="row mb-4">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ _('Informations d\'Expédition') }}</h5>
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label">{{ _('Compagnie Maritime') }}<span class="text-danger">*</span></label>
+                                                        <select class="form-select" name="shipping_company" id="ShippingCompanyTitle" required>
+                                                            <option value="" disabled selected>{{ _('Sélectionner...') }}</option>
+                                                            <option value="C/o MSC BENIN S.A.">C/o MSC BENIN S.A.</option>
+                                                            <option value="C/o MSC Lomé S.A.">C/o MSC Lomé S.A.</option>
+                                                        </select>
+                                                        <div class="invalid-feedback" id="shippingCompanyError" style="display: none;">
+                                                            {{ _('Veuillez sélectionner une compagnie maritime') }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <!-- Terms and Submission -->
+                                <div class="row mb-4">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="privacyPolicy" name="privacy_policy" required>
+                                                    <label class="form-check-label" for="privacyPolicy">
+                                                        {{ _('Vous acceptez notre') }} 
+                                                        <a href="{{ url_for('main.cgu') }}" target="_blank">{{ _('politique de confidentialité') }}</a>
+                                                        <span class="text-danger">*</span>
+                                                    </label>
+                                                    <div class="invalid-feedback" id="privacyPolicyError" style="display: none;">
+                                                        {{ _('Vous devez accepter la politique de confidentialité') }}
+                                                    </div>
+                                                </div>
+                                                <div class="d-grid gap-2 mt-3">
+                                                    <button type="submit" id="SubmitButton" class="btn btn-info">
+                                                        <i id="ButtonIcon" class="bi bi-arrow-right-circle me-2"></i>
+                                                        <span id="Spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                                        <span id="ButtonText">{{ _('Continuer') }}</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Pagination Controls -->
+            <nav aria-label="Pagination" class="mt-3">
+                <ul class="pagination justify-content-center">
+                    {% if pagination.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('order.new_quotes', company_id=company.id, page=pagination.prev_num) }}">
+                            <i class="bi bi-chevron-double-left"></i>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">
+                            <i class="bi bi-chevron-double-left"></i>
+                        </span>
+                    </li>
+                    {% endif %}
+
+                    {% for page_num in pagination.iter_pages(left_edge=2, right_edge=2, left_current=2, right_current=2) %}
+                        {% if page_num %}
+                            {% if page_num == pagination.page %}
+                                <li class="page-item active"><span class="page-link">{{ page_num }}</span></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="{{ url_for('order.new_quotes', company_id=company.id, page=page_num) }}">{{ page_num }}</a></li>
+                        {% endif %}
+                        {% else %}
+                            <li class="page-item disabled"><span class="page-link">…</span></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if pagination.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('order.new_quotes', company_id=company.id, page=pagination.next_num) }}">
+                            <i class="bi bi-chevron-double-right"></i>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">
+                            <i class="bi bi-chevron-double-right"></i>
+                        </span>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+
+    <div class="py-5"></div>
+    <script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Authorizations/Autocomplete.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Authorizations/EditAuthorization.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Authorizations/DeleteAuthorization.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Letter/CreateLetter.js') }}"></script>
+    <script>
+        const clientTypeRadios = document.querySelectorAll('input[name="client_type"]');
+        const personFields = document.getElementById('personFields');
+        const companyFields = document.getElementById('companyFields');
+                                
+        function toggleClientFields() {
+            const isCompany = document.querySelector('input[name="client_type"]:checked').value === 'company';
+            personFields.style.display = isCompany ? 'none' : 'block';
+            companyFields.style.display = isCompany ? 'block' : 'none';
+                                    
+            document.querySelectorAll('#personFields [required]').forEach(el => {
+                el.required = !isCompany;
+            });
+            document.querySelectorAll('#companyFields [required]').forEach(el => {
+                el.required = isCompany;
+            });
+        }
+                                
+        clientTypeRadios.forEach(radio => {
+            radio.addEventListener('change', toggleClientFields);
+        });
+                                
+        toggleClientFields();
+                            
+    </script>  
+     
+    <script>
+        function filterQuotes() {
+            const searchInput = document.getElementById('bills-search').value.toLowerCase();
+            const tableBody = document.querySelector('tbody');
+            const rows = tableBody.getElementsByTagName('tr');
+            const noResultsMessage = document.getElementById('no-results-message');
+            let resultsFound = false;
+
+            for (let row of rows) {
+                const clientCell = row.cells[1].innerText.toLowerCase();
+                const companyCell = row.cells[2].innerText.toLowerCase();
+
+                if (clientCell.includes(searchInput) || companyCell.includes(searchInput)) {
+                    row.style.display = '';
+                    resultsFound = true;
+                } else {
+                    row.style.display = 'none'; 
+                }
+            }
+
+            if (noResultsMessage) {
+                noResultsMessage.style.display = resultsFound ? 'none' : 'block';
+            }
+        }
+    </script>
+
+</div>
+
+{% endblock %}

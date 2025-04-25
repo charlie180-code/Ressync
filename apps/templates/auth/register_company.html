@@ -1,0 +1,459 @@
+{% extends 'auth/layout.html' %}
+{% block title %}{{ _('Ressync : Ajouter une nouvelle entreprise') }}{% endblock %}
+{% block content %}
+<section class="bg-white">
+  <div class="lg:grid lg:min-h-screen lg:grid-cols-12">
+    <aside class="relative block h-16 lg:order-last lg:col-span-5 lg:h-full xl:col-span-6">
+      <img
+        alt="{{ _('Gradient Image') }}"
+        src="{{ url_for('static', filename='img/entry/Rangitikei.png') }}"
+        class="absolute inset-0 h-full w-full object-cover"
+      />
+    </aside>
+
+    <!-- Form Section -->
+    <main
+      class="flex items-start px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6"
+    >
+      <div class="max-w-4xl w-full">
+        <h1 class="mt-6 text-2xl text-gray-900 sm:text-3xl md:text-4xl">
+          {{ _('Ajouter une nouvelle entreprise') }}
+        </h1>
+
+        <p class="mt-4 leading-relaxed text-gray-500">
+          {{ _('Veuillez remplir correctement ce formulaire afin d\'enregistrer votre entreprise') }}
+        </p>
+
+        <form action="#" method="POST" enctype="multipart/form-data" class="mt-8 grid grid-cols-6 gap-6" id="companyForm">
+          <!-- Company Title -->
+          <div class="col-span-6">
+            <label for="Title" class="block text-sm font-medium text-gray-700">
+              {{ _('Nom de l\'entreprise') }}<span class="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              id="Title"
+              name="title"
+              placeholder="Airbnb"
+              class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+              required
+            />
+            <p class="text-red-500 hidden" id="EmptyNameError">
+              {{ _('Veuillez fournir le nom de l\'entreprise pour continuer') }}
+            </p>
+            <p class="text-red-500 hidden" id="DuplicateCompanyNameError">
+              {{ _('Ce nom existe déjà, veuillez utiliser un autre nom') }}
+            </p>
+          </div>
+
+          <!-- Description -->
+          <div class="col-span-6">
+            <label for="Description" class="block text-sm font-medium text-gray-700">
+              {{ _('Description') }}
+            </label>
+            <textarea
+              id="Description"
+              name="description"
+              rows="4"
+              placeholder="{{ _('Donnez une brève description de votre entreprise (max 250 mots)') }}"
+              class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+            ></textarea>
+            <p id="wordCount" class="mt-1 text-sm text-gray-500">
+              0 / 250
+            </p>
+          </div>
+
+          <div class="col-span-6">
+            <label for="Email" class="block text-sm font-medium text-gray-700">
+              {{ _('Email') }}<span class="text-red-500">*</span>
+            </label>
+            <input
+              type="email"
+              id="Email"
+              name="email"
+              placeholder="{{ _('example@domain.com') }}"
+              class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+              required
+            />
+            <p class="text-red-500 hidden" id="InvalidEmailAddress">
+              {{ _('Veuillez fournir une adresse email valide') }}
+            </p>
+            <p class="text-red-500 hidden" id="DuplicateEmailError">
+              {{ _('Veuillez fournir une adresse email valide') }}
+            </p>
+            <p class="text-red-500 hidden" id="EmptyEmailAddress">
+              {{ _('Veuillez fournir une adresse email pour continuer') }}
+            </p>
+          </div>
+                
+
+          <!-- Logo File Upload -->
+          <div class="col-span-6">
+            <label for="LogoFile" class="block text-sm font-medium text-gray-700">
+              {{ _('Veuillez télécharger le logo de votre entreprise') }}<span class="text-red-500">*</span>
+            </label>
+            <input
+              type="file"
+              id="LogoFile"
+              name="logo_file"
+              accept="image/*"
+              class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+              required
+            />
+            <p class="mt-1 text-sm text-gray-500">
+              {{ _('Formats acceptés: SVG, PNG, JPG, GIF. Taille maximale: 5MB.') }}
+            </p>
+            <p class="text-red-500 hidden" id="LogoEmptyError">
+              {{ _('Veuillez télécharger un logo pour votre entreprise') }}
+            </p>
+            <p class="text-red-500 hidden" id="LogoTypeError">
+              {{ _('Veuillez télécharger un fichier de type SVG, PNG, JPG, GIF') }}
+            </p>
+            <p class="text-red-500 hidden" id="LogoSizeError">
+              {{ _('Votre logo ne doit pas dépasser 5MB') }}
+            </p>
+          </div>
+
+        <!-- Location & Category -->
+        
+        <!-- Location Input and Suggestions -->
+        <div class="col-span-6 relative">
+          <label for="Location" class="block text-sm font-medium text-gray-700">
+            {{ _('Adresse') }}<span class="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            id="Location"
+            name="location"
+            class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+            required
+            placeholder="{{ _('Entrez votre adresse') }}"
+          />
+          <div id="suggestions" class="absolute z-10 mt-1 w-full max-h-60 overflow-auto bg-white border border-gray-300 rounded-md shadow-lg hidden">
+            <!-- Suggestions will be inserted here dynamically -->
+          </div>
+          <p class="text-red-500 hidden" id="AddressEmptyError">
+            {{ _('Veuillez indiquer l\'adresse de votre entreprise') }}
+          </p>
+        </div>
+
+
+        <!-- Sector Selection with Descriptive Text -->
+        <div class="col-span-6">
+          <label for="Category" class="block text-sm font-medium text-gray-700">
+            {{ _('Dites-nous comment vous prévoyez d\'utiliser nos applications') }} <span class="text-red-500">*</span>
+          </label>
+
+          <!-- Sector Selection with Descriptive Text -->
+          <div class="mt-4 space-y-6">
+              <!-- Academics -->
+              <label class="block p-4 border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 cursor-pointer peer-checked:border-blue-600">
+                <div class="flex items-center">
+                  <input type="radio" name="category" id="sector-academics" value="Education" required>
+                  <span class="text-lg font-medium text-gray-900 ms-2">{{ _('Académie') }}</span>
+                </div>
+                <p class="mt-1 text-sm text-gray-700">
+                  {{ _('Conçu spécialement pour les établissements d\'enseignement, notre solution offre une gestion intégrée des étudiants, du personnel et des ressources pédagogiques, simplifiant ainsi les processus administratifs et académiques.') }}
+                </p>
+              </label>
+
+              <!-- Engineering -->
+              <label class="block p-4 border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 cursor-pointer peer-checked:border-blue-600">
+                <div class="flex items-center">
+                  <input class="peer" type="radio" name="category" id="sector-engineering" value="Engineering">
+                  <span class="text-lg font-medium text-gray-900 ms-2">{{ _('Ingénierie') }}</span>
+                </div>
+                <p class="mt-1 text-sm text-gray-700">
+                  {{ _('Notre solution dédiée à l\'ingénierie intègre la gestion de projets, la planification des tâches et l\'analyse des données pour optimiser les opérations techniques. Elle inclut également des outils avancés d\'analyse de données, idéaux pour les activités de recherche et développement.') }}
+                </p>
+              </label>
+
+              <!-- Other -->
+              <label class="block p-4 border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 cursor-pointer peer-checked:border-blue-600">
+                <div class="flex items-center">
+                  <input class="peer" type="radio" name="category" id="sector-non-specified" value="Other">
+                  <span class="text-lg font-medium text-gray-900 ms-2">{{ _('Autre') }}</span>
+                </div>
+                <p class="mt-1 text-sm text-gray-700">
+                  {{ _('Vous souhaitez simplifier la gestion de vos ressources humaines, générer des factures et organiser vos archives ? Cette offre est conçue pour des besoins individuels ou non collaboratifs.') }}
+                </p>
+              </label>
+          </div>
+
+          <p class="text-red-500 hidden" id="CategoryEmptyError">
+              {{ _('Veuillez entrer votre secteur d\'activité pour continuer') }}
+          </p>
+        </div>
+
+
+
+      
+      
+
+        
+        <!-- Nature & Email -->
+        <div class="col-span-6 md:col-span-3">
+          <label for="Nature" class="block text-sm font-medium text-gray-700">
+            {{ _('Nature de l\'entreprise') }}
+          </label>
+          <select
+            id="Nature"
+            name="nature"
+            class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+          >
+              <option value="" disabled selected>{{ _('Sélectionnez la nature de votre entreprise') }}</option>
+              <option value="corp">{{ _('Corp') }}</option>
+              <option value="llc">{{ _('LLC') }}</option>
+              <option value="sarl">{{ _('SARL') }}</option>
+              <option value="sa">{{ _('SA') }}</option>
+              <option value="sasu">{{ _('SASU') }}</option>
+              <option value="sas">{{ _('SAS') }}</option>
+              <option value="sci">{{ _('SCI') }}</option>
+              <option value="sci">{{ _('SCI') }}</option>
+              <option value="eurl">{{ _('EURL') }}</option>
+              <option value="plc">{{ _('PLC') }}</option>
+              <option value="llp">{{ _('LLP') }}</option>
+          </select>
+        </div>
+
+
+          <!-- Phone Number & Website URL -->
+          <div class="col-span-6 md:col-span-3">
+            <label for="PhoneNumber" class="block text-sm font-medium text-gray-700">
+              {{ _('N° de Téléphone de l\'entreprise') }}
+            </label>
+            <input
+              type="text"
+              id="PhoneNumber"
+              name="phone_number"
+              class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+              placeholder="+227 74 41 17 94"
+            />
+          </div>
+
+          <div class="col-span-6 md:col-span-3">
+            <label for="WebsiteUrl" class="block text-sm font-medium text-gray-700">
+              {{ _('URL de votre site web') }}
+            </label>
+            <input
+              type="url"
+              id="WebsiteUrl"
+              name="website_url"
+              class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+              placeholder="https://www.entreprise.com"
+            />
+          </div>
+
+          <!-- LinkedIn & Twitter URLs -->
+          <div class="col-span-6 md:col-span-3">
+            <label for="LinkedinUrl" class="block text-sm font-medium text-gray-700">
+              {{ _('URL de votre page LinkedIn') }}    
+            </label>
+            <input
+              type="text"
+              id="LinkedinUrl"
+              name="linkedin_url"
+              class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+              placeholder="https://www.linkedin.com/in/entreprise/"
+            />
+          </div>
+          <div class="col-span-6 md:col-span-3">
+            <label for="TwitterUrl" class="block text-sm font-medium text-gray-700">
+              {{ _('URL de votre page Twitter ou X') }}
+            </label>
+            <input
+              type="text"
+              id="TwitterUrl"
+              name="twitter_url"
+              class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+              placeholder="https://www.x.com/entreprise"
+            />
+          </div>
+
+          <!-- Facebook URL & Number of Employees -->
+          <div class="col-span-6 md:col-span-3">
+            <label for="FacebookUrl" class="block text-sm font-medium text-gray-700">
+              {{ ('URL de votre page Facebook') }}
+            </label>
+            <input
+              type="text"
+              id="FacebookUrl"
+              name="facebook_url"
+              class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+              placeholder="https://facebook.com/entreprise"
+            />
+          </div>
+          <div class="col-span-6 md:col-span-3">
+            <label for="NumberOfEmployees" class="block text-sm font-medium text-gray-700">
+              {{ _('Taille de l\'entreprise') }} <span class="text-red-500">*</span>
+            </label>
+            <select
+              id="NumberOfEmployees"
+              name="number_of_employees"
+              class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+              required
+            >
+                <option value="" disabled selected>{{ _('Taille de l\'entreprise') }}</option>
+                <option value="1_10">{{ _('1-10 employés') }}</option>
+                <option value="11_50">{{ _('11-50 employés') }}</option>
+                <option value="51_200">{{ _('51-200 employés') }}</option>
+                <option value="201_500">{{ _('201-500 employés') }}</option>
+                <option value="501_1000">{{ _('501-1000 employés') }}</option>
+                <option value="1001_5000">{{ _('1001-5000 employés') }}</option>
+                <option value="5001_10000">{{ _('5001-10000 employés') }}</option>
+                <option value="10001_plus">{{ _('10001+ employés') }}</option>
+            </select>
+
+            <p class="text-red-500 hidden" id="CompanySizeEmptyError">
+              {{ _('Veuillez indiquer la taille de votre entreprise') }}
+            </p>
+
+          </div>
+
+          <!-- Year Established & Annual Revenue -->
+          <div class="col-span-6 md:col-span-3">
+            <label for="YearEstablished" class="block text-sm font-medium text-gray-700">
+              {{ _('Année de création') }} <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="number"
+              id="YearEstablished"
+              name="year_established"
+              class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+              placeholder="{{ _('2003') }}"
+              required
+            />
+          </div>
+
+          <!-- Annual Revenue & Currency -->
+          <div class="col-span-6 md:col-span-3">
+            <label for="Currency" class="block text-sm font-medium text-gray-700">
+              {{ _('Devise') }}
+            </label>
+            <select
+              id="Currency"
+              name="currency"
+              class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+            >
+              <option value="" disabled selected>{{ _('Sélectionnez la monnaie') }}</option>
+              <option value="USD">{{ _('USD') }}</option>
+              <option value="EUR">{{ _('EUR') }}</option>
+              <option value="GBP">{{ _('GBP') }}</option>
+              <option value="JPY">{{ _('JPY') }}</option>
+              <option value="AUD">{{ _('AUD') }}</option>
+              <option value="CAD">{{ _('CAD') }}</option>
+              <option value="CHF">{{ _('CHF') }}</option>
+              <option value="CNY">{{ _('CNY') }}</option>
+              <option value="INR">{{ _('INR') }}</option>
+              <option value="BRL">{{ _('BRL') }}</option>
+              <option value="RUB">{{ _('RUB') }}</option>
+              <option value="ZAR">{{ _('ZAR') }}</option>
+              <option value="MXN">{{ _('MXN') }}</option>
+              <option value="HKD">{{ _('HKD') }}</option>
+              <option value="SGD">{{ _('SGD') }}</option>
+              <option value="NOK">{{ _('NOK') }}</option>
+              <option value="SEK">{{ _('SEK') }}</option>
+              <option value="NZD">{{ _('NZD') }}</option>
+              <option value="KRW">{{ _('KRW') }}</option>
+              <option value="TRY">{{ _('TRY') }}</option>
+              <option value="IDR">{{ _('IDR') }}</option>
+              <option value="THB">{{ _('THB') }}</option>
+              <option value="MYR">{{ _('MYR') }}</option>
+              <option value="PLN">{{ _('PLN') }}</option>
+              <option value="CZK">{{ _('CZK') }}</option>
+              <option value="HUF">{{ _('HUF') }}</option>
+              <option value="ILS">{{ _('ILS') }}</option>
+              <option value="PHP">{{ _('PHP') }}</option>
+              <option value="AED">{{ _('AED') }}</option>
+              <option value="SAR">{{ _('SAR') }}</option>
+              <option value="PKR">{{ _('PKR') }}</option>
+              <option value="EGP">{{ _('EGP') }}</option>
+              <option value="NGN">{{ _('NGN') }}</option>
+              <option value="VND">{{ _('VND') }}</option>
+              <option value="XOF">{{ _('XOF') }}</option>
+              <option value="XAF">{{ _('XAF') }}</option>
+              <option value="KES">{{ _('KES') }}</option>
+              <option value="GHS">{{ _('GHS') }}</option>
+              <option value="TZS">{{ _('TZS') }}</option>
+              <option value="UGX">{{ _('UGX') }}</option>
+              <option value="MGA">{{ _('MGA') }}</option>
+              <option value="BWP">{{ _('BWP') }}</option>
+              <option value="ETB">{{ _('ETB') }}</option>
+              <option value="DZD">{{ _('DZD') }}</option>
+              <option value="MAD">{{ _('MAD') }}</option>
+            </select>
+          </div>
+
+          <div class="col-span-6 md:col-span-3">
+            <label for="AnnualRevenue" class="block text-sm font-medium text-gray-700">
+              {{ _('Revenu annuel') }}
+            </label>
+            <select
+              id="AnnualRevenue"
+              name="annual_revenue"
+              class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+            >
+                <option value="" disabled selected>{{ _('Sélectionnez la tranche de revenu') }}</option>
+                <option value="0_1M">{{ _('0 - 1M') }}</option>
+                <option value="1M_10M">{{ _('1M - 10M') }}</option>
+                <option value="10M_50M">{{ _('10M - 50M') }}</option>
+                <option value="50M_100M">{{ _('50M - 100M') }}</option>
+                <option value="100M_500M">{{ _('100M - 500M') }}</option>
+                <option value="500M_1B">{{ _('500M - 1B') }}</option>
+                <option value="1B_plus">{{ _('1B+') }}</option>
+            </select>
+          </div>
+
+        <!-- Privacy Policy Agreement -->
+        <div class="col-span-6">
+          <div class="flex items-center">
+            <input
+              type="checkbox"
+              id="privacyCheck"
+              name="privacy_policy"
+              class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              required
+            />
+            <label for="privacyCheck" class="ml-2 text-sm text-gray-700">
+              {{ _('En continuant vous acceptez notre') }} <a href="/privacy-policy" target="_blank" class="text-blue-600 hover:underline">{{ _('Politique de confidentialité') }}</a> <span class="text-red-500">*</span>
+            </label>
+          </div>
+          <p class="text-red-500 hidden" id="PrivacyCheckError">
+            {{ _('Veuillez accepter les conditions d\'utilisation pour continuer') }}
+          </p>
+        </div>
+
+        {% include 'auth/register_company_success.html' %}
+
+        <div class="mt-5">
+          <button
+            id="CreateCompanyButton"
+            type="button"
+            class="inline-flex rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
+          >
+            <div role="status" id="Spinner" class="flex-shrink-0 mr-3 hidden">
+              <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+              </svg>
+              <span class="sr-only">{{ _('En cours') }}</span>
+            </div>
+            <div id="button-text" class="flex-1 text-center">
+              {{ _('Continuer') }}
+            </div>
+          </button>
+        </div>
+        
+        
+          
+          
+        </form>
+      </div>
+    </main>
+  </div>
+</section>
+
+<script type="module" src="{{ url_for('static', filename='js/async/auth/DupCompanyNameChecker.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/auth/RegisterCompany.js') }}"></script>
+
+{% endblock %}

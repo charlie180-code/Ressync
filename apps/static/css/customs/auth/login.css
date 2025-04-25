@@ -1,0 +1,12 @@
+#SubmitButton:disabled{
+    background-color: gray;
+}
+
+
+#CreateCompanyButton:disabled{
+    background-color: #d1d5db; /* Gray background */
+    color: #9ca3af; /* Gray text */
+    border-color: #d1d5db; /* Gray border */
+    cursor: not-allowed; /* Change cursor to indicate disabled state */
+    opacity: 0.6; /* Make it look faded */
+}

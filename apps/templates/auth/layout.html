@@ -1,0 +1,73 @@
+<html lang="{{ get_locale() }}" class="h-full bg-white">
+<head>
+    {% include 'includes/inc_top.html' %}
+    <title>{% block title %}{{ _('Ressync : Se connecter') }}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/brand/Ressync/apple-touch-icon.svg') }}" sizes="180x180">
+    <link rel="icon" href="{{url_for('static', filename='media/favicons/favicon-32x32.png')}}" sizes="32x32" type="image/png">
+    <link rel="icon" href="{{url_for('static', filename='media/favicons/favicon-16x16.png')}}" sizes="16x16" type="image/png">
+    <link rel="icon" href="{{ url_for('static', filename='img/brand/Ressync/apple-touch-icon.svg') }}" type="image/png">
+
+    <!-- spinner css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/customs/auth/spinner.css') }}">
+</head>
+<body class="h-full">
+    <main>
+        <!-- Overlay and Spinner -->
+        <div id="overlay" class="overlay">
+            <div id="spinner" class="sk-chase" role="status">
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+            </div>
+        </div>
+        {% block content %}{% endblock %}
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const flashMessage = document.querySelector('.flash-message');
+            if (flashMessage) {
+                flashMessage.style.display = 'block';
+                setTimeout(() => {
+                    flashMessage.style.display = 'none';
+                }, 5000);
+            }
+
+            const registerLink = document.querySelector("#register_company");
+            const createCompanyButton = document.querySelector("#CreateCompanyButton");
+            const overlay = document.getElementById("overlay");
+
+            function showSpinner() {
+                overlay.style.display = "flex";
+                setTimeout(() => {
+                    overlay.style.display = "none";
+                }, 500);
+            }
+
+            if (registerLink) {
+                registerLink.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    showSpinner();
+                    setTimeout(() => {
+                        window.location.href = registerLink.href;
+                    }, 500);
+                });
+            }
+
+            if (createCompanyButton) {
+                createCompanyButton.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    showSpinner();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

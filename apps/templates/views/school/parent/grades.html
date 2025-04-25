@@ -1,0 +1,89 @@
+{% extends 'dashboard/dashboard.html' %}
+
+{% block title %}<title>{{ _('Voir les Notes: Ressync') }}</title>{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="my-5">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                <li class="breadcrumb-item">
+                    <a class="link-body-emphasis" href="{{ url_for('user.user_home', company_id=company.id) }}">
+                        <i class="bi bi-house-door-fill"></i>
+                        <span class="visually-hidden">{{ _('Accueil') }}</span>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">{{ _('Voir les Notes') }}</li>
+            </ol>
+        </nav>
+    </div>
+
+    <h2>{{ _('Voir les Notes') }}</h2>
+
+    {% for student in students %}
+        {% set notes_de = "Notes de: " %}
+        {% if request.args.get('subject_id') or request.args.get('session_id') or request.args.get('exam_id') %}
+            <h3>{{ notes_de }} {{ student.user.first_name }} {{ student.user.last_name }}</h3>
+        {% else %}
+            <h3>{{ _('Notes pour: ') }} {{ student.user.first_name }} {{ student.user.last_name }}</h3>
+        {% endif %}
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="subject-select">{{ _('Sélectionnez la Matière') }}</label>
+                <select id="subject-select" class="form-select" onchange="window.location.href='?subject_id=' + this.value + '&session_id={{ request.args.get('session_id') }}&exam_id={{ request.args.get('exam_id') }}'">
+                    <option value="">{{ _('Toutes') }}</option>
+                    {% for subject in all_subjects[student.id] %}
+                        <option value="{{ subject.id }}" {% if subject.id|string == request.args.get('subject_id') %}selected{% endif %}>{{ subject.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="session-select">{{ _('Sélectionnez la Session') }}</label>
+                <select id="session-select" class="form-select" onchange="window.location.href='?session_id=' + this.value + '&subject_id={{ request.args.get('subject_id') }}&exam_id={{ request.args.get('exam_id') }}'">
+                    <option value="">{{ _('Toutes') }}</option>
+                    {% for session in all_sessions[student.id] %}
+                        <option value="{{ session.id }}" {% if session.id|string == request.args.get('session_id') %}selected{% endif %}>{{ session.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="exam-select">{{ _('Sélectionnez l\'Examen') }}</label>
+                <select id="exam-select" class="form-select" onchange="window.location.href='?exam_id=' + this.value + '&subject_id={{ request.args.get('subject_id') }}&session_id={{ request.args.get('session_id') }}'">
+                    <option value="">{{ _('Tous') }}</option>
+                    {% for exam in all_exams[student.id] %}
+                        <option value="{{ exam.id }}" {% if exam.id|string == request.args.get('exam_id') %}selected{% endif %}>{{ exam.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>{{ _('Matière') }}</th>
+                    <th>{{ _('Session') }}</th>
+                    <th>{{ _('Examen') }}</th>
+                    <th>{{ _('Note') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for grade in all_grades[student.id] %}
+                    <tr>
+                        <td>{{ (all_subjects[student.id]|selectattr('id', 'equalto', grade.subject_id)|first).name }}</td>
+                        <td>{{ (all_sessions[student.id]|selectattr('id', 'equalto', grade.session_id)|first).name }}</td>
+                        <td>{{ (all_exams[student.id]|selectattr('id', 'equalto', grade.exam_id)|first).name }}</td>
+                        <td>{{ grade.value }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center">{{ _('Aucune note disponible') }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="text-center my-2">{{ _('Il n\'y a rien à afficher') }}</p>
+    {% endfor %}
+</div>
+{% endblock %}

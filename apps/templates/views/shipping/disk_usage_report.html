@@ -1,0 +1,21 @@
+<div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+    <div class="card">
+        <div class="card-header p-3 pt-2">
+            <div class="icon icon-lg icon-shape shadow-lg bg-white text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10 text-primary">storage</i>
+            </div>
+            <div class="text-end pt-1">
+                <p class="text-sm mb-0 text-capitalize">
+                    {{ _('Usage du disque') }}
+                </p>
+                <h4 class="mb-0">{{ total_disk_usage_mb | round(2) }} MB</h4>
+            </div>
+        </div>
+        <hr class="dark horizontal my-0">
+        <div class="card-footer p-3">
+            <p class="mb-0">
+                {{ _('Utilisation totale du disque') }}
+            </p>
+        </div>
+    </div>
+</div>

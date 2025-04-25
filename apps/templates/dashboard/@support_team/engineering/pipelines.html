@@ -1,0 +1,174 @@
+{% extends 'dashboard/dashboard.html' %}
+{% block title %}<title>{{ _('Gestion des stations: Ressync') }}</title>{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="my-5 d-flex align-items-center justify-content-between">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-3 bg-body-tertiary rounded-3 mb-0">
+                <li class="breadcrumb-item">
+                    <a class="link-body-emphasis" href="{{ url_for('user.user_home', company_id=company.id) }}">
+                        <i class="bi bi-house-door-fill"></i>
+                        <span class="visually-hidden">{{ _('Accueil') }}</span>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">{{ _('Gestion des stations') }}</li>
+            </ol>
+        </nav>
+        <!-- Button Group -->
+        <div class="d-flex justify-content-end align-items-center mb-4">
+            <div class="btn-group" role="group" aria-label="Task Actions">
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#NewStationModal">
+                    <i class="bi bi-plus-circle"></i>
+                </button>
+                <button type="button" class="btn btn-outline-secondary">
+                    <i class="bi bi-sort-up"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    {% if pipelines|length > 0 %}
+    <div class="table-responsive mb-5">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 justify-content-center">#</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 justify-content-center">{{ _("Station") }}</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 justify-content-center">{{ _("Etat") }}</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 justify-content-center">{{ _("Identifiant") }}</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 justify-content-center">{{ _("Adress") }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pipeline in pipelines %}
+                <tr class="border-1 border-bottom">
+                    <td>
+                        {% if pipeline.pipeline_type == 'water' %}
+                            <i class="material-icons text-primary">water_drop</i>
+                        {% elif pipeline.pipeline_type == 'oil' %}
+                            <i class="material-icons text-dark">local_gas_station</i>
+                        {% elif pipeline.pipeline_type == 'gas' %}
+                            <i class="material-icons text-warning">cloud_queue</i>
+                        {% else %}
+                            <i class="material-icons text-muted">help_outline</i>
+                        {% endif %}
+                    </td>
+                    <td>{{ pipeline.pipeline_name }}</td>
+                    <td>{{ pipeline.pipeline_status }}</td>
+                    <td>{{ pipeline.pipeline_identifier or 'Old Prague' }}</td>
+                    <td>{{ pipeline.pipeline_location }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        {% include 'dashboard/@support_team/empty/no_station.html' %}
+    {% endif %}
+
+    <!-- New Pipeline Modal -->
+    <div class="modal fade" id="NewStationModal" tabindex="-1" aria-labelledby="NewStationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="NewStationModalLabel">{{ _('Ajouter une Nouvelle Station') }}</h5>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" id="pipelineForm" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="pipeline_name" class="form-label">{{ _('Nom de la Station') }}<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="pipeline_name" name="pipeline_name" placeholder="{{ _('Station 001') }}" required>
+                            <div class="error-text text-danger">
+                                {{ _('Le nom de la station est obligatoire') }}
+                            </div>
+                        </div>                
+                        <div class="mb-3">
+                            <label for="pipeline_identifier" class="form-label">{{ _('Identifiant de la Station') }}</label>
+                            <input type="text" class="form-control" id="pipeline_identifier" name="pipeline_identifier" placeholder="{{ _('Old Prague') }}">
+                        </div>                
+                        <div class="mb-3">
+                            <label for="pipeline_type" class="form-label">{{ _('Type de Station') }}<span class="text-danger">*</span></label>
+                            <select class="form-select" id="pipeline_type" name="pipeline_type" required>
+                                <option value="">{{ _('Sélectionnez un type') }}</option>
+                                <option value="oil">{{ _('Pétrole') }}</option>
+                                <option value="gas">{{ _('Gaz') }}</option>
+                                <option value="water">{{ _('Eau') }}</option>
+                                <option value="water">{{ _('Autre') }}</option>
+                            </select>
+                            <div class="error-text text-danger">
+                                {{ _('Veuillez sélectionner un type de station') }}
+                            </div>
+                        </div>                
+                        <div class="mb-3">
+                            <label for="pipeline_status" class="form-label">{{ _('Statut de la Station') }}<span class="text-danger">*</span></label>
+                            <select class="form-select" id="pipeline_status" name="pipeline_status" required>
+                                <option value="">{{ _('Sélectionnez un statut') }}</option>
+                                <option value="Active">{{ _('Active') }}</option>
+                                <option value="Inactive">{{ _('Inactive') }}</option>
+                            </select>
+                            <div class="error-text text-danger">
+                                {{ _('Veuillez sélectionner un statut de station') }}
+                            </div>
+                        </div>                
+                        <div class="mb-3">
+                            <label for="installed_date" class="form-label">{{ _('Date d&rsquo;Installation') }}</label>
+                            <input type="date" class="form-control" id="installed_date" name="installed_date">
+                        </div>                
+                        <div class="mb-3">
+                            <label for="pipeline_location" class="form-label">{{ _('Emplacement de la Station') }}<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="pipeline_location" name="pipeline_location" placeholder="{{ _('Lieu ou adresse') }}" required>
+                            <div class="error-text text-danger">
+                                {{ _('L’emplacement de la station est obligatoire') }}
+                            </div>
+                        </div> 
+                        <!--
+                        <div class="mb-3">
+                            <label for="president_1_id" class="form-label">{{ _('Team leader') }}<span class="text-danger">*</span></label>
+                            <select class="form-select" id="president_1_id" name="president_1_id" required>
+                                <option value="">{{ _("Sélectionnez un chef d'équipe") }}</option>
+                                {% for user in users %}
+                                <option value="{{ user.id }}">
+                                    {% if user.first_name or last_name %}
+                                        {{ user.first_name or user.last_name  }} - {{ user.email }}
+                                    {% endif %}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            <div class="error-text text-danger">
+                                {{ _("Veuillez sélectionner un chef d’équipe") }}
+                            </div>
+                        </div>                
+                        <div class="mb-3">
+                            <label for="main_head_id" class="form-label">{{ _('Responsable Principal de la Station') }}</label>
+                            <select class="form-select" id="main_head_id" name="main_head_id">
+                                <option value="">{{ _('Sélectionnez un responsable principal') }}</option>
+                                {% for user in users %}
+                                <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        -->               
+                
+                        <div class="text-end">
+                            <button type="button" class="btn btn-info" id="submitBtn">
+                                <i class="bi bi-plus-circle-dotted" id="submitIcon"></i>
+                                <div id="submitSpinner" class="spinner-border spinner-border-sm text-light d-none" role="status"></div>
+                                <span>
+                                    {{ _('Enregistrer') }}
+                                </span>
+                                <span id="loadingText" class="d-none">
+                                    {{ _('En cours...') }}
+                                </span>
+                            </button>
+                        </div>                        
+                    </form>
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Station/CreateNewStation.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,340 @@
+
+{% extends 'dashboard/dashboard.html' %}
+{% block title %}<title>{{ _('Gestion des enseignants: Ressync') }}</title>{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="my-5 d-flex align-items-center justify-content-between">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                <li class="breadcrumb-item">
+                    <a class="link-body-emphasis" href="{{ url_for('user.user_home', company_id=company.id) }}">
+                        <i class="bi bi-house-door-fill"></i>
+                        <span class="visually-hidden">{{ _('Accueil') }}</span>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">{{ _('Enseignants') }}</li>
+            </ol>
+        </nav>
+        <div>
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#createTeacherModal">
+                <i class="bi bi-plus-circle-dotted"></i>
+            </button>
+        </div>
+    </div>
+    
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="subject-select">{{ _('Sélectionnez la matière') }}</label>
+            <select id="subject-select" class="form-select" onchange="window.location.href='?subject_id=' + this.value + '&session_id={{ selected_session_id }}'">
+                <option value="">{{ _('Tous') }}</option>
+                {% for subject in subjects %}
+                    <option value="{{ subject.id }}" {% if subject.id == selected_subject_id %}selected{% endif %}>{{ subject.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="session-select">{{ _('Sélectionnez la session') }}</label>
+            <select id="session-select" class="form-select" onchange="window.location.href='?session_id=' + this.value + '&subject_id={{ selected_subject_id }}'">
+                <option value="">{{ _('Tous') }}</option>
+                {% for session in sessions %}
+                    <option value="{{ session.id }}" {% if session.id == selected_session_id %}selected{% endif %}>{{ session.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    {% if teachers %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>{{ _('Prénom') }}</th>
+                    <th>{{ _('Nom') }}</th>
+                    <th>{{ _('Email') }}</th>
+                    <th>{{ _('Session') }}</th>
+                    <th>{{ _('Année') }}</th>
+                    <th>{{ _('Salaire') }}</th>
+                    <th>{{ _('Devise') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for teacher in teachers %}
+                <tr>
+                    <td>{{ teacher.user.first_name }}</td>
+                    <td>{{ teacher.user.last_name }}</td>
+                    <td>{{ teacher.user.email }}</td>
+                    <td>{{ teacher.session.name }}</td>
+                    <td>{{ teacher.session.academic_year.name }}</td>
+                    <td>{{ teacher.wage }}</td>
+                    <td>{{ teacher.currency }}</td>
+                    <td>
+                        <button class="btn shadow-lg" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            ...
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#viewTeacherModal{{ teacher.id }}">{{ _('Voir les infos') }}</a></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editTeacherModal{{ teacher.id }}">{{ _('Modifier les infos') }}</a></li>
+                            <li>
+                                <form action="{{ url_for('auth.manage_teachers', company_id=company.id) }}" method="DELETE" id="DeleteTeacherForm"></form>
+                                    <a href="#" class="dropdown-item text-danger delete-teacher-btn" data-teacher-id="{{ teacher.id }}">
+                                        {{ _('Supprimer') }}
+                                    </a>    
+                                </form>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if pagination.has_prev %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('auth.manage_teachers', company_id=company.id, page=pagination.prev_num) }}" aria-label="{{ _('Précédent') }}">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% endif %}
+            {% for page in pagination.iter_pages() %}
+            <li class="page-item{% if page == pagination.page %} active{% endif %}">
+                <a class="page-link" href="{{ url_for('auth.manage_teachers', company_id=company.id, page=page) }}">{{ page }}</a>
+            </li>
+            {% endfor %}
+            {% if pagination.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('auth.manage_teachers', company_id=company.id, page=pagination.next_num) }}" aria-label="{{ _('Suivant') }}">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% else %}
+        {% include 'auth/school/@support_team/it_admin/teacher/empty_teacher.html' %}
+    {% endif %}
+</div>
+
+{% for teacher in teachers %}
+<div class="modal fade" id="viewTeacherModal{{ teacher.id }}" tabindex="-1" aria-labelledby="viewTeacherModalLabel{{ teacher.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewTeacherModalLabel{{ teacher.id }}">{{ _('Détails de l\'enseignant') }}</h5>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="viewFirstName{{ teacher.id }}" class="form-label">{{ _('Prénom') }}</label>
+                    <input type="text" class="form-control" id="viewFirstName{{ teacher.id }}" value="{{ teacher.user.first_name }}" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="viewLastName{{ teacher.id }}" class="form-label">{{ _('Nom de famille') }}</label>
+                    <input type="text" class="form-control" id="viewLastName{{ teacher.id }}" value="{{ teacher.user.last_name }}" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="viewEmail{{ teacher.id }}" class="form-label">{{ _('Email') }}</label>
+                    <input type="email" class="form-control" id="viewEmail{{ teacher.id }}" value="{{ teacher.user.email }}" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="viewSession{{ teacher.id }}" class="form-label">{{ _('Session') }}</label>
+                    <input type="text" class="form-control" id="viewSession{{ teacher.id }}" value="{{ teacher.session.name }}" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="viewAcademicYear{{ teacher.id }}" class="form-label">{{ _('Année académique') }}</label>
+                    <input type="text" class="form-control" id="viewAcademicYear{{ teacher.id }}" value="{{ teacher.session.academic_year.name }}" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="viewWage{{ teacher.id }}" class="form-label">{{ _('Salaire') }}</label>
+                    <input type="text" class="form-control" id="viewWage{{ teacher.id }}" value="{{ teacher.wage }}" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="viewWageSystem{{ teacher.id }}" class="form-label">{{ _('Système de rémunération') }}</label>
+                    <input type="text" class="form-control" id="viewWageSystem{{ teacher.id }}" value="{{ teacher.wage_system }}" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="viewCurrency{{ teacher.id }}" class="form-label">{{ _('Devise') }}</label>
+                    <input type="text" class="form-control" id="viewCurrency{{ teacher.id }}" value="{{ teacher.currency }}" readonly>
+                </div>
+            </div>            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-bs-dismiss="modal">{{ _('Fermer') }}</button> <!-- Change to btn-info -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editTeacherModal{{ teacher.id }}" tabindex="-1" aria-labelledby="editTeacherModalLabel{{ teacher.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editTeacherModalLabel{{ teacher.id }}">{{ _('Modifier les détails de l\'enseignant') }}</h5>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editTeacherForm{{ teacher.id }}" data-teacher-id="{{ teacher.id }}" action="{{ url_for('auth.manage_teachers', company_id=company.id) }}">
+                    <div class="mb-3">
+                        <label for="editFirstName{{ teacher.id }}" class="form-label">{{ _('Prénom') }}</label>
+                        <input type="text" class="form-control" id="editFirstName{{ teacher.id }}" name="first_name" value="{{ teacher.user.first_name }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editLastName{{ teacher.id }}" class="form-label">{{ _('Nom de famille') }}</label>
+                        <input type="text" class="form-control" id="editLastName{{ teacher.id }}" name="last_name" value="{{ teacher.user.last_name }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editEmail{{ teacher.id }}" class="form-label">{{ _('Email') }}</label>
+                        <input type="email" class="form-control" id="editEmail{{ teacher.id }}" name="email" value="{{ teacher.user.email }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editSession{{ teacher.id }}" class="form-label">{{ _('Session') }}</label>
+                        <select class="form-select" id="editSession{{ teacher.id }}" name="session_id">
+                            {% for session in sessions %}
+                                <option value="{{ session.id }}" {% if session.id == teacher.session.id %}selected{% endif %}>{{ session.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editWage{{ teacher.id }}" class="form-label">{{ _('Salaire') }}</label>
+                        <input type="number" step="0.01" class="form-control" id="editWage{{ teacher.id }}" name="wage" value="{{ teacher.wage }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editWageSystem{{ teacher.id }}" class="form-label">{{ _('Système de rémunération') }}</label>
+                        <input type="text" class="form-control" id="editWageSystem{{ teacher.id }}" name="wage_system" value="{{ teacher.wage_system }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editCurrency{{ teacher.id }}" class="form-label">{{ _('Devise') }}</label>
+                        <input type="text" class="form-control" id="editCurrency{{ teacher.id }}" name="currency" value="{{ teacher.currency }}">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Fermer') }}</button>
+                        <button type="submit" class="btn btn-info">{{ _('Enregistrer') }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+
+<!-- Create Teacher Modal -->
+<div class="modal fade" id="createTeacherModal" tabindex="-1" aria-labelledby="createTeacherModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createTeacherModalLabel">{{ _('Ajouter un Enseignant') }}</h5>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Add form for creating a new teacher -->
+                <form id="newTeacherForm" action="{{ url_for('auth.manage_teachers', company_id=company.id) }}" method="POST">
+                    <!-- Include form fields for creating a new teacher -->
+                    <div class="mb-3">
+                        <label for="first_name" class="form-label">{{ _('Prénom') }}</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="{{ _('Josh') }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="last_name" class="form-label">{{ _('Nom de famille') }}</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="{{ _('Brainer') }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">{{ _('Email') }}</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="{{ _('exemple@gmail.com') }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="session" class="form-label">{{ _('Session') }}</label>
+                        <select id="session" name="session_id" class="form-select" required>
+                            {% for session in sessions %}
+                                <option value="{{ session.id }}">{{ session.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="wage" class="form-label">{{ _('Salaire') }}</label>
+                        <input type="number" class="form-control" id="wage" name="wage" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="wage_system" class="form-label">{{ _('Système de rémunération') }}</label>
+                        <select class="form-select" id="wage_system" name="wage_system" required>
+                            <option value="{{ _('(/h)') }}">{{ _('Par heure') }}</option>
+                            <option value="{{ _('/m') }}">{{ _('Par mois') }}</option>
+                            <option value="{{ _('/y') }}">{{ _('Par an') }}</option>
+                            <option value="contract">{{ _('Contrat') }}</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="currency" class="form-label">{{ _('Devise') }}</label>
+                        <select name="currency" id="currency" class="form-select">
+                            <option value="" disabled selected>{{ _('Sélectionnez la monnaie') }}</option>
+                            <option value="USD">{{ _('USD') }}</option>
+                            <option value="EUR">{{ _('EUR') }}</option>
+                            <option value="GBP">{{ _('GBP') }}</option>
+                            <option value="JPY">{{ _('JPY') }}</option>
+                            <option value="AUD">{{ _('AUD') }}</option>
+                            <option value="CAD">{{ _('CAD') }}</option>
+                            <option value="CHF">{{ _('CHF') }}</option>
+                            <option value="CNY">{{ _('CNY') }}</option>
+                            <option value="INR">{{ _('INR') }}</option>
+                            <option value="BRL">{{ _('BRL') }}</option>
+                            <option value="RUB">{{ _('RUB') }}</option>
+                            <option value="ZAR">{{ _('ZAR') }}</option>
+                            <option value="MXN">{{ _('MXN') }}</option>
+                            <option value="HKD">{{ _('HKD') }}</option>
+                            <option value="SGD">{{ _('SGD') }}</option>
+                            <option value="NOK">{{ _('NOK') }}</option>
+                            <option value="SEK">{{ _('SEK') }}</option>
+                            <option value="NZD">{{ _('NZD') }}</option>
+                            <option value="KRW">{{ _('KRW') }}</option>
+                            <option value="TRY">{{ _('TRY') }}</option>
+                            <option value="IDR">{{ _('IDR') }}</option>
+                            <option value="THB">{{ _('THB') }}</option>
+                            <option value="MYR">{{ _('MYR') }}</option>
+                            <option value="PLN">{{ _('PLN') }}</option>
+                            <option value="CZK">{{ _('CZK') }}</option>
+                            <option value="HUF">{{ _('HUF') }}</option>
+                            <option value="ILS">{{ _('ILS') }}</option>
+                            <option value="PHP">{{ _('PHP') }}</option>
+                            <option value="AED">{{ _('AED') }}</option>
+                            <option value="SAR">{{ _('SAR') }}</option>
+                            <option value="PKR">{{ _('PKR') }}</option>
+                            <option value="EGP">{{ _('EGP') }}</option>
+                            <option value="NGN">{{ _('NGN') }}</option>
+                            <option value="VND">{{ _('VND') }}</option>
+                            <option value="XOF">{{ _('XOF') }}</option>
+                            <option value="XAF">{{ _('XAF') }}</option>
+                            <option value="KES">{{ _('KES') }}</option>
+                            <option value="GHS">{{ _('GHS') }}</option>
+                            <option value="TZS">{{ _('TZS') }}</option>
+                            <option value="UGX">{{ _('UGX') }}</option>
+                            <option value="MGA">{{ _('MGA') }}</option>
+                            <option value="BWP">{{ _('BWP') }}</option>
+                            <option value="ETB">{{ _('ETB') }}</option>
+                            <option value="DZD">{{ _('DZD') }}</option>
+                            <option value="MAD">{{ _('MAD') }}</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-info">
+                            <span id="Spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                            <span id="ButtonText">{{ _('Ajouter') }}</span>
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Fermer') }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Teacher/CreateTeacher.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Teacher/EditTeacher.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Teacher/DeleteTeacher.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,408 @@
+{% extends 'dashboard/dashboard.html' %}
+
+{% block title %}
+  <title>
+    {% if current_user.first_name and current_user.last_name %}
+      {{ _('Paramètres') }} | 
+      {{ current_user.first_name }} {{ current_user.last_name }}
+    {% else %}
+      {{ _('Paramètres') }}
+    {% endif %}
+  </title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="d-flex">
+      <div class="my-3">
+          <nav aria-label="breadcrumb">
+              <ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3">
+                  <li class="breadcrumb-item">
+                      <a class="link-body-emphasis" href="{{ url_for('user.user_home', company_id=company.id) }}">
+                          <i class="bi bi-house-fill"></i>
+                          <span class="visually-hidden">{{ _('Accueil') }}</span>
+                      </a>
+                  </li>
+                  <li class="breadcrumb-item active" aria-current="page">
+                    {{ _('Paramètres') }}
+                  </li>
+              </ol>
+          </nav>
+      </div>
+  </div>
+  <!-- Flash Messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="alert-container">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            <span class="text-white">{{ message }}</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Profile and Company Settings Form -->
+  <div class="container">
+    <form action="{{ url_for('user.settings', company_id=company.id) }}" method="post" enctype="multipart/form-data">
+      
+      <!-- Profile Settings -->
+      <fieldset>
+        <legend>{{ _('Paramètres du Profil') }}</legend>
+        
+        <div class="text-center mb-4">
+          <div class="profile-image-wrapper">
+            <img id="profileImagePreview" src="{{ current_user.profile_picture_url or url_for('static', filename='img/feedbacks/no_admins.png') }}" class="rounded-circle" alt="{{ _('Profile Image') }}">
+            <input type="file" id="profileImageInput" name="profile_image" accept="image/*" style="display: none;">
+            <label for="profileImageInput" class="btn btn-info mt-2">
+              <i class="bi bi-pencil-fill"></i>
+              {{ _('Modifier') }}
+            </label>
+          </div>
+        </div>
+        <hr class="my-4" />
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="FirstName">{{ _('Prénom') }}</label>
+                <input type="text" id="FirstName" name="first_name" class="form-control" placeholder="Endie" value="{% if current_user.first_name %}{{ current_user.first_name }}{% endif %}">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="LastName">{{ _('Nom de famille') }}</label>
+                <input type="text" id="LastName" name="last_name" class="form-control" placeholder="Stafford" value="{% if current_user.last_name %}{{ current_user.last_name }}{% endif %}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="EmailAddress">{{ _("Adresse E-mail") }}</label>
+            <input type="email" class="form-control" id="EmailAddress" name="email" placeholder="endiestafford456@gmail.com" value="{{ current_user.email }}">
+        </div>
+        <div class="form-group">
+            <label for="UserAddress">{{ _('Adresse Maison') }}</label>
+            <input type="text" class="form-control" id="UserAddress" name="address" placeholder="5230 Newell Road, San Francisco, CA" value="{% if current_user.address %}{{ current_user.address }}{% endif %}">
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="UserName">{{ _("Nom d'utilisateur") }}</label>
+              <input type="text" class="form-control" id="UserName" name="username" placeholder="endiestafford456" value="{% if current_user.username %}{{ current_user.username }}{% endif %}">
+            </div>
+        </div>
+        <hr class="my-4" />
+        <div class="row mb-4">
+              <div class="col-md-6">
+                <div class="form-group">
+                    <label for="OldPassword">{{ _('Ancien mot de passe') }}</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="OldPassword" name="old_password">
+                        <div class="input-group-append">
+                            <button type="button" id="toggleOldPassword" class="btn">
+                                <svg id="eyeIconOld" width="24" height="24" fill="gray" xmlns="http://www.w3.org/2000/svg"><path d="M12 5C7.03 5 3 12 3 12s4.03 7 9 7 9-7 9-7-4.03-7-9-7zm0 11c-2.67 0-5-3-5-3s2.33-3 5-3 5 3 5 3-2.33 3-5 3zm-1-3a1 1 0 1 1 2 0 1 1 0 0 1-2 0z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="NewPassword">{{ _('Nouveau mot de passe') }}</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="NewPassword" name="new_password">
+                        <div class="input-group-append">
+                            <button type="button" id="toggleNewPassword" class="btn">
+                                <svg id="eyeIconNew" width="24" height="24" fill="gray" xmlns="http://www.w3.org/2000/svg"><path d="M12 5C7.03 5 3 12 3 12s4.03 7 9 7 9-7 9-7-4.03-7-9-7zm0 11c-2.67 0-5-3-5-3s2.33-3 5-3 5 3 5 3-2.33 3-5 3zm-1-3a1 1 0 1 1 2 0 1 1 0 0 1-2 0z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ConfirmPassword">{{ _('Confirmer mot de passe') }}</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="ConfirmPassword" name="confirm_password">
+                        <div class="input-group-append">
+                            <button type="button" id="toggleConfirmPassword" class="btn">
+                                <svg id="eyeIconConfirm" width="24" height="24" fill="gray" xmlns="http://www.w3.org/2000/svg"><path d="M12 5C7.03 5 3 12 3 12s4.03 7 9 7 9-7 9-7-4.03-7-9-7zm0 11c-2.67 0-5-3-5-3s2.33-3 5-3 5 3 5 3-2.33 3-5 3zm-1-3a1 1 0 1 1 2 0 1 1 0 0 1-2 0z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="col-md-6">
+                <p class="mb-2">{{ _('Exigences du mot de passe') }}</p>
+                <p class="small text-muted mb-2">{{ _('Pour créer un nouveau mot de passe, vous devez répondre à toutes les exigences suivantes:') }}</p>
+                <ul class="small text-muted pl-4 mb-0">
+                    <li>{{ _('Minimum 8 caractères') }}</li>
+                    <li>{{ _('Au moins un caractère spécial') }}</li>
+                    <li>{{ _('Au moins un numéro') }}</li>
+                    <li>{{ _('Ne peut pas être le même que l\'ancien mot de passe') }}</li>
+                </ul>
+            </div>
+        </div>
+      </fieldset>
+
+      <!-- Company Settings -->
+      {% if current_user.is_company_it_administrator() or current_user.is_it_administrator() %}
+      <fieldset>
+        <legend>{{ _('Paramètres de la Société') }}</legend>
+        
+        <div class="form-group">
+          <label for="CompanyLogo">{{ _("Logo de la société") }}</label>
+          <div class="d-flex align-items-center">
+            <img id="companyLogoPreview" src="{{ company.logo_url or url_for('static', filename='img/default_logo.png') }}" alt="{{ company.title }} {{ _('Logo') }}" class="img-thumbnail me-3" style="width: 100px; height: 100px; display: block;">
+            <input type="file" id="CompanyLogoInput" name="company_logo" accept="image/*" style="display: none;">
+            <label for="CompanyLogoInput" class="btn btn-info">
+              <i class="bi bi-pencil-fill"></i>
+              {{ _('Modifier') }}
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="CompanyEmail">{{ _("Email de la société") }}</label>
+          <input type="email" class="form-control" id="CompanyEmail" name="company_email" value="{{ company.email }}">
+        </div>
+        <div class="form-group">
+          <label for="CompanyName">{{ _("Nom de la société") }}</label>
+          <input type="text" class="form-control" id="CompanyName" name="company_name" value="{{ company.title }}">
+        </div>
+        <div class="form-group">
+          <label for="CompanyAddress">{{ _("Adresse de la société") }}</label>
+          <input type="text" class="form-control" id="CompanyAddress" name="company_address" value="{{ company.location }}">
+        </div>
+        <div class="form-group">
+          <label for="CompanyPhone">{{ _("Numéro de téléphone de la société") }}</label>
+          <input type="text" class="form-control" id="CompanyPhone" name="company_phone" value="{{ company.phone_number or '' }}" placeholder="{{ _('Entrez le numéro de téléphone de la société') }}">
+        </div>
+        <div class="form-group">
+          <label for="CompanyWebsite">{{ _("Site Web de la société") }}</label>
+          <input type="text" class="form-control" id="CompanyWebsite" name="company_website" value="{{ company.website_url or '' }}" placeholder="{{ _('Entrez le site web de la société') }}">
+        </div>        
+      </fieldset>
+      {% endif %}
+
+
+      <fieldset class="my-2">
+        <legend>{{ _('Configuration courrier électronique') }}</legend>
+      
+        <div class="form-group">
+          <label for="EmailProvider">{{ _("Fournisseur E-mail") }}</label>
+          <div class="dropdown">
+            <button class="btn w-100 border dropdown-toggle text-start" type="button" id="EmailProviderDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <span id="providerLogoContainer">
+                    <img id="providerLogo" src="" alt="" width="20" height="20" style="display: none;">
+                </span>
+                <span id="providerName">{{ current_user.email_provider or 'Sélectionner un Fournisseur' }}</span>
+            </button>
+            <input type="hidden" id="EmailProviderInput" name="email_provider">
+            <ul class="dropdown-menu" aria-labelledby="EmailProviderDropdown">
+                <li>
+                    <a class="dropdown-item" href="#" data-value="gmail" data-logo="{{ url_for('static', filename='img/placeholders/Gmail.svg') }}">
+                        <img src="{{ url_for('static', filename='img/placeholders/Gmail.svg') }}" alt="Gmail" width="20" height="20">
+                        {{ _('Gmail') }}
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#" data-value="outlook" data-logo="{{ url_for('static', filename='img/placeholders/Microsoft_Outlook.svg') }}">
+                        <img src="{{ url_for('static', filename='img/placeholders/Microsoft_Outlook.svg') }}" alt="Outlook" width="20" height="20">
+                        {{ _('Outlook') }}
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#" data-value="yahoo" data-logo="{{ url_for('static', filename='img/placeholders/Yahoo.png') }}">
+                        <img src="{{ url_for('static', filename='img/placeholders/Yahoo.png') }}" alt="Yahoo" width="20" height="20">
+                        {{ _('Yahoo') }}
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#" data-value="icloud" data-logo="{{ url_for('static', filename='img/placeholders/Apple.svg') }}">
+                        <img src="{{ url_for('static', filename='img/placeholders/Apple.svg') }}" alt="iCloud" width="20" height="20">
+                        {{ _('Icloud') }}
+                    </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#" data-value="custom" data-logo="{{ url_for('static', filename='img/placeholders/Mail.svg') }}">
+                    <img src="{{ url_for('static', filename='img/placeholders/Mail.svg') }}" alt="Custom" width="20" height="20">
+                    {{ _('IMAP/SMTP Pro') }}
+                  </a>
+              </li>
+            </ul>
+          </div>
+             
+        </div>
+        <div id="customServerFields" style="display: {% if current_user.email_provider == 'custom' %}block{% else %}none{% endif %};">
+          <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">{{ _('SMTP Server') }}</label>
+                <input type="text" class="form-control" name="smtp_server" 
+                value="{{ current_user.smtp_server or 'smtp.example.com' }}">
+              </div>
+              <div class="col-md-6 mb-3">
+                  <label class="form-label">{{ _('SMTP Port') }}</label>
+                  <input type="number" class="form-control" name="smtp_port" 
+                  value="{{ current_user.smtp_port or 587 }}">
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">{{ _('IMAP Server') }}</label>
+                <input type="text" class="form-control" name="imap_server" 
+                value="{{ current_user.imap_server or 'imap.example.com' }}">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">{{ _('IMAP Port') }}</label>
+                <input type="number" class="form-control" name="imap_port" 
+                value="{{ current_user.imap_port or 993 }}">
+              </div>
+          </div>
+          <div class="mt-3">
+            <button type="button" id="testEmailConnection" class="btn btn-outline-secondary">
+                <span class="spinner-border spinner-border-sm d-none" id="testConnectionSpinner"></span>
+                {{ _('Vérifier') }}
+            </button>
+          </div>
+          <small id="testConnectionResult" class="ms-2 my-2"></small>
+
+        </div>
+        <div class="form-group">
+            <label for="EmailUsername">{{ _("Nom d'utilisateur") }}</label>
+            <input type="text" class="form-control" id="EmailUsername" name="email_username" placeholder="example@gmail.com" value="{{ current_user.email_username }}">
+        </div>
+        <div class="form-group">
+            <label for="EmailPassword">{{ _("Mot de passe") }}</label>
+            <div class="input-group">
+                <input type="password" class="form-control" value="{{ current_user.email_password }}" id="EmailPassword" name="email_password">
+                <div class="input-group-append">
+                    <button type="button" id="toggleEmailPassword" class="btn">
+                        <svg id="eyeIconEmail" width="24" height="24" fill="gray" xmlns="http://www.w3.org/2000/svg"><path d="M12 5C7.03 5 3 12 3 12s4.03 7 9 7 9-7 9-7-4.03-7-9-7zm0 11c-2.67 0-5-3-5-3s2.33-3 5-3 5 3 5 3-2.33 3-5 3zm-1-3a1 1 0 1 1 2 0 1 1 0 0 1-2 0z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+      </fieldset>
+
+      {% if company.category == 'Engineering' or company.category == 'Shipping' or company.category == 'Education' %}
+        <fieldset class="my-3">
+          <legend>{{ _('Plus...') }}</legend>
+          <small>
+            {{ _('Cette section vous aides à communiquer plus d\'infos concernant vos moyens de déplacement
+            cela aide le système à vous fournir des suggestions d\'itinéraires, de moyens de transport plus efficaces
+            pour vos déplacements dans le cadre de votre travail ou voyages personnels') }}
+          </small>
+          <br>
+
+          <div class="border-top my-2"></div>
+
+          <div class="form-group mt-4 col-md-6">
+            <label for="TransportCompanyInput">{{ _("Compagnie de transport") }}</label>
+            <div class="position-relative">
+              <input
+                type="text"
+                class="form-control"
+                id="TransportCompanyInput"
+                placeholder="{{ _('Taper pour rechercher') }}"
+              />
+              <ul
+                id="TransportCompanySuggestions"
+                class="list-group position-absolute w-100"
+                style="z-index: 1050; max-height: 200px; overflow-y: auto; display: none;"
+                >
+              </ul>
+              <input type="hidden" id="TransportCompany" name="transport_company">
+            </div>
+          </div>
+
+          <div class="form-group mt-4 col-md-6">
+            <label for="arrival_date">{{ _("Date d\'arrivée sur site") }}</label>
+            <input
+              type="date"
+              class="form-control"
+              id="arrival_date"
+              name="arrival_date"
+              placeholder="{{ _('Entrer la date') }}"
+              value="{{ current_user.arrival_date.strftime('%Y-%m-%d') if current_user.arrival_date else '' }}"
+            />
+          </div>
+          
+          <div class="form-group mt-3 col-md-6">
+            <label for="leaving_date">{{ _("Date de retour du site") }}</label>
+            <input
+              type="date"
+              class="form-control"
+              id="leaving_date"
+              name="leaving_date"
+              placeholder="{{ _('Entrer la date') }}"
+              value="{{ current_user.leaving_date.strftime('%Y-%m-%d') if current_user.leaving_date else '' }}"
+            />
+          </div>
+          
+        
+        </fieldset>
+      {% endif %}
+
+      <div class="d-flex justify-content-end my-5">
+        <button type="submit" class="btn btn-info">
+          <div class="spinner-border spinner-border-sm" style="display: none;"></div>
+          <span id="LoadingText" style="display: none;">{{ _('En cours...') }}</span>
+          <span id="ButtonText">{{ _('Enregistrer') }}</span>
+       </button>
+      </div>
+
+      <div class="border-top my-2"></div>
+
+      
+      <div class="privacy-policy mt-5 text-muted">
+        <p class="text-justify">
+          We take your data privacy very seriously. We understand that personal information such as your music preferences, book preferences, and private cloud storage are essential to your personal experience. 
+          These data are <span style="font-weight: bold; color: #333;">strictly confidential</span> and are never shared with third parties without your consent. We employ industry-standard security measures, including strong hashing strategies, to ensure that your sensitive information—such as passwords, authentication tokens, and personal credentials—remains private and secure.
+        </p>
+        <p class="text-justify">
+          We also want to emphasize that all project-related and company-related files, such as documents, proposals, and communications, are shared only among authorized company members. These files are essential for seamless collaboration and project management. However, rest assured that Ressync, along with any other third parties, does not have access to these files unless explicitly authorized by you. This ensures that the integrity of your personal and professional data remains intact.
+        </p>
+        <p class="text-justify">
+          To further protect your privacy, Ressync continuously reviews and updates our data protection policies in accordance with the latest security standards and legal regulations. We are committed to being transparent about how we collect, use, and protect your data. Your trust is of utmost importance, and we strive to ensure that your data is always handled with the highest degree of confidentiality and care.
+        </p>
+        <p class="text-justify">
+          By using our services, you acknowledge and consent to the data practices outlined above. Should you have any questions or concerns about your data privacy, please feel free to contact us directly.
+        </p>
+      </div>
+    
+    
+
+
+      
+    </form>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const dropdownButton = document.getElementById('EmailProviderDropdown');
+    const emailProviderInput = document.getElementById('EmailProviderInput');
+    const dropdownItems = document.querySelectorAll('.dropdown-item');
+    const providerLogo = document.getElementById('providerLogo');
+    const providerName = document.getElementById('providerName');
+
+    dropdownItems.forEach(item => {
+        item.addEventListener('click', function(event) {
+          event.preventDefault();
+          const selectedValue = this.getAttribute('data-value');
+          const selectedText = this.textContent.trim();
+          const selectedLogo = this.getAttribute('data-logo');
+
+          dropdownButton.textContent = selectedText;
+          emailProviderInput.value = selectedValue;
+            
+          providerLogo.src = selectedLogo;
+          providerLogo.alt = selectedText;
+          providerLogo.style.display = 'inline';
+          providerName.textContent = selectedText;
+        });
+    });
+});
+</script>
+
+
+<script type="module" src="{{ url_for('static', filename='js/async/auth/Settings.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='data-objects/scripts/GetTransportCompanies.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/auth/EmailConfigSettings.js') }}"></script>
+
+{% endblock %}

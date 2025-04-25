@@ -1,0 +1,228 @@
+{% extends 'dashboard/dashboard.html' %}
+{% block title %}<title>{{ _('Gestion des administrateurs: Ressync') }}</title>{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="my-5 d-flex align-items-center justify-content-between">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                <li class="breadcrumb-item">
+                    <a class="link-body-emphasis" href="{{ url_for('user.user_home', company_id=company.id) }}">
+                        <i class="bi bi-house-door-fill"></i>
+                        <span class="visually-hidden">{{ _('Accueil') }}</span>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">{{ _('Administrateurs') }}</li>
+            </ol>
+        </nav>
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#createAdminModal" title="{{ _('Ajouter un nouvel administrateur') }}">
+                <i class="bi bi-plus-circle"></i>
+            </button>
+        </div>
+    </div>
+
+    <h2>
+        {{ _('Administrateurs') }}
+    </h2>
+
+
+    {% if admins %}
+        <div class="table-responsive">
+            <table class="table table-striped align-items-center mb-0">
+                <thead>
+                    <tr>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ _("Nom") }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ _("Email") }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ _("Rôle") }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">{{ _("Options") }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for admin in admins %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ admin.profile_picture_url or url_for('static', filename='img/feedbacks/no_admins.png') }}" class="avatar avatar-sm me-3" alt="{{ admin.first_name or '' }} image">
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h6 class="mb-0 text-sm">{{ admin.first_name }}</h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm">{{ admin.email }}</h6>
+                                </div>
+                            </td>
+                            <td class="align-middle text-sm">
+                                <span class="text-xs font-weight-bold">{{ roles_translations.get(admin.role.name, admin.role.name) }}</span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <div class="dropdown">
+                                    <button class="btn btn-sm shadow-lg" type="button" id="actionDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        ...
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="actionDropdown">
+                                        <li><button class="dropdown-item">{{ _('Voir détails') }}</button></li>
+                                        <li><button class="dropdown-item">{{ _('Modifier') }}</button></li>
+                                        <li><button class="dropdown-item text-danger">{{ _('Supprimer') }}</button></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Modal for viewing admin details -->
+                        <div class="modal fade" id="viewAdminModal{{ admin.id }}" tabindex="-1" aria-labelledby="viewAdminModal{{ admin.id }}Label" aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="viewAdminModal{{ admin.id }}Label">{{ _('Détails de l\'administrateur') }}</h5>
+                                        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="adminName" class="form-label">{{ _('Nom') }}</label>
+                                            <input type="text" class="form-control" id="adminName" value="{{ admin.first_name }}" readonly>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="adminEmail" class="form-label">{{ _('Email') }}</label>
+                                            <input type="email" class="form-control" id="adminEmail" value="{{ admin.email }}" readonly>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="adminRole" class="form-label">{{ _('Rôle') }}</label>
+                                            <input type="text" class="form-control" id="adminRole" value="{{ roles_translations.get(admin.role.name, admin.role.name) }}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Fermer') }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal for editing admin details -->
+                        <div class="modal fade" id="editAdminModal{{ admin.id }}" tabindex="-1" aria-labelledby="editAdminModal{{ admin.id }}Label" aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editAdminModal{{ admin.id }}Label">{{ _('Modifier les détails de l\'administrateur') }}</h5>
+                                        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Edit Admin Form -->
+                                        <form id="editAdminForm{{ admin.id }}" data-admin-id="{{ admin.id }}" action="{{ url_for('auth.manage_admins', company_id=company.id) }}" method="POST">
+                                            <div class="mb-3">
+                                                <label for="editAdminName{{ admin.id }}" class="form-label">{{ _('Nom') }}</label>
+                                                <input type="text" class="form-control" id="editAdminName{{ admin.id }}" name="name" value="{{ admin.first_name }}" required>
+                                                <p class="text-danger d-none my-2" id="FirstNameLengthError{{ admin.id }}">
+                                                    {{ _('Un Prénom ne doit pas dépasser (64) caractères') }}
+                                                </p>
+                                                <p class="text-danger d-none my-2" id="FirstNameEmptyError{{ admin.id }}">
+                                                    {{ _('Vous devez fournir un prénom pour continuer') }}
+                                                </p>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="editAdminEmail{{ admin.id }}" class="form-label">{{ _('Email') }}</label>
+                                                <input type="email" class="form-control" id="editAdminEmail{{ admin.id }}" name="email" value="{{ admin.email }}" required>
+                                                <p class="text-danger d-none my-2" id="EmailError{{ admin.id }}">
+                                                    {{ _('Veuillez entrez une adresse e-mail valide') }}
+                                                </p>
+                                                <p class="text-danger d-none my-2" id="EmailEmptyError{{ admin.id }}">
+                                                    {{ _('Veuillez fournir une adresse e-mail pour continuer') }}
+                                                </p>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="editAdminRole{{ admin.id }}" class="form-label">{{ _('Rôle') }}</label>
+                                                <select class="form-select" id="editAdminRole{{ admin.id }}" name="role_id" required>
+                                                    {% for role in roles %}
+                                                        <option value="{{ role.id }}" {% if admin.role_id == role.id %}selected{% endif %}>{{ roles_translations.get(role.name, role.name) }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Fermer') }}</button>
+                                                <button type="button" class="btn btn-info" id="EditAdminButton{{ admin.id }}">
+                                                    <span class="spinner-border spinner-border-sm d-none" id="EditSpinner{{ admin.id }}"></span>
+                                                    <span id="EditButtonText{{ admin.id }}">
+                                                        <i class="bi bi-check-circle"></i>
+                                                        {{ _('Sauvegarder') }}
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        {% include 'auth/school/@support_team/it_admin/admin/empty_admin.html' %}
+    {% endif %}
+
+    <!-- Modal for creating new admin -->
+    <div class="modal fade" id="createAdminModal" tabindex="-1" aria-labelledby="createAdminModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createAdminModalLabel">{{ _('Ajouter un nouvel administrateur') }}</h5>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="createAdminForm" action="{{ url_for('auth.manage_admins', company_id=company.id) }}" method="POST">
+                        <div class="mb-3">
+                            <label for="adminName" class="form-label">{{ _('Prénom') }}<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="adminName" name="name" placeholder="{{ _('Kimberly') }}" required>
+                            <p class="text-danger d-none my-2" id="FirstNameLengthError">
+                                {{ _('Un Prénom ne doit pas dépasser (64) caractères') }}
+                            </p>
+                            <p class="text-danger d-none my-2" id="FirstNameEmptyError">
+                                {{ _('Vous devez fournir un prénom pour continuer') }}
+                            </p>
+                        </div>
+                        <div class="mb-3">
+                            <label for="adminEmail" class="form-label">{{ _('Email') }}<span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="adminEmail" name="email" placeholder="exemple@gmail.com" required>
+                            <p class="text-danger d-none my-2" id="EmailError">
+                                {{ _('Veuillez entrez une adresse e-mail valide') }}
+                            </p>
+                            <p class="text-danger d-none my-2" id="EmailEmptyError">
+                                {{ _('Veuillez fournir une adresse e-mail pour continuer') }}
+                            </p>
+                        </div>
+                        <div class="mb-3">
+                            <label for="adminRole" class="form-label">{{ _('Rôle') }}<span class="text-danger">*</span></label>
+                            <select class="form-select" id="adminRole" name="role_id" required>
+                                {% for role in roles %}
+                                    <option value="{{ role.id }}">{{ roles_translations.get(role.name, role.name) }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Fermer') }}</button>
+                            <button type="button" class="btn btn-info" id="CreateAdminButton">
+                                <span class="spinner-border d-none spinner-border-sm" id="Spinner" role="status"></span>
+                                <span id="ButtonText">
+                                    <i class="bi bi-plus-circle"></i>
+                                    {{ _('Ajouter') }}
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/SchoolAdmin/CreateAdmin.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/SchoolAdmin/EditAdmin.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/SchoolAdmin/DeleteAdmin.js') }}"></script>
+
+{% endblock %}

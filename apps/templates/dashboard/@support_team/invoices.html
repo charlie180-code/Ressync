@@ -1,0 +1,390 @@
+{% extends 'dashboard/dashboard.html' %}
+{% block title %}<title>{{ _('Factures : Ressync') }}</title>{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="my-5 d-flex align-items-center justify-content-between">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                <li class="breadcrumb-item">
+                    <a class="link-body-emphasis" href="{{ url_for('user.user_home', company_id=company.id) }}">
+                        <i class="bi bi-house-door-fill"></i>
+                        <span class="visually-hidden">{{ _('Accueil') }}</span>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">{{ _('factures') }}</li>
+            </ol>
+        </nav>
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#createInvoiceModal" id="CreateInvoiceButton" title="{{ _('Créer une nouvelle facture') }}">
+                <i class="bi bi-plus-circle"></i>
+            </button>
+        </div>
+    </div>
+
+    <h2>{{ _('Factures') }}</h2>
+
+    {% if invoices %}
+        <div class="table-responsive" id="invoiceTable">
+            <table class="table table-striped align-items-center mb-0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>{{ _("Date de création") }}</th>
+                        <th>{{ _("Montant total") }}</th>
+                        <th>{{ _("Options") }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for invoice in invoices %}
+                        <tr>
+                            <td>{{ invoice.id }}</td>
+                            <td>{{ invoice.date_created.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td>
+                                {{ invoice.expenses | sum(attribute='total_cost', start=0) }}
+                            </td>                            
+                            <td>
+                                <button class="btn shadow-lg delete-invoice-btn" type="button" data-invoice-id="{{ invoice.id }}" title="{{ _('Supprimer la facture') }}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                                                                           
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        {% include 'dashboard/empty/no_invoice.html' %}
+    {% endif %}
+
+    <!-- Modal for creating new invoice -->
+    <div class="modal fade" id="createInvoiceModal" tabindex="-1" aria-labelledby="createInvoiceModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createInvoiceModalLabel">
+                        <i class="bi bi-file-earmark-text"></i>
+                        {{ _('Créer une nouvelle facture') }}
+                    </h5>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="createInvoiceForm" action="{{ url_for('accounting.manage_invoices', company_id=company.id) }}" method="POST">
+                    
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="clientName" class="form-label">{{ _('Nom du client') }}</label>
+                                <input type="text" class="form-control" id="clientName" name="client_name" placeholder="{{ _('Entrez le nom du client') }}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="clientType" class="form-label">{{ _('Type de client') }}</label>
+                                <input type="text" class="form-control" id="clientType" name="client_type" placeholder="{{ _('Type de client') }}">
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="clientPhone" class="form-label">{{ _('Téléphone du client') }}</label>
+                                <input type="text" class="form-control" id="clientPhone" name="client_phone" placeholder="{{ _('Entrez le numéro de téléphone') }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="clientEmail" class="form-label">{{ _('Email du client') }}</label>
+                                <input type="email" class="form-control" id="clientEmail" name="client_email" placeholder="{{ _('Entrez l\'adresse email') }}">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label for="clientAddress" class="form-label">{{ _('Adresse') }}</label>
+                                <input type="text" class="form-control" id="clientAddress" name="client_address" placeholder="{{ _('Entrez l\'adresse') }}">
+                            </div>
+                        </div>
+                    
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="clientCity" class="form-label">{{ _('Ville') }}</label>
+                                <input type="text" class="form-control" id="clientCity" name="client_city" placeholder="{{ _('Entrez la ville') }}">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="clientPostalCode" class="form-label">{{ _('Code postal') }}</label>
+                                <input type="text" class="form-control" id="clientPostalCode" name="client_postal_code" placeholder="{{ _('Entrez le code postal') }}">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="clientCountry" class="form-label">{{ _('Pays') }}</label>
+                                <input type="text" class="form-control" id="clientCountry" name="client_country" placeholder="{{ _('Entrez le pays') }}">
+                            </div>
+                        </div>
+
+                        
+                        <!-- Button Group -->
+                        <div class="d-flex justify-content-end btn-group" role="group" aria-label="Button group with icons">
+                            <button type="button" class="btn btn-white shadow-sm" title="{{ _('Ajouter un autre item') }}" id="addExpenseButton">
+                                <i class="bi bi-plus-circle"></i>
+                            </button>
+                            <button type="button" class="btn btn-white shadow-sm" title="{{ _('Sélectionner pour supprimer des items') }}" id="selectDeleteButton">
+                                <i class="bi bi-check2-square"></i>
+                            </button>
+                        </div>
+
+                        <!-- Expenses Container -->
+                        <div class="file-input-rows">
+                            <p class="text-center">{{ _('Cliquez sur le button (+) pour ajouter des items') }}</p>
+                        </div>
+                    
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Fermer') }}</button>
+                            <button type="button" id="submitButton" class="btn btn-info">
+                                <span id="buttonText">
+                                    <i class="bi bi-plus-circle-dotted"></i>
+                                    {{ _('Enregistrer') }}
+                                </span>
+                                <span id="spinner" class="spinner-border spinner-border-sm d-none"></span>
+                                <span id="loadingText" class="d-none">
+                                    {{ _('En cours ...') }}
+                                </span>
+                            </button>
+                        </div>
+                    </form>                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const addExpenseButton = document.getElementById('addExpenseButton');
+        const invoiceExpensesContainer = document.querySelector('.file-input-rows');
+
+        let expenseIndex = 1;
+
+        function createExpenseField() {
+            expenseIndex++;
+
+            // Create a new expense field with its own set of inputs
+            const expenseDiv = document.createElement('div');
+            expenseDiv.classList.add('row', 'mb-3', 'align-items-end', 'file-input-row');
+            expenseDiv.innerHTML = `
+                <div class="col-md-2">
+                    <label for="expenseServiceType${expenseIndex}" class="form-label">{{ _('Type de service') }}</label>
+                    <input type="text" class="form-control" id="expenseServiceType${expenseIndex}" name="expenses[${expenseIndex}][service_type]" placeholder="{{ _('Entrez le type de service') }}" list="serviceTypesList${expenseIndex}" value="">
+                    <datalist id="serviceTypesList${expenseIndex}">
+                        <option value="Cloud Services">
+                        <option value="Networking">
+                        <option value="Shop">
+                        <option value="AI & Computation">
+                    </datalist>
+                </div>
+                <div class="col-md-2">
+                    <label for="expenseType${expenseIndex}" class="form-label">{{ _('Type') }}</label>
+                    <select class="form-select" id="expenseType${expenseIndex}" name="expenses[${expenseIndex}][type]">
+                        <option value="gain">{{ _('Gain') }}</option>
+                        <option value="loss">{{ _('Perte') }}</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="expenseCurrency${expenseIndex}" class="form-label">{{ _('Devise') }}</label>
+                    <select class="form-select" id="expenseCurrency${expenseIndex}" name="expenses[${expenseIndex}][currency]">
+                        <option value="" selected disabled>{{ _('Sélectionnez la devise') }}</option>
+                        <option value="USD">{{ _('USD') }}</option>
+                        <option value="EUR">{{ _('EUR') }}</option>
+                        <option value="GBP">{{ _('GBP') }}</option>
+                        <option value="JPY">{{ _('JPY') }}</option>
+                        <option value="AUD">{{ _('AUD') }}</option>
+                        <option value="CAD">{{ _('CAD') }}</option>
+                        <option value="CHF">{{ _('CHF') }}</option>
+                        <option value="CNY">{{ _('CNY') }}</option>
+                        <option value="INR">{{ _('INR') }}</option>
+                        <option value="BRL">{{ _('BRL') }}</option>
+                        <option value="RUB">{{ _('RUB') }}</option>
+                        <option value="ZAR">{{ _('ZAR') }}</option>
+                        <option value="MXN">{{ _('MXN') }}</option>
+                        <option value="HKD">{{ _('HKD') }}</option>
+                        <option value="SGD">{{ _('SGD') }}</option>
+                        <option value="NOK">{{ _('NOK') }}</option>
+                        <option value="SEK">{{ _('SEK') }}</option>
+                        <option value="NZD">{{ _('NZD') }}</option>
+                        <option value="KRW">{{ _('KRW') }}</option>
+                        <option value="TRY">{{ _('TRY') }}</option>
+                        <option value="IDR">{{ _('IDR') }}</option>
+                        <option value="THB">{{ _('THB') }}</option>
+                        <option value="MYR">{{ _('MYR') }}</option>
+                        <option value="PLN">{{ _('PLN') }}</option>
+                        <option value="CZK">{{ _('CZK') }}</option>
+                        <option value="HUF">{{ _('HUF') }}</option>
+                        <option value="ILS">{{ _('ILS') }}</option>
+                        <option value="PHP">{{ _('PHP') }}</option>
+                        <option value="AED">{{ _('AED') }}</option>
+                        <option value="SAR">{{ _('SAR') }}</option>
+                        <option value="PKR">{{ _('PKR') }}</option>
+                        <option value="EGP">{{ _('EGP') }}</option>
+                        <option value="NGN">{{ _('NGN') }}</option>
+                        <option value="VND">{{ _('VND') }}</option>
+                        <option value="XOF">{{ _('XOF') }}</option>
+                        <option value="XAF">{{ _('XAF') }}</option>
+                        <option value="KES">{{ _('KES') }}</option>
+                        <option value="GHS">{{ _('GHS') }}</option>
+                        <option value="TZS">{{ _('TZS') }}</option>
+                        <option value="UGX">{{ _('UGX') }}</option>
+                        <option value="MGA">{{ _('MGA') }}</option>
+                        <option value="BWP">{{ _('BWP') }}</option>
+                        <option value="ETB">{{ _('ETB') }}</option>
+                        <option value="DZD">{{ _('DZD') }}</option>
+                        <option value="MAD">{{ _('MAD') }}</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="expenseUnitPrice${expenseIndex}" class="form-label">{{ _('Prix unitaire') }}</label>
+                    <input type="number" class="form-control" id="expenseUnitPrice${expenseIndex}" name="expenses[${expenseIndex}][unit_price]" placeholder="{{ _('Entrer le prix unitaire') }}" step="0.01" value="0.00">
+                </div>
+                <div class="col-md-2">
+                    <label for="expenseQuantity${expenseIndex}" class="form-label">{{ _('Quantité') }}</label>
+                    <input type="number" class="form-control" id="expenseQuantity${expenseIndex}" name="expenses[${expenseIndex}][quantity]" placeholder="{{ _('Entrer la quantité') }}" value="1">
+                </div>
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-sm mt-4 btn-danger removeExpenseButton">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+                <div id="additionalFields${expenseIndex}" class="mt-3"></div>
+                
+            `;
+
+            invoiceExpensesContainer.appendChild(expenseDiv);
+
+            // Add event listener for dynamically added service type input
+            const serviceTypeInput = document.getElementById(`expenseServiceType${expenseIndex}`);
+            serviceTypeInput.addEventListener('change', function() {
+                const serviceType = this.value;
+                const additionalFieldsDiv = document.getElementById(`additionalFields${expenseIndex}`);
+                additionalFieldsDiv.innerHTML = '';  // Clear previous fields
+
+                if (serviceType === 'Cloud Services') {
+                    additionalFieldsDiv.innerHTML = `
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="expenseStorage${expenseIndex}" class="form-label">{{ _('Stockage') }}</label>
+                                <input type="text" class="form-control" id="expenseStorage${expenseIndex}" name="expenses[${expenseIndex}][storage]" placeholder="{{ _('Entrez les détails du stockage') }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="expenseTimeOfUsage${expenseIndex}" class="form-label">{{ _('Durée d\'utilisation') }}</label>
+                                <input type="text" class="form-control" id="expenseTimeOfUsage${expenseIndex}" name="expenses[${expenseIndex}][time_of_usage]" placeholder="{{ _('Entrez la durée d\'utilisation') }}">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="expenseComputePower${expenseIndex}" class="form-label">{{ _('Puissance de calcul') }}</label>
+                                <input type="text" class="form-control" id="expenseComputePower${expenseIndex}" name="expenses[${expenseIndex}][compute_power]" placeholder="{{ _('Entrez la puissance de calcul utilisée') }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="expenseBandwidth${expenseIndex}" class="form-label">{{ _('Bande passante') }}</label>
+                                <input type="text" class="form-control" id="expenseBandwidth${expenseIndex}" name="expenses[${expenseIndex}][bandwidth]" placeholder="{{ _('Entrez la bande passante consommée') }}">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="expenseApiCalls${expenseIndex}" class="form-label">{{ _('Appels API') }}</label>
+                                <input type="text" class="form-control" id="expenseApiCalls${expenseIndex}" name="expenses[${expenseIndex}][api_calls]" placeholder="{{ _('Entrez le nombre d\'appels API') }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="expenseLicensingCosts${expenseIndex}" class="form-label">{{ _('Coûts de licence') }}</label>
+                                <input type="text" class="form-control" id="expenseLicensingCosts${expenseIndex}" name="expenses[${expenseIndex}][licensing_costs]" placeholder="{{ _('Entrez les coûts de licence') }}">
+                            </div>
+                        </div>
+
+
+                    `;
+                } else if (serviceType === 'Networking') {
+                    additionalFieldsDiv.innerHTML = `
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="expenseBandwidth${expenseIndex}" class="form-label">{{ _('Bande passante') }}</label>
+                                <input type="text" class="form-control" id="expenseBandwidth${expenseIndex}" name="expenses[${expenseIndex}][bandwidth]" placeholder="{{ _('Entrez les détails de la bande passante') }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="expenseLatency${expenseIndex}" class="form-label">{{ _('Latence') }}</label>
+                                <input type="text" class="form-control" id="expenseLatency${expenseIndex}" name="expenses[${expenseIndex}][latency]" placeholder="{{ _('Entrez les détails de la latence') }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="expenseNetworkType${expenseIndex}" class="form-label">{{ _('Type de réseau') }}</label>
+                                <input type="text" class="form-control" id="expenseNetworkType${expenseIndex}" name="expenses[${expenseIndex}][network_type]" placeholder="{{ _('Entrez le type de réseau') }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="expenseConnections${expenseIndex}" class="form-label">{{ _('Nombre de connexions') }}</label>
+                                <input type="number" class="form-control" id="expenseConnections${expenseIndex}" name="expenses[${expenseIndex}][number_of_connections]" placeholder="{{ _('Entrez le nombre de connexions') }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="expenseSLA${expenseIndex}" class="form-label">{{ _('Niveau de SLA') }}</label>
+                                <input type="text" class="form-control" id="expenseSLA${expenseIndex}" name="expenses[${expenseIndex}][sla]" placeholder="{{ _('Entrez le niveau de SLA') }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="expenseUptime${expenseIndex}" class="form-label">{{ _('Temps de disponibilité (Uptime)') }}</label>
+                                <input type="text" class="form-control" id="expenseUptime${expenseIndex}" name="expenses[${expenseIndex}][uptime]" placeholder="{{ _('Entrez les détails du temps de disponibilité') }}">
+                            </div>
+                        </div>
+
+                    `;
+                } else if(serviceType === 'Shop') {
+                    additionalFieldsDiv.innerHTML = `
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="expenseProductSpecs${expenseIndex}" class="form-label">{{ _('Spécifications du produit') }}</label>
+                                <input type="text" class="form-control" id="expenseProductSpecs${expenseIndex}" name="expenses[${expenseIndex}][product_specs]" placeholder="{{ _('Entrez les spécifications du produit') }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="expenseBrand${expenseIndex}" class="form-label">{{ _('Marque') }}</label>
+                                <input type="text" class="form-control" id="expenseBrand${expenseIndex}" name="expenses[${expenseIndex}][brand]" placeholder="{{ _('Entrez la marque du produit') }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="expenseColor${expenseIndex}" class="form-label">{{ _('Couleur') }}</label>
+                                <input type="text" class="form-control" id="expenseColor${expenseIndex}" name="expenses[${expenseIndex}][color]" placeholder="{{ _('Entrez la couleur du produit') }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="expenseCategory${expenseIndex}" class="form-label">{{ _('Catégorie') }}</label>
+                                <input type="text" class="form-control" id="expenseCategory${expenseIndex}" name="expenses[${expenseIndex}][category]" placeholder="{{ _('Entrez la catégorie du produit') }}">
+                            </div>
+                        </div>
+                       
+                        
+                    `;
+                }
+                
+
+            });
+        }
+        
+
+        function removeExpense(button) {
+            button.closest('.file-input-row').remove();
+        }
+
+        addExpenseButton.addEventListener('click', createExpenseField);
+
+        invoiceExpensesContainer.addEventListener('click', function(event) {
+            if (event.target && event.target.matches('.removeExpenseButton')) {
+                removeExpense(event.target);
+            }
+        });
+
+    
+
+        addExpenseButton.addEventListener('click', createExpenseField);
+            selectDeleteButton.addEventListener('click', function () {
+        });
+
+    });
+</script>
+
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Invoices/CreateInvoice.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Invoices/DeleteInvoice.js') }}"></script>
+
+{% endblock %}

@@ -1,0 +1,136 @@
+General User Guide V 1.0
+
+Before starting everything make email configuration
+
+1. First create academic year, then create the sessions, then create the sections
+2. create classes
+3. create teachers
+4. create subjects
+5. create student
+6. then manage grades and any aspects(donnez un de très bons titre à vos évaluations, ajouter le nom de la matière à coté)
+7. add any needed admin
+8. for printing session report we just need to select the classroom
+9. for excel yearly report we just need the year and the classroom
+10. for migrating session just create a new session and deactivate the existing one & follow instructions
+11. we have automatic yearly reports system
+
+At the end of the day, a teacher can go onto the database and save student absence
+default to 1
+
+Every teacher will put 18 for the conduite grade by default, only one teacher should
+put a different value in that case report that
+
+Please in a session don't add other subjects
+wait until the end of the current session
+
+In order for the system to work we should have a different email
+for each student even if it is the parent, so we can add something to 
+differentiate whatever the stuff is... number or space
+before we improve it in the next version
+
+Use prefilled data when creating classes/majors sometimes
+to avoid error while passing classes so at the end of year
+we can pass the year for each student easily
+
+It is forbidden to edit default role names but u can add other roles
+
+in order to delete a section u first need to search all classes associated to this 
+section and change their sections and then deleting the section
+
+
+3G internet needed in order for the system to work properly
+
+try to use the most accurate data for the system to work properly
+
+
+Please create new sessions before switching the year
+
+
+
+--------------------------------------------------------------------------------------------------------
+|           Type of Roles                 |                         Tools                               |
+---------------------------------------------------------------------------------------------------------
+|                                         |                                                             |
+|                                         |     Archiving folders, giving characteristics etc           |
+|                                         |     Creating Word documents & excel docs cloud              |
+|              Agents                     |     Email & Messages(Contacts, from Google Drive, iCloud)   |
+|                                         |     Blogging tools                                          |
+|                                         |     some other tools depending on the sector and activities |
+|--------------------------------------------------------------------------------------------------------
+|                                         |                                                             |
+|                                         |     Task assignments, event planning, notes etc             |
+|                                         |     View company statistics & overall company statistics    |
+|                                         |     Employees management(user & not)                        |
+|             Team Leader                 |     Accounting operations & Financial services              |
+|             (responsible)               |     Archiving folders, giving characteristics etc           |
+|                                         |     Creating Word documents & excel docs cloud              |
+|                                         |     Email & Messages(Contacts, from Google Drive, iCloud)   |
+|                                         |     Blogging tools                                          |
+|                                         |     Purchase operations                                     |
+---------------------------------------------------------------------------------------------------------
+|                                         |                                                             |
+|                                         |     Access to some tools for advanced operations            |
+|               External                  |     Creating Word documents & excel docs cloud              |
+|               Consultant                |     Email & Messages(Contacts, from Google Drive, iCloud)   |
+|                                         |     Blogging tools                                          |
+|                                         |                                                             |
+|--------------------------------------------------------------------------------------------------------
+|                                         |                                                             |
+|                                         |     Manage roles and admins                                 |
+|                                         |     Manage access and confingure the whole system           |
+|                                         |     Database & cloud Management                             |
+|             IT Adminsitrator            |     Controle some type of accesses                          |
+|                                         |                                                             |
+|                                         |                                                             |
+|                                         |                                                             |
+|                                         |                                                             |
+|                                         |                                                             |
+---------------------------------------------------------------------------------------------------------
+
+
+
+--------------------------------------------------------------------------------------------------------
+|           Sectors                       |                    Tools we propose                         |
+---------------------------------------------------------------------------------------------------------
+|                                         |     student management, PDF reports generation              |
+|                                         |     automated student promotions                            |
+|           Academics                     |     library management                                      |
+|       (Internal & External)             |     free ebook and audiobook library management             |
+|                                         |     student school fees management tools                    |
+|                                         |     school expenses management tools                        |
+|                                         |     school hr management tools                              |
+|                                         |     Task assignments, event planning, notes etc             
+|                                         |     Email & Messages(Contacts, from Google Drive, iCloud)
+|--------------------------------------------------------------------------------------------------------
+|                                         |                                                             |
+|                                         |     Task assignments, event planning, notes etc             |
+|                                         |     Data and insights for better management                 |
+|                                         |     Employees management(user & not)                        |
+|            Engineering                  |     Accounting operation tools                              |
+|                                         |     Archiving folders, giving characteristics etc           |
+|                                         |     Creating Word documents & excel docs cloud              |
+|                                         |     Email & Messages(Contacts, from Google Drive, iCloud)   |
+|                                         |     Blogging tools                                          |
+|                                         |     Purchase operations management                          |
+---------------------------------------------------------------------------------------------------------
+|                                         |                                                             |
+|                                         |     Access to some tools for advanced analytics             |
+|                                         |     Creating Word documents & excel docs cloud              |
+|                                         |     Email & Messages(Contacts, from Google Drive, iCloud)   |
+|                                         |     Blogging tools                                          |
+|                                         |     Task assignments, event planning, notes etc             |
+|             Shipping                    |     Data and insights for better management                 |
+|                                         |     Employees management(user & not)                        |
+|                                         |     Accounting operation tools                              |
+|                                         |     Archiving folders, giving characteristics etc           |
+|                                         |     Creating Word documents & excel docs cloud              |
+|                                         |     Email & Messages(Contacts, from Google Drive, iCloud)   |
+|                                         |     Blogging tools                                          |
+|                                         |     Purchase operations management                          |
+|                                         |     Reseller Gateway                                        |
+|                                         |     Supply chain management tools                           |                             |
+--------------------------------------------------------------------------------------------------------
+
+
+
+

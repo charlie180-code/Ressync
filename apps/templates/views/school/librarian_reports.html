@@ -1,0 +1,70 @@
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Number of Books in the Library -->
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-header p-3 pt-2">
+                    <div class="icon icon-lg icon-shape shadow-lg bg-white text-center border-radius-xl mt-n4 position-absolute">
+                        <i class="material-icons opacity-10 text-primary">library_books</i>
+                    </div>
+                    <div class="text-end pt-1">
+                        <p class="text-sm mb-0 text-capitalize">{{ _('Nombre total de livres') }}</p>
+                        <h4 class="mb-0">{{ book_count }}</h4>
+                    </div>
+                </div>
+                <hr class="dark horizontal my-0">
+                <div class="card-footer p-3">
+                    <p class="mb-0">
+                        <span class="text-info text-sm font-weight-bolder">{{ _('Livres disponibles dans la bibliothèque') }}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Number of Book Lendings -->
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-header p-3 pt-2">
+                    <div class="icon icon-lg icon-shape shadow-lg bg-white text-center border-radius-xl mt-n4 position-absolute">
+                        <i class="material-icons opacity-10 text-primary">book</i>
+                    </div>
+                    <div class="text-end pt-1">
+                        <p class="text-sm mb-0 text-capitalize">{{ _('Nombre total de prêts de livres') }}</p>
+                        <h4 class="mb-0">{{ book_loan_count }}</h4>
+                    </div>
+                </div>
+                <hr class="dark horizontal my-0">
+                <div class="card-footer p-3">
+                    <p class="mb-0">
+                        <span class="text-info text-sm font-weight-bolder">{{ _('Prêts de livres effectués') }}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Counts (existing card) -->
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-header p-3 pt-2">
+                    <div class="icon icon-lg icon-shape shadow-lg bg-white text-center border-radius-xl mt-n4 position-absolute">
+                        <i class="material-icons opacity-10 text-primary">people</i>
+                    </div>
+                    <div class="text-end pt-1">
+                        <p class="text-sm mb-0 text-capitalize">{{ _('Nombre total d\'élèves') }}</p>
+                        <h4 class="mb-0">{{ student_count }}</h4>
+                    </div>
+                </div>
+                <hr class="dark horizontal my-0">
+                <div class="card-footer p-3">
+                    <p class="mb-0">
+                        <span class="text-success text-sm font-weight-bolder">{{ student_count_percentage_difference | round(2) }}%</span>
+                        {{ _('Par rapport au mois passé') }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Other cards as needed -->
+
+    </div>
+</div>

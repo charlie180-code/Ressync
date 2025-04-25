@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ./app/api
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5000"
+    environment:
+      - FLASK_ENV=development
+
+  auth:
+    build:
+      context: ./app/auth
+      dockerfile: Dockerfile
+    ports:
+      - "5002:5000"
+    environment:
+      - FLASK_ENV=development
+
+  main:
+    build:
+      context: ./app/main
+      dockerfile: Dockerfile
+    ports:
+      - "5003:5000"
+    environment:
+      - FLASK_ENV=development
+
+  promote:
+    build:
+      context: ./app/promote
+      dockerfile: Dockerfile
+    ports:
+      - "5004:5000"
+    environment:
+      - FLASK_ENV=development
+
+  note:
+    build:
+      context: ./app/note
+      dockerfile: Dockerfile
+    ports:
+      - "5005:5000"
+    environment:
+      - FLASK_ENV=development
+
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: 
+      POSTGRES_PASSWORD: 
+      POSTGRES_DB: 
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

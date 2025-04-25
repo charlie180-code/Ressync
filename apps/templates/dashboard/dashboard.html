@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="{{ get_locale() }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- custom css -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/customs/dashboard/dashboard.css') }}">
+
+  <!-- spinner css -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/customs/dashboard/spinner.css') }}">
+
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/brand/Ressync/apple-touch-icon.svg') }}" sizes="180x180">
+  <link rel="icon" href="{{ url_for('static', filename='media/favicons/favicon-32x32.png') }}" sizes="32x32" type="image/png">
+  <link rel="icon" href="{{ url_for('static', filename='img/brand/Ressync/apple-touch-icon.svg') }}" sizes="16x16" type="image/png">
+
+  <!-- sweet alert css -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/lib/sweetalert2.min.css') }}">
+
+  <!-- Nucleo Icons -->
+  <link href="{{ url_for('static', filename='css/nucleo/nucleo-icons.css')}}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='css/nucleo/nucleo-svg.css')}}" rel="stylesheet" />
+
+  <!-- bootstrap-icons-->
+  <link rel="stylesheet" href="{{ url_for('static', filename='icons/font/bootstrap-icons.min.css') }}">
+
+  <!-- tel input css -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/lib/intlTelInput.min.css') }}">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/lib/all.min.css') }}">
+
+  <!-- Material Icons -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='fonts/material-icons/material-icons-round.woff') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='fonts/material-icons/material-icons-round.woff2') }}">
+  <link href="{{ url_for('static', filename='css/lib/material-icons.css') }}" rel="stylesheet">
+
+  <!-- flags css -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/lib/flag-icons.min.css') }}" />
+
+  <!-- CSS Files -->
+  <link id="pagestyle" href="{{ url_for('static', filename='css/customs/dashboard/material-dashboard.min.css') }}" rel="stylesheet" />
+
+
+
+  {% block title %}<title>{{ _('MySails : Dashboard') }}</title>{% endblock %}
+
+</head>
+<body class="g-sidenav-show bg-gray-200">
+
+<!-- Sidebar -->
+{% include 'dashboard/partials/sidebar.html' %}
+
+<!-- Main content -->
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+
+  <!-- Company ID -->
+  <input type="hidden" id="company-id" value="{{ company.id }}">
+
+  <!-- Navigation -->
+  {% include 'dashboard/partials/navigation.html' %}
+
+  <!-- Spinner with Transparent Overlay -->
+  <div id="overlay" class="overlay d-none">
+    <div id="spinner" class="sk-chase" role="status">
+      <div class="sk-chase-dot"></div>
+      <div class="sk-chase-dot"></div>
+      <div class="sk-chase-dot"></div>
+      <div class="sk-chase-dot"></div>
+      <div class="sk-chase-dot"></div>
+      <div class="sk-chase-dot"></div>
+    </div>
+  </div>
+
+  {% block content %}{% endblock %}
+
+
+
+  <!-- Footer -->
+  {% include 'dashboard/partials/footer.html' %}
+
+</main>
+
+<!-- Scripts -->
+<script>
+  window.addEventListener('load', function () {
+    // Hide spinner and overlay on page load
+    document.getElementById('overlay').classList.add('d-none');
+  });
+
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', function () {
+      // Show spinner and overlay when navigation is triggered
+      document.getElementById('overlay').classList.remove('d-none');
+    });
+  });
+
+
+  // For Scrollbar Initialization
+  var win = navigator.platform.indexOf('Win') > -1;
+  if (win && document.querySelector('#sidenav-scrollbar')) {
+    var options = {
+      damping: '0.5'
+    };
+    Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+  }
+</script>
+
+{% include 'includes/inc_bottom.html' %}
+
+<!-- Additional scripts -->
+<script type="module" src="{{ url_for('static', filename='js/_utils/calendar.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/customers/Contact/loadEmails.js') }}"></script>
+<script src="{{ url_for('static', filename='js/lib/plugins/perfect-scrollbar.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/lib/plugins/smooth-scrollbar.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/lib/plugins/material-dashboard.min.js') }}"></script>
+</body>
+</html>

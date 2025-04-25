@@ -1,0 +1,7 @@
+{% if company.category == 'Education' %}
+  {% include 'views/school/user_home.html' %}
+{% elif company.category == 'Shipping' %}
+  {% include 'views/shipping/user_home.html' %}
+{% elif company.category == 'Engineering' %}
+  {% include 'views/engineering/user_home.html' %}
+{% endif %}

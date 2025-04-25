@@ -1,0 +1,17 @@
+<div class="px-4 text-center">
+    <img class="d-block mx-auto mb-4 img-fluid" src="{{ url_for('static', filename='img/feedbacks/building.png') }}" alt="{{ _('Aucune setion trouvée dans cette école') }}" width="300">
+    <h1 class="display-5 text-body-emphasis">{{ _('Aucune section trouvée') }}</h1>
+    <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">
+            {{ _("Cet onglet est adapté aux instutions universitaires ou scolaires ayant des répartitions plus ou moins complexes") }}
+        </p>
+    </div>
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <button type="button" class="btn btn-info btn-lg px-4 gap-3" data-bs-toggle="modal" data-bs-target="#createNewSectionModal">
+            <i class="bi bi-plus-circle-dotted"></i>
+            {{ _('Créer une nouvelle section') }}
+        </button>
+    </div>
+</div>
+
+<div class="py-5"></div>

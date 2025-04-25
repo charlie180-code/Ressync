@@ -1,0 +1,144 @@
+{% extends 'dashboard/dashboard.html' %}
+
+{% block title %}
+    <title>{{ _('Demandes de procurations : Ressync') }}</title>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="my-2 d-flex align-items-center justify-content-between">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                    <li class="breadcrumb-item">
+                        <a class="link-body-emphasis" href="#">
+                            <i class="bi bi-house-door-fill"></i>
+                            <span class="visually-hidden">{{ _('Accueil') }}</span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active">{{ _('Préparer l\'envoi de la demande') }}</li>
+                </ol>
+            </nav>
+        </div>
+        
+        <h2>
+            <span>
+                {{ _('Autorisation d\'enlèvement du BL N°') }} {{ quote.lading_bills_identifier }}
+            </span>
+        </h2>
+
+        <form id="emailForm" action="{{ url_for('msg.send_authorization_email') }}" method="POST" enctype="multipart/form-data">
+            <div class="row">
+                <div class="mb-3">
+                    <label class="form-label">
+                        {{ _('À') }}
+                        <span class="text-danger">*</span>
+                    </label>
+                    <div class="contact-selector">
+                        <div class="contact-input-container" id="to-container">
+                            <input type="text" id="to-input" class="contact-input" placeholder="{{ _('Recherchez des contacts') }}" autocomplete="off">
+                        </div>
+                        <div class="contact-suggestions" id="to-suggestions"></div>
+                        <input type="hidden" name="to" id="to-recipients">
+                        <div class="my-2 text-danger" id="to-error" style="display: none;">
+                            {{ _('Ce champ est requis pour continuer') }} 
+                        </div>                                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="mb-3">
+                    <label class="form-label">
+                        {{ _('Cc') }} 
+                    </label>
+                    <div class="contact-selector">
+                        <div class="contact-input-container" id="cc-container">
+                            <input type="text" id="cc-input" class="contact-input" placeholder="{{ _('Recherchez des contacts') }}" autocomplete="off">
+                        </div>
+                        <div class="contact-suggestions" id="cc-suggestions"></div>
+                        <input type="hidden" name="cc" id="cc-recipients">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="mb-3">
+                    <label class="form-label">
+                        {{ _('Objet') }} 
+                        <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" name="subject" class="form-control" value="{{ _('Autorisation d\'enlèvement du BL N°') }} {{ quote.lading_bills_identifier }} {{ _('du client') }} {% if quote.is_company %}{{ quote.company_name }}{% else %}{{ quote.client_last_name }} {{ quote.client_first_name }}{% endif %}" required>
+                    <div class="my-2 text-danger" id="subject-error" style="display: none;">
+                        {{ _('Ce champ est requis pour continuer') }} 
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="row">
+                <div class="mb-3">
+                    <label class="form-label">{{ _('Message') }}<span class="text-danger">*</span></label>
+                    <div id="editor"></div>
+                    <input type="hidden" name="message" id="message-content">
+                    <div class="my-2 text-danger" id="message-error" style="display: none;">
+                        {{ _('Ce champ est requis pour continuer') }} 
+                    </div>                                        
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="mb-3">
+                    <label class="form-label">{{ _('Fichers Additionnels') }} <span class="text-danger">*</span></label>
+                    <input type="file" id="file-input" class="form-control" multiple>
+                    <div class="file-attachments" id="file-attachments"></div>
+                    <input type="hidden" name="attachments" id="attachments-data">
+                </div>
+            </div>
+
+            <div class="my-5">
+                <button type="submit" id="submitButton" class="btn btn-info">
+                    <div class="spinner-border spinner-border-sm" style="display: none;" id="spinner"></div>
+                    <span id="LoadindText" class="d-none">
+                        {{ _('En cours...') }}
+                    </span>
+                    <span id="buttonText">
+                        <i class="bi bi-send-fill"></i> 
+                        {{ _('Envoyer') }}
+                    </span>
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Quill editor -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script>
+        const quill = new Quill('#editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline', 'strike'],
+                    ['blockquote', 'code-block'],
+                    [{ 'header': 1 }, { 'header': 2 }],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'script': 'sub'}, { 'script': 'super' }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    [{ 'direction': 'rtl' }],
+                    [{ 'size': ['small', false, 'large', 'huge'] }],
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'font': [] }],
+                    [{ 'align': [] }],
+                    ['clean'],
+                    ['link', 'image']
+                ]
+            },
+            placeholder: '{{ _("Composez votre message ici...") }}',
+        });
+
+        quill.root.innerHTML = '{{ _("Veuillez recevoir en pièces jointes le BL N°") }} {{ quote.lading_bills_identifier }} {{ _("du client") }} {% if quote.is_company %}{{ quote.company_name }}{% else %}{{ quote.client_last_name }} {{ quote.client_first_name }}{% endif %}';
+
+    </script>
+    <script type="module" src="{{ url_for('static', filename='js/async/api/customers/Contact/SendAuthorizationEmail.js') }}"></script>
+{% endblock %}

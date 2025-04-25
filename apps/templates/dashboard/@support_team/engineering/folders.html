@@ -1,0 +1,471 @@
+{% extends 'dashboard/dashboard.html' %}
+{% block title %}<title>{{ _('Projets : Ressync') }}</title>{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="my-5 d-flex align-items-center justify-content-between">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                <li class="breadcrumb-item">
+                    <a class="link-body-emphasis" href="{{ url_for('user.user_home', company_id=company.id) }}">
+                        <i class="bi bi-house-door-fill"></i>
+                        <span class="visually-hidden">{{ _('Accueil') }}</span>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">{{ _('Projets') }}</li>
+            </ol>
+        </nav>
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#createFolderModal" id="CreateFolderButton" title="{{ _('Créer un nouveau projet') }}">
+                <i class="bi bi-plus-circle"></i>
+            </button>
+             <button type="button" class="btn btn-outline-secondary" title="{{ _('Ajouter des fichiers') }}" data-bs-toggle="modal" data-bs-target="#addFileModalEngineering">
+                <i class="bi bi-paperclip"></i>
+            </button>
+        </div>
+    </div>
+
+    <h2>{{ _('Projets') }}</h2>
+    
+    <div class="d-flex justify-content-between align-items-center me-2 mb-3">
+        <form id="folderSearchForm" action="{{ url_for('archive.search_folders_files', company_id=company.id) }}" method="get">
+            <div class="input-group w-auto">
+                <input type="text" id="folderSearchInput" class="form-control" placeholder="{{ _('Rechercher un fichier') }}" aria-label="Search" aria-describedby="search-button" style="width: 200px; height: 38px;">
+                <button class="btn btn-md btn-outline-secondary" type="button" id="search-button" style="height: 38px;">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>  
+        </form>
+    </div>
+    
+   <!-- Search Results Dropdown -->
+   <div id="searchResultsDropdown" class="w-100 d-none"></div>
+    
+    {% if folders %}
+        <div class="table-responsive" id="folderTable">
+            <table class="table table-striped align-items-center mb-0">
+                <thead>
+                    <tr>
+                        <th>{{  _('Projet') }}</th>
+                        <th>{{ _("Ouvert le") }}</th>
+                        <th>{{ _("Discipline") }}</th>
+                        <th>{{ _("Client") }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for folder in folders %}
+                        <tr>
+                            <td>{{ folder.name }}</td>
+                            <td>{{ folder.created_at.strftime('%Y-%m-%d') }}</td>
+                            <td>{{ folder.type }}</td>
+                            <td>{{ folder.client }}</td>
+                            <td>
+                                <button class="btn shadow-lg" type="button" data-bs-toggle="modal" data-bs-target="#viewFolderModal{{ folder.id }}" title="{{ _('Voir les détails') }}">
+                                    {{ _('...') }}
+                                </button>
+                            </td>
+                            <td>
+                                <!-- Modal for viewing folder details -->
+                                <div class="modal fade" id="viewFolderModal{{ folder.id }}" tabindex="-1" aria-labelledby="viewFolderModal{{ folder.id }}Label" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="viewFolderModal{{ folder.id }}Label">{{ _('Détails du projet') }}</h5>
+                                                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label for="folderDescription" class="form-label">{{ _('Description') }}</label>
+                                                    <input type="text" class="form-control" id="folderDescription" value="{{ folder.description }}" readonly>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="folderOpenAt" class="form-label">{{ _('Date d\'ouverture') }}</label>
+                                                    <input type="text" class="form-control" id="folderOpenAt" value="{{ folder.created_at | strftime('%Y-%m-%d %H:%M') }}" readonly>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="folderType" class="form-label">{{ _('Discipline') }}</label>
+                                                    <input type="text" class="form-control" id="folderType" value="{{ folder.type }}" readonly>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="folderClient" class="form-label">{{ _('Client') }}</label>
+                                                    <input type="text" class="form-control" id="folderClient" value="{{ folder.client }}" readonly>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="folderDeadline" class="form-label">{{ _('Date limite') }}</label>
+                                                    <input type="text" class="form-control" id="folderDeadline" value="{{ folder.deadline | strftime('%Y-%m-%d %H:%M') }}" readonly>
+                                                </div>
+                                                
+                                                <!-- Conditional fields based on discipline -->                                              
+                                                {% if folder.type == 'Génie civil' %}
+                                                    <div class="mb-3">
+                                                        <label for="folderProjectLocation" class="form-label">{{ _('Emplacement du projet') }}</label>
+                                                        <input type="text" class="form-control" id="folderProjectLocation" value="{{ folder.project_location }}" readonly>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="folderProjectManager" class="form-label">{{ _('Responsable du projet') }}</label>
+                                                        <input type="text" class="form-control" id="folderProjectManager" value="{{ folder.project_manager }}" readonly>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="folderProjectPhase" class="form-label">{{ _('Phase du projet') }}</label>
+                                                        <input type="text" class="form-control" id="folderProjectPhase" value="{{ folder.project_phase }}" readonly>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="folderBudget" class="form-label">{{ _('Budget') }}</label>
+                                                        <input type="text" class="form-control" id="folderBudget" value="{{ folder.budget }}" readonly>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="folderContractor" class="form-label">{{ _('Entrepreneur') }}</label>
+                                                        <input type="text" class="form-control" id="folderContractor" value="{{ folder.contractor }}" readonly>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="folderMaterialsUsed" class="form-label">{{ _('Matériaux utilisés') }}</label>
+                                                        <input type="text" class="form-control" id="folderMaterialsUsed" value="{{ folder.materials_used }}" readonly>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="folderPermitsApproved" class="form-label">{{ _('Permis approuvés') }}</label>
+                                                        <input type="text" class="form-control" id="folderPermitsApproved" value="{{ 'Oui' if folder.permits_approved else 'Non' }}" readonly>
+                                                    </div>
+                                                {% elif folder.type == 'Electricité' %}
+                                                    <div class="mb-3">
+                                                        <label for="folderVoltage" class="form-label">{{ _('Tension') }}</label>
+                                                        <input type="text" class="form-control" id="folderVoltage" value="{{ folder.voltage }}" readonly>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="folderCurrent" class="form-label">{{ _('Courant') }}</label>
+                                                        <input type="text" class="form-control" id="folderCurrent" value="{{ folder.current }}" readonly>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="folderCircuitDiagram" class="form-label">{{ _('Diagramme du circuit') }}</label>
+                                                        <input type="text" class="form-control" id="folderCircuitDiagram" value="{{ folder.circuit_diagram }}" readonly>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="folderComplianceStandards" class="form-label">{{ _('Normes de conformité') }}</label>
+                                                        <input type="text" class="form-control" id="folderComplianceStandards" value="{{ folder.compliance_standards }}" readonly>
+                                                    </div>
+                                                {% elif folder.type == 'Electronique' %}
+                                                    <div class="mb-3">
+                                                        <label for="folderPcbLayout" class="form-label">{{ _('Disposition du PCB') }}</label>
+                                                        <input type="text" class="form-control" id="folderPcbLayout" value="{{ folder.pcb_layout }}" readonly>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="folderComponentsList" class="form-label">{{ _('Liste des composants') }}</label>
+                                                        <input type="text" class="form-control" id="folderComponentsList" value="{{ folder.components_list }}" readonly>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="folderFirmwareVersion" class="form-label">{{ _('Version du firmware') }}</label>
+                                                        <input type="text" class="form-control" id="folderFirmwareVersion" value="{{ folder.firmware_version }}" readonly>
+                                                    </div>
+                                                {% elif folder.type == 'Biomédical' %}
+                                                    <div class="mb-3">
+                                                        <label for="folderSpeciesStudied" class="form-label">{{ _('Espèces étudiées') }}</label>
+                                                        <input type="text" class="form-control" id="folderSpeciesStudied" value="{{ folder.species_studied }}" readonly>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="folderExperimentDate" class="form-label">{{ _('Date de l\'expérience') }}</label>
+                                                        <input type="text" class="form-control" id="folderExperimentDate" value="{{ folder.experiment_date | strftime('%Y-%m-%d') }}" readonly>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="folderLabTechnician" class="form-label">{{ _('Technicien de laboratoire') }}</label>
+                                                        <input type="text" class="form-control" id="folderLabTechnician" value="{{ folder.lab_technician }}" readonly>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="folderSampleStorage" class="form-label">{{ _('Stockage des échantillons') }}</label>
+                                                        <input type="text" class="form-control" id="folderSampleStorage" value="{{ folder.sample_storage }}" readonly>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="folderBiosafetyLevel" class="form-label">{{ _('Niveau de biosécurité') }}</label>
+                                                        <input type="text" class="form-control" id="folderBiosafetyLevel" value="{{ folder.biosafety_level }}" readonly>
+                                                    </div>
+                                                {% endif %}
+
+                                                <div class="mb-3">
+                                                    <h5>{{ _('Fichiers associés') }}</h5>
+                                                    {% if folder.files %}
+                                                        <div class="list-group">
+                                                            {% for file in folder.files %}
+                                                                <a href="{{ file.filepath }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center mb-2">
+                                                                    <div class="me-3">
+                                                                        {% set ext = file.filepath.split('.')[-1].lower() %}
+                                                                        {% if ext in ['pdf'] %}
+                                                                            <img src="{{ url_for('static', filename='img/placeholders/pdf.png') }}" alt="{{ file.label }}" class="img-thumbnail" style="width: 100px; height: auto;">
+                                                                        {% elif ext in ['jpg', 'jpeg', 'png'] %}
+                                                                            <img src="{{ url_for('static', filename='img/placeholders/image.png') }}" alt="{{ file.label }}" class="img-thumbnail" style="width: 100px; height: auto;">
+                                                                        {% else %}
+                                                                            <i class="bi bi-file-earmark"></i>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                    <div>
+                                                                        <!-- File Details -->
+                                                                        <h6 class="mb-1">{{ file.label }}</h6>
+                                                                        <small>{{ folder.uploaded_at | strftime('%Y-%m-%d %H:%M') }}</small>
+                                                                        <small>{{ ext }}</small>
+                                                                    </div>
+                                                                </a>
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% else %}
+                                                        <p>{{ _('Aucun fichier associé') }}</p>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="modal-footer">
+                                                <button class="btn btn-danger delete-button" href="#" data-folder-id="{{ folder.id }}" title="{{ _('Supprimer') }}">
+                                                    <i class="bi bi-trash"></i> 
+                                                    {{ _('Supprimer') }}
+                                                </button>
+                                                <button type="button" class="btn shadow-lg" data-bs-dismiss="modal">{{ _('Fermer') }}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </td>                                                                                                            
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        {% include 'dashboard/@support_team/empty/no_folder.html' %}
+    {% endif %}
+</div>
+
+<!-- Modal for creating new folder -->
+<div class="modal fade" id="createFolderModal" tabindex="-1" aria-labelledby="createFolderModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createFolderModalLabel">
+                    <i class="bi bi-folder"></i>
+                    {{ _('Créer un nouveau projet') }}
+                </h5>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="createFolderForm" action="{{ url_for('archive.folders', company_id=company.id) }}" method="POST">
+                    <div class="mb-3">
+                        <label for="createFolderName" class="form-label">{{ _('Nom du projet') }} <span class="text-danger">*</span> </label>
+                        <input type="text" class="form-control" id="createFolderName" name="name" placeholder="{{ _('Da Vinci 4.0') }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="createFolderDescription" class="form-label">{{ _('Description') }}</label>
+                        <textarea class="form-control" id="createFolderDescription" name="description" rows="3" placeholder="{{ _('Entrez la description du projet...') }}"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="createFolderDiscipline" class="form-label">{{ _('Discipline d\'ingénierie') }} <span class="text-danger">*</span> </label>
+                        <select class="form-select" id="createFolderDiscipline" name="discipline" required onchange="populateFields(this.value)">
+                            <option value="" selected disabled>{{ _('Sélectionner le domaine') }}</option>
+                            <option value="{{ _('Electricité') }}">{{ _('Electricité') }}</option>
+                            <option value="{{ _('Electronique') }}">{{ _('Electronique') }}</option>
+                            <option value="{{ _('Génie civil') }}">{{ _('Génie civil') }}</option>
+                            <option value="{{ _('Biomédical') }}">{{ _('Biomédical') }}</option>
+                        </select>
+                    </div>
+                    <div id="additionalFields">
+                        <!-- Additional fields will be populated here based on the selected discipline -->
+                    </div>
+                    <div class="mb-3">
+                        <label for="createFolderClient" class="form-label">{{ _('Client') }} <span class="text-danger">*</span> </label>
+                        <input type="text" class="form-control" id="createFolderClient" name="client" placeholder="{{ _('Entrez le nom complet du client') }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="createFolderDeadline" class="form-label">{{ _('Date limite') }}  <span class="text-danger">*</span> </label>
+                        <input type="datetime-local" class="form-control" id="createFolderDeadline" name="deadline" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Annuler') }}</button>
+                        <button type="submit" class="btn btn-info" id="CreateFolderSubmitButton">
+                            <span id="CreateFolderLoadingText" style="display: none;">{{ _('En cours...') }}</span>
+                            <span id="CreateFolderButtonText">{{ _('Enregistrer') }}</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Add File Modal -->
+<div class="modal fade" id="addFileModalEngineering" tabindex="-1" aria-labelledby="addFileModalEngineeringLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addFileModalEngineeringLabel">
+                    <i class="bi bi-paperclip"></i>
+                    {{ _('Ajouter des fichiers') }}
+                </h5>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addFileForm" enctype="multipart/form-data" method="post">
+                    <input type="hidden" id="companyId" value="{{ company.id }}">
+                    <div class="d-flex justify-content-end btn-group" role="group" aria-label="Button group with icons">
+                        <button type="button" class="btn btn-white shadow-sm" title="{{ _('Ajouter un autre fichier') }}" id="addRowBtn">
+                            <i class="bi bi-plus"></i>
+                        </button>
+                        <button type="button" class="btn btn-white shadow-sm" title="{{ _('Sélectionner pour supprimer des fichiers') }}" id="selectDeleteBtn">
+                            <i class="bi bi-check2-square"></i>
+                        </button>
+                    </div>
+                    <div class="file-input-rows">
+                        <!-- Default Row (Non-Removable) -->
+                        <div class="row mb-3 align-items-end file-input-row default-row">
+                            <div class="col">
+                                <label class="form-label">{{ _('Label') }}<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="labels[]" placeholder="{{ _('Entrez le titre du fichier...') }}" required>
+                            </div>
+                            <div class="col">
+                                <label class="form-label">{{ _('Fichier') }}<span class="text-danger">*</span></label>
+                                <input type="file" class="form-control" name="files[]" required>
+                            </div>
+                            <div class="col-auto">
+                                <!-- No remove icon for the default row -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="DestinationFolderSelect">
+                            {{ _('Veuillez sélectionner le répertoire de destination') }}
+                            <span class="text-danger">*</span>
+                        </label>
+                        <select name="destination_folder" class="form-select" id="DestinationFolderSelect" required>
+                            <option value="" disabled selected>{{ _('Sélectionnez un projet') }}</option>
+                            {% for folder in folders %}
+                                <option value="{{ folder.id }}">{{ folder.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Fermer') }}</button>
+                        <button type="submit" id="submitButton" class="btn btn-info">
+                            <span id="buttonText">
+                                <i class="bi bi-plus-circle-dotted"></i>
+                                {{ _('Enregistrer') }}
+                            </span>
+                            <span id="AddfilesloadingText" style="display: none;">
+                                {{ _('En cours ...') }}
+                            </span>
+                        </button>
+                    </div>
+                </form>                                                         
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function populateFields(discipline) {
+        let additionalFields = document.getElementById('additionalFields');
+        additionalFields.innerHTML = '';
+
+        if (discipline === 'Electricité') {
+            additionalFields.innerHTML = `
+                <div class="mb-3">
+                    <label for="voltage" class="form-label">{{ _('Tension nominale') }}</label>
+                    <input type="text" class="form-control" id="voltage" name="voltage" placeholder="{{ _('Entrez la tension nominale...') }}">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="current" class="form-label">{{ _('Courant nominal') }}</label>
+                    <input type="text" class="form-control" id="current" name="current" placeholder="{{ _('Entrez le courant nominal...') }}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="complianceStandards" class="form-label">{{ _('Normes de conformité') }}</label>
+                    <input type="text" class="form-control" id="complianceStandards" name="compliance_standards" placeholder="{{ _('Entrez les normes de conformité...') }}">
+                </div>
+            `;
+        } else if (discipline === 'Electronique') {
+            additionalFields.innerHTML = `
+                <div class="mb-3">
+                    <label for="circuit_type" class="form-label">{{ _('Type de circuit') }}</label>
+                    <input type="text" class="form-control" id="circuit_type" name="circuit_type" placeholder="{{ _('Entrez le type de circuit...') }}">
+                </div>
+                <div class="mb-3">
+                    <label for="power_rating" class="form-label">{{ _('Puissance nominale') }}</label>
+                    <input type="text" class="form-control" id="power_rating" name="power_rating" placeholder="{{ _('Entrez la puissance nominale...') }}">
+                </div>
+                <div class="mb-3">
+                    <label for="components_list" class="form-label">{{ _('Liste des composants électroniques') }}</label>
+                    <textarea class="form-control" id="components_list" name="components_list" rows="4" placeholder="{{ _('Entrez la liste des composants électroniques...') }}"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="firmware_version" class="form-label">{{ _('Version du firmware') }}</label>
+                    <input type="text" class="form-control" id="firmware_version" name="firmware_version" placeholder="{{ _('Entrez la version du firmware...') }}">
+                </div>
+
+            `;
+        } else if (discipline === 'Génie civil') {
+            additionalFields.innerHTML = `
+                <div class="mb-3">
+                    <label for="project_location" class="form-label">{{ _('Lieu du projet') }}</label>
+                    <input type="text" class="form-control" id="project_location" name="project_location" placeholder="{{ _('Entrez le lieu du projet...') }}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="project_manager" class="form-label">{{ _('Responsable du projet') }}</label>
+                    <input type="text" class="form-control" id="project_manager" name="project_manager" placeholder="{{ _('Entrez le nom du responsable du projet...') }}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="project_phase" class="form-label">{{ _('Phase du projet') }}</label>
+                    <select class="form-control" id="project_phase" name="project_phase">
+                        <option value="" disabled selected>{{ _('Sélectionnez la phase du projet...') }}</option>
+                        <option value="Design">{{ _('Conception') }}</option>
+                        <option value="Construction">{{ _('Construction') }}</option>
+                        <option value="Finalization">{{ _('Finalisation') }}</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="budget" class="form-label">{{ _('Budget') }}</label>
+                    <input type="number" step="0.01" class="form-control" id="budget" name="budget" placeholder="{{ _('Entrez le budget du projet...') }}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="contractor" class="form-label">{{ _('Entrepreneur') }}</label>
+                    <input type="text" class="form-control" id="contractor" name="contractor" placeholder="{{ _('Entrez le nom de l\'entrepreneur...') }}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="materials_used" class="form-label">{{ _('Matériaux utilisés') }}</label>
+                    <textarea class="form-control" id="materials_used" name="materials_used" rows="3" placeholder="{{ _('Entrez la liste des matériaux utilisés...') }}"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="permits_approved" class="form-label">{{ _('Permis approuvés') }}</label>
+                    <input type="checkbox" class="form-check-input" id="permits_approved" name="permits_approved">
+                    <label class="form-check-label" for="permits_approved">{{ _('Les permis ont été approuvés') }}</label>
+                </div>
+
+                            `;
+        } else if (discipline === 'Biomédical') {
+            additionalFields.innerHTML = `
+                <div class="mb-3">
+                    <label for="equipment_type" class="form-label">{{ _('Type d\'équipement') }}</label>
+                    <input type="text" class="form-control" id="equipment_type" name="equipment_type" placeholder="{{ _('Entrez le type d\'équipement biomédical...') }}">
+                </div>
+                <div class="mb-3">
+                    <label for="safety_standards" class="form-label">{{ _('Normes de sécurité') }}</label>
+                    <input type="text" class="form-control" id="safety_standards" name="safety_standards" placeholder="{{ _('Entrez les normes de sécurité...') }}">
+                </div>
+            `;
+        }
+    }
+</script>
+
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Folders/Engineering/SearchFolder.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Folders/Engineering/AddFiles.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Folders/Engineering/CreateFolder.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Folders/Engineering/DeleteFolder.js') }}"></script>
+
+{% endblock %}

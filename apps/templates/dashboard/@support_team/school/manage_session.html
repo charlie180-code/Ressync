@@ -1,0 +1,177 @@
+{% extends 'dashboard/dashboard.html' %}
+{% block title %}<title>{{ _('Gestion des sessions: Ressync') }}</title>{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="my-5 d-flex align-items-center justify-content-between">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                <li class="breadcrumb-item">
+                    <a class="link-body-emphasis" href="{{ url_for('user.user_home', company_id=company.id) }}">
+                        <i class="bi bi-house-door-fill"></i>
+                        <span class="visually-hidden">{{ _('Accueil') }}</span>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">{{ _('Sessions académiques') }}</li>
+            </ol>
+        </nav>
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#createNewSessionModal" title="{{ _('Créer une nouvelle session') }}">
+                <i class="bi bi-plus-circle"></i>
+            </button>
+            <!--
+                <button type="button" class="btn btn-outline-secondary" id="EditButton" title="{{ _('Modifer les sessions') }}">
+                <i class="bi bi-pencil"></i>
+                </button>
+                <button type="button" class="btn btn-outline-secondary dropdown-toggle" id="SortAdsButton" data-bs-toggle="dropdown" aria-expanded="false" title="{{ _('Ranger les sessions') }}">
+                    <i class="bi bi-sort-up"></i>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">{{ _('Organiser par nom') }}</a></li>
+                    <li><a class="dropdown-item" href="#">{{ _('Organiser par date') }}</a></li>
+                </ul>
+            -->
+        </div>
+    </div>
+
+    <h2>{{ _('Sessions') }}</h2>
+
+    <form method="PUT" action="{{ url_for('session.manage_sessions', company_id=company.id) }}" id="UpdateSessionForm" data-session-id="{{ session.id }}">
+        {% if sessions %}
+            <table class="table align-items-center mb-0 border-bottom">
+                <thead>
+                    <tr>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">#</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ _('Nom') }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ _('Date de début') }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ _('Date de fin') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tbody>
+                        {% for session in sessions %}
+                            <tr>
+                                <td>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheck_{{ session.id }}" data-session-id="{{ session.id }}" {% if session.active %}checked{% endif %}>
+                                    </div>
+                                </td>
+                                <td><input type="text" name="name_{{ session.id }}" value="{{ session.name }}" class="form-control"></td>
+                                <td><input type="date" name="start_date_{{ session.id }}" value="{{ session.start_date.strftime('%Y-%m-%d') }}" class="form-control"></td>
+                                <td><input type="date" name="end_date_{{ session.id }}" value="{{ session.end_date.strftime('%Y-%m-%d') }}" class="form-control"></td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-link p-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-three-dots-vertical text-secondary"></i>
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item btn-sm delete-btn" data-session-id="{{ session.id }}" title="{{ _('Supprimer') }}" href="#">
+                                                {{ _('Supprimer') }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td> 
+                            </tr>
+                        {% endfor %}
+                    </tbody>                    
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-end my-5 gap-2">
+                <button type="button" class="btn btn-secondary" id="discardButton" style="display: none;">
+                    {{ _('Annuler') }}
+                </button>
+                <button type="button" class="btn btn-info" id="saveButton" data-session-id="{{ session.id }}" disabled>
+                    <span id="Spinner" class="spinner-border-sm spinner-border d-none"></span>
+                    <span id="ButtonText">{{ _('Enregistrer') }}</span>
+                </button>
+            </div>   
+        {% else %}
+            {% include 'dashboard/@support_team/empty/no_session.html' %}
+        {% endif %}
+    </form>
+</div>
+
+<!-- Modal for Creating New Session -->
+<div class="modal fade" id="createNewSessionModal" tabindex="-1" aria-labelledby="createNewSessionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createNewSessionModalLabel">{{ _('Créer une nouvelle session') }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="{{ url_for('session.manage_sessions', company_id=company.id) }}">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="sessionName" class="form-label">{{ _('Nom de la session') }} <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="sessionName" name="name" placeholder="{{ _('Session 1') }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="startDate" class="form-label">{{ _('Date de début') }} <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="startDate" name="start_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="endDate" class="form-label">{{ _('Date de fin') }} <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="endDate" name="end_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="academicYear" class="form-label">{{ _('Année académique') }} <span class="text-danger">*</span></label>
+                        <select id="academicYear" name="academic_year" class="form-select" required>
+                            <option value="" disabled selected>{{ _('Choisissez une année académique') }}</option>
+                            {% for year in academic_years %}
+                                <option value="{{ year.id }}">{{ year.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Annuler') }}</button>
+                    <button type="submit" class="btn btn-info">
+                        <span id="Spinner" class="spinner-border-sm spinner-border d-none"></span>
+                        <span id="ButtonText">
+                            <i class="bi bi-plus-circle-dotted"></i>
+                            {{ _('Créer') }}
+                        </span>
+                    </button>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Session Migration -->
+<div class="modal fade" id="migrateSessionModal" tabindex="-1" aria-labelledby="migrateSessionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="migrateSessionForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="migrateSessionModalLabel">{{ _('Migrer la session') }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="newSessionSelect" class="form-label">{{ _('Sélectionner une nouvelle session') }}<span class="text-danger">*</span></label>
+                        <select id="newSessionSelect" name="new_session" class="form-select" required>
+                            <option value="" disabled selected>{{ _('Choisissez une session') }}</option>
+                            {% for session in inactive_sessions %}
+                                <option value="{{ session.id }}">{{ session.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Annuler') }}</button>
+                    <button type="submit" class="btn btn-info">{{ _('Continuer') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/SessionManagement/SwitchSession.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/SessionManagement/CreateSession.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/SessionManagement/DeleteSession.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/SessionManagement/UpdateSession.js') }}"></script>
+{% endblock %}

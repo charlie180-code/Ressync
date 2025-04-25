@@ -1,0 +1,327 @@
+{% extends 'dashboard/dashboard.html' %}
+{% block title %}<title>{{ _('Gestion des examens: Ressync') }}</title>{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="my-5 d-flex align-items-center justify-content-between">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                <li class="breadcrumb-item">
+                    <a class="link-body-emphasis" href="{{ url_for('user.user_home', company_id=company.id) }}">
+                        <i class="bi bi-house-door-fill"></i>
+                        <span class="visually-hidden">{{ _('Accueil') }}</span>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">{{ _('Examens & Compositions') }}</li>
+            </ol>
+        </nav>
+        <div>
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#createExamModal">
+                <i class="bi bi-plus-circle-dotted"></i>
+            </button>
+        </div>
+    </div>
+
+    <h2>
+        {{ _('Examens') }}
+    </h2>
+    
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="session-select">{{ _('Sélectionnez la session') }}</label>
+            <select id="session-select" class="form-select" onchange="window.location.href='?session_id=' + this.value + '&subject_id={{ selected_subject }}'">
+                <option value="">{{ _('Tous') }}</option>
+                {% for session in sessions %}
+                <option value="{{ session.id }}" {% if session.id == selected_session %}selected{% endif %}>{{ session.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="subject-select">{{ _('Sélectionnez la matière') }}</label>
+            <select id="subject-select" class="form-select" onchange="window.location.href='?subject_id=' + this.value + '&session_id={{ selected_session }}'">
+                <option value="">{{ _('Tous') }}</option>
+                {% for subject in subjects %}
+                <option value="{{ subject.id }}" {% if subject.id == selected_subject %}selected{% endif %}>{{ subject.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    {% if exams %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>{{ _('Examen') }}</th>
+                    <th>{{ _('Date') }}</th>
+                    <th>{{ _('Matière') }}</th>
+                    <th>{{ _('Actions') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for exam in exams %}
+                <tr>
+                    <td>{{ exam.name }}</td>
+                    <td>{{ exam.date.strftime('%d-%m-%Y') }}</td>
+                    <td>{{ subject_dict[exam.subject_id] }}</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-sm shadow-lg" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ _('...') }}
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <li>
+                                    <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#viewExamModal{{ exam.id }}">
+                                        {{ _('Voir détails') }}
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editExamModal{{ exam.id }}">
+                                        <i class="bi bi-pencil"></i>
+                                        {{ _('Modifier') }}
+                                    </button>
+                                </li>
+                                <li>
+                                    <form action="{{ url_for('classroom.manage_exams', company_id=company.id) }}" method="DELETE" id="DeleteExamForm">
+                                        <button class="dropdown-item text-danger delete-exam-btn" data-exam-id="{{ exam.id }}" type="button">
+                                            <i class="bi bi-trash"></i>
+                                            {{ _('Supprimer') }}
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+
+                 <!-- View Exam Modal -->
+                 <div class="modal fade" id="viewExamModal{{ exam.id }}" tabindex="-1" aria-labelledby="viewExamModalLabel{{ exam.id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-left">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="viewExamModalLabel{{ exam.id }}">{{ _('Détails de l\'examen') }}</h5>
+                                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="examNameView{{ exam.id }}" class="form-label">{{ _('Nom de l\'examen') }}</label>
+                                    <input type="text" class="form-control" id="examNameView{{ exam.id }}" value="{{ exam.name }}" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="examTypeView{{ exam.id }}" class="form-label">{{ _('Type') }}</label>
+                                    <input type="text" class="form-control" id="examTypeView{{ exam.id }}" value="{{ exam.type }}" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="examDateView{{ exam.id }}" class="form-label">{{ _('Date') }}</label>
+                                    <input type="text" class="form-control" id="examDateView{{ exam.id }}" value="{{ exam.date.strftime('%d-%m-%Y') }}" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="examSubjectView{{ exam.id }}" class="form-label">{{ _('Matière') }}</label>
+                                    <input type="text" class="form-control" id="examSubjectView{{ exam.id }}" value="{{ subject_dict[exam.subject_id] }}" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="examClassView{{ exam.id }}" class="form-label">{{ _('Classe') }}</label>
+                                    <input type="text" class="form-control" id="examClassView{{ exam.id }}" value="{{ class_dict[exam.class_id] }}" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="examSessionView{{ exam.id }}" class="form-label">{{ _('Session') }}</label>
+                                    <input type="text" class="form-control" id="examSessionView{{ exam.id }}" value="{{ session_dict[exam.session_id] }}" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="examGradeValue{{ exam.id }}" class="form-label">{{ _('Note Maximale') }}</label>
+                                    <input type="text" class="form-control" id="examGradeValue{{ exam.id }}" value="{{ exam.max_grade_value }}" readonly>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Fermer') }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Exam Modal -->
+                <div class="modal fade" id="editExamModal{{ exam.id }}" tabindex="-1" aria-labelledby="editExamModalLabel{{ exam.id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-left">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editExamModalLabel{{ exam.id }}">{{ _('Modifier les détails de l\'examen') }}</h5>
+                                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{ url_for('classroom.manage_exams', company_id=company.id) }}" method="PUT" class="edit-exam-form" data-exam-id="{{ exam.id }}">
+                                    <div class="mb-3">
+                                        <label for="examName{{ exam.id }}" class="form-label">{{ _('Nom de l\'examen') }}</label>
+                                        <input type="text" class="form-control" id="examName{{ exam.id }}" name="examName" value="{{ exam.name }}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="examType{{ exam.id }}" class="form-label">{{ _('Type') }}</label>
+                                        <select id="examType{{ exam.id }}" class="form-select" name="examType" required>
+                                            <option value="" disabled selected>{{ _('Sélectionnez le type d\'évaluation') }}</option>
+                                            <option value="composition/examen">{{ _('Composition/Examen') }}</option>
+                                            <option value="devoir">{{ _('Devoir') }}</option>
+                                            <option value="interro">{{ _('Interrogation') }}</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="examDate{{ exam.id }}" class="form-label">{{ _('Date') }}</label>
+                                        <input type="date" class="form-control" id="examDate{{ exam.id }}" name="examDate" value="{{ exam.date }}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="examSubject{{ exam.id }}" class="form-label">{{ _('Sujet') }}</label>
+                                        <select class="form-select" id="examSubject{{ exam.id }}" name="examSubject" required>
+                                            {% for subject in subjects %}
+                                            <option value="{{ subject.id }}" {% if subject.id == exam.subject_id %}selected{% endif %}>{{ subject.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="examClass{{ exam.id }}" class="form-label">{{ _('Classe') }}</label>
+                                        <select class="form-select" id="examClass{{ exam.id }}" name="examClass" required>
+                                            {% for cls in classes %}
+                                            <option value="{{ cls.id }}" {% if cls.id == exam.class_id %}selected{% endif %}>{{ cls.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="examSession{{ exam.id }}" class="form-label">{{ _('Session') }}</label>
+                                        <select class="form-select" id="examSession{{ exam.id }}" name="examSession" required>
+                                            {% for session in sessions %}
+                                            <option value="{{ session.id }}" {% if session.id == exam.session_id %}selected{% endif %}>{{ session.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="examGradeValue" class="form-label">{{ _('Note maximale') }}<span class="text-danger">*</span></label>
+                                        <select class="form-select" id="examGradeValue" name="examGradeValue" required>
+                                            <option value="" disabled selected>{{ _('Sélectionnez la note maximale') }}</option>
+                                            <option value="10">{{ _('10') }}</option>
+                                            <option value="20">{{ _('20') }}</option>
+                                            <option value="30">{{ _('30') }}</option>
+                                            <option value="40">{{ _('40') }}</option>
+                                            <option value="50">{{ _('50') }}</option>
+                                            <option value="60">{{ _('60') }}</option>
+                                            <option value="F">{{ _('F') }}</option>
+                                            <option value="4.0">{{ _('4.0') }}</option>
+                                            <option value="100%">{{ _('100.0') }}</option>
+                                        </select>
+                                        <p class="my-2 warning-messages">
+                                            <span class="text-danger">
+                                                {{ _('!!! Attention') }}
+                                            </span> <br>
+                                            {{ _('La note maximale joue un rôle fondamentale pour le calcul des moyennes') }}
+                                        </p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Annuler') }}</button>
+                                        <button type="submit" class="btn btn-info">{{ _('Enregistrer') }}</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        {% include 'dashboard/@support_team/empty/no_exam.html' %}
+    {% endif %}
+</div>
+
+<!-- Create Exam Modal -->
+<div class="modal fade" id="createExamModal" tabindex="-1" aria-labelledby="createExamModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-left">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createExamModalLabel">{{ _('Ajouter un nouvel examen') }}</h5>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url_for('classroom.manage_exams', company_id=company.id) }}" method="post" id="createExamForm">
+                    <div class="mb-3">
+                        <div class="mb-3">
+                            <label for="examName" class="form-label">{{ _('Titre de l\'examen') }}<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="examName" name="examName" placeholder="{{ _('Interrogation 1') }}" required>
+                        </div>
+                        <label for="examTypeCreate" class="form-label">{{ _('Type') }}<span class="text-danger">*</span></label>
+                        <select class="form-select" id="examTypeCreate" name="examType" required>
+                            <option value="" disabled selected>{{ _('Sélectionnez le type d\'évaluation') }}</option>
+                            <option value="composition/examen">{{ _('Composition/Examen') }}</option>
+                            <option value="devoir">{{ _('Devoir') }}</option>
+                            <option value="interro">{{ _('Interrogation') }}</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="examDateCreate" class="form-label">{{ _('Date') }}<span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="examDateCreate" name="examDate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="examSubjectCreate" class="form-label">{{ _('Matière') }}<span class="text-danger">*</span></label>
+                        <select class="form-select" id="examSubjectCreate" name="examSubject" required>
+                            {% for subject in subjects %}
+                            <option value="{{ subject.id }}">{{ subject.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="examClassCreate" class="form-label">{{ _('Classe') }}<span class="text-danger">*</span></label>
+                        <select class="form-select" id="examClassCreate" name="examClass" required>
+                            {% for cls in classes %}
+                            <option value="{{ cls.id }}">{{ cls.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="examSessionCreate" class="form-label">{{ _('Session') }}<span class="text-danger">*</span></label>
+                        <select class="form-select" id="examSessionCreate" name="examSession" required>
+                            {% for session in sessions %}
+                            <option value="{{ session.id }}">{{ session.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="examGradeValue" class="form-label">{{ _('Note maximale') }}<span class="text-danger">*</span></label>
+                        <select class="form-select" id="examGradeValue" name="examGradeValue" required>
+                            <option value="" disabled selected>{{ _('Sélectionnez la note maximale') }}</option>
+                            <option value="10">{{ _('10') }}</option>
+                            <option value="20">{{ _('20') }}</option>
+                            <option value="30">{{ _('30') }}</option>
+                            <option value="40">{{ _('40') }}</option>
+                            <option value="50">{{ _('50') }}</option>
+                            <option value="60">{{ _('60') }}</option>
+                            <option value="F">{{ _('F') }}</option>
+                            <option value="4.0">{{ _('4.0') }}</option>
+                            <option value="100%">{{ _('100.0') }}</option>
+                        </select>
+                        <p class="my-1 warning-messages">
+                            <span class="text-danger">
+                                {{ _('!!! Attention') }}
+                            </span> <br>
+                            {{ _('La note maximale joue un rôle fondamentale pour le calcul des moyennes') }}
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Annuler') }}</button>
+                        <button type="submit" class="btn btn-info">
+                            <i class="bi bi-plus-circle-dotted"></i>
+                            {{ _('Ajouter') }}
+                        </button>
+                    </div>
+                </form>                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Exam/CreateExam.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Exam/EditExam.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Exam/DeleteExam.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,52 @@
+.icon-card {
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.icon-card:hover {
+    border-color: blue;
+    box-shadow: 0px 4px 10px rgba(0, 0, 255, 0.1);
+}
+
+.icon-card.selected {
+    border-color: blue;
+    background-color: #e0f7fa;
+}
+
+.icon-large {
+    font-size: 3rem;
+    color: grey;
+}
+
+.icon-card.selected .icon-large {
+    color: blue;
+}
+.progress-bar-container {
+    width: 100%;
+    position: relative;
+}
+  
+/* Outer progress bar */
+.progress-bar {
+    height: 10px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+}
+  
+/* Inner progress (dynamic width) */
+.progress {
+    height: 100%;
+    background-color: #007bff; /* Bootstrap primary blue */
+    border-radius: 5px;
+    transition: width 0.4s ease;
+}
+  
+/* Step text */
+.step-text {
+    font-weight: bold;
+    font-size: 1rem;
+}
+  

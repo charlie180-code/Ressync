@@ -1,0 +1,224 @@
+{% extends 'dashboard/dashboard.html' %}
+
+{% block title %}
+  <title>{{ _('Contacts : Ressync') }}</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="d-flex my-3">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3">
+        <li class="breadcrumb-item">
+          <a class="link-body-emphasis" href="{{ url_for('user.user_home', company_id=company.id) }}">
+            <i class="bi bi-house-fill"></i>
+            <span class="visually-hidden">{{ _('Accueil') }}</span>
+          </a>
+        </li>
+        <li class="breadcrumb-item" aria-current="page">
+          {{ _('Contacts') }}
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          {{ _('Voir les contacts') }}
+        </li>
+      </ol>
+    </nav>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">{{ _('Voir les contacts') }}</h2>
+    <a href="{{ url_for('msg.create_contact', company_id=company.id) }}" class="btn btn-outline-secondary">
+      <i class="bi bi-plus-lg me-1"></i> {{ _('Ajouter') }}
+    </a>
+  </div>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      {% if contacts.items %}
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead class="table-light">
+              <tr>
+                <th class="text-uppercase text-secondary text-xs font-weight-bolder">{{ _('ID') }}</th>
+                <th class="text-uppercase text-secondary text-xs font-weight-bolder">{{ _('Prénom') }}</th>
+                <th class="text-uppercase text-secondary text-xs font-weight-bolder">{{ _('Nom') }}</th>
+                <th class="text-uppercase text-secondary text-xs font-weight-bolder">{{ _('Email') }}</th>
+                <th class="text-uppercase text-secondary text-xs font-weight-bolder">{{ _('Téléphone') }}</th>
+                <th class="text-uppercase text-secondary text-xs font-weight-bolder">{{ _('Sexe') }}</th>
+                <th class="text-uppercase text-secondary text-xs font-weight-bolder text-end">{{ _('Actions') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for contact in contacts.items %}
+                <tr>
+                  <td class="text-sm text-secondary">{{ contact.id }}</td>
+                  <td class="text-sm text-secondary">{{ contact.first_name if contact.first_name else '-' }}</td>
+                  <td class="text-sm text-secondary">{{ contact.last_name if contact.last_name else '-' }}</td>
+                  <td class="text-sm text-secondary">{{ contact.email if contact.email else '-' }}</td>
+                  <td class="text-sm text-secondary">{{ contact.phone if contact.phone else '-' }}</td>
+                  <td class="text-sm text-secondary">
+                    {% if contact.gender == 'Male' %}
+                      {{ _('Homme') }}
+                    {% elif contact.gender == 'Female' %}
+                      {{ _('Femme') }}
+                    {% else %}
+                      {{ contact.gender if contact.gender else '-' }}
+                    {% endif %}
+                  </td>
+                  <td class="text-end">
+                    <div class="dropdown">
+                      <button class="btn shadow-none" type="button" id="dropdownMenuButton{{ contact.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-three-dots-vertical"></i>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton{{ contact.id }}">
+                        <li>
+                          <button class="dropdown-item edit-contact" data-bs-toggle="modal" data-bs-target="#editContactModal" data-contact-id="{{ contact.id }}">
+                            <i class="bi bi-pencil-square me-2"></i> {{ _('Modifier') }}
+                          </button>
+                        </li>
+                        <li>
+                          <button class="dropdown-item delete-contact" data-bs-toggle="modal" data-bs-target="#deleteContactModal" data-contact-id="{{ contact.id }}">
+                            <i class="bi bi-trash me-2"></i> {{ _('Supprimer') }}
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <nav aria-label="Page navigation" class="mt-4">
+          <ul class="pagination justify-content-center">
+            {% if contacts.has_prev %}
+              <li class="page-item">
+                <a class="page-link" href="{{ url_for('msg.contacts', company_id=company.id, page=contacts.prev_num) }}" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&laquo;</a>
+              </li>
+            {% endif %}
+
+            {% for page_num in contacts.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=3) %}
+              {% if page_num %}
+                {% if contacts.page == page_num %}
+                  <li class="page-item active" aria-current="page">
+                    <a class="page-link" href="#">{{ page_num }}</a>
+                  </li>
+                {% else %}
+                  <li class="page-item">
+                    <a class="page-link" href="{{ url_for('msg.contacts', company_id=company.id, page=page_num) }}">{{ page_num }}</a>
+                  </li>
+                {% endif %}
+              {% else %}
+                <li class="page-item disabled">
+                  <a class="page-link" href="#">...</a>
+                </li>
+              {% endif %}
+            {% endfor %}
+
+            {% if contacts.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="{{ url_for('msg.contacts', company_id=company.id, page=contacts.next_num) }}" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&raquo;</a>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
+      {% else %}
+        {% include 'dashboard/@support_team/empty/no_contact.html' %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- Edit Contact Modal -->
+<div class="modal fade" id="editContactModal" tabindex="-1" aria-labelledby="editContactModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title" id="editContactModalLabel">{{ _('Modifier le contact') }}</h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="editContactForm">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="editFirstName" class="form-label">{{ _('Prénom') }}</label>
+            <input type="text" class="form-control" id="editFirstName" required>
+            <div class="invalid-feedback">{{ _('Veuillez entrer un prénom') }}</div>
+          </div>
+          <div class="mb-3">
+            <label for="editLastName" class="form-label">{{ _('Nom') }}</label>
+            <input type="text" class="form-control" id="editLastName" required>
+            <div class="invalid-feedback">{{ _('Veuillez entrer un nom') }}</div>
+          </div>
+          <div class="mb-3">
+            <label for="editEmail" class="form-label">{{ _('Email') }}</label>
+            <input type="email" class="form-control" id="editEmail">
+            <div class="invalid-feedback">{{ _('Veuillez entrer un email valide') }}</div>
+          </div>
+          <div class="mb-3">
+            <label for="editPhone" class="form-label">{{ _('Téléphone') }}</label>
+            <input type="tel" class="form-control" id="editPhone">
+          </div>
+          <div class="mb-3">
+            <label for="editGender" class="form-label">{{ _('Sexe') }}</label>
+            <select class="form-select" id="editGender">
+              <option value="Male">{{ _('Homme') }}</option>
+              <option value="Female">{{ _('Femme') }}</option>
+              <option value="Other">{{ _('Autre') }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Annuler') }}</button>
+          <button type="submit" class="btn btn-info" id="saveContactChanges">
+            <span class="spinner-border spinner-border-sm d-none" id="editSpinner"></span>
+            {{ _('Enregistrer') }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteContactModal" tabindex="-1" aria-labelledby="deleteContactModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title" id="deleteContactModalLabel">{{ _('Confirmer la suppression') }}</h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>{{ _('Êtes-vous sûr de vouloir supprimer ce contact ? Cette action est irréversible.') }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Annuler') }}</button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteContact">
+          <span class="spinner-border spinner-border-sm d-none" id="deleteSpinner"></span>
+          {{ _('Supprimer') }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="{{ url_for('static', filename='js/async/api/customers/Contact/editContact.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/customers/Contact/deleteContact.js') }}"></script>
+{% endblock %}

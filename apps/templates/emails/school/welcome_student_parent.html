@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ _("Bienvenue sur notre plateforme") }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #8a2be2;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .content {
+            padding: 20px;
+        }
+        .content p {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        .content a {
+            color: #8a2be2;
+            text-decoration: none;
+        }
+        .footer {
+            background-color: #8a2be2;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            border-radius: 0 0 8px 8px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{{ _("Bienvenue sur notre plateforme") }}</h1>
+        </div>
+        <div class="content">
+            <p>{{ _("Bonjour,") }}</p>
+            <p>{{ _("Nous sommes ravis de vous accueillir sur notre plateforme en tant que parent de ") }}{{ role_name }}.</p>
+            <p>{{ _("Voici vos identifiants pour vous connecter :") }}</p>
+            <p><strong>{{ _("Email:") }}</strong> {{ email }}</p>
+            <p><strong>{{ _("Mot de passe:") }}</strong> {{ password }}</p>
+            <p>{{ _("Vous pouvez vous connecter en cliquant sur le lien ci-dessous :") }}</p>
+            <p><a href="{{ login_url }}">{{ _("Se connecter") }}</a></p>
+            <p>{{ _("Nous vous souhaitons une excellente expérience sur notre plateforme.") }}</p>
+            <p>{{ _("Cordialement,") }}<br>{{ _("L'équipe de la plateforme") }}</p>
+        </div>
+        <div class="footer">
+            <p>{{ _("Si vous avez des questions, n'hésitez pas à nous contacter.") }}</p>
+        </div>
+    </div>
+</body>
+</html>

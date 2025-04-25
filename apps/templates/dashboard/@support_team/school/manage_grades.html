@@ -1,0 +1,135 @@
+{% extends 'dashboard/dashboard.html' %}
+
+{% block title %}<title>{{ _('Gestion des notes: Ressync') }}</title>{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="my-5">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                <li class="breadcrumb-item">
+                    <a class="link-body-emphasis" href="{{ url_for('user.user_home', company_id=company.id) }}">
+                        <i class="bi bi-house-door-fill"></i>
+                        <span class="visually-hidden">{{ _('Accueil') }}</span>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">{{ _('Notes') }}</li>
+            </ol>
+        </nav>
+    </div>
+
+    <h2>{{ _('Gérer les notes') }}</h2>
+
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <label for="subject-select">{{ _('Sélectionnez la matière') }}</label>
+            <select id="subject-select" class="form-select" onchange="window.location.href='?subject_id=' + this.value + '&session_id={{ request.args.get('session_id') }}&class_id={{ request.args.get('class_id') }}&exam_id={{ request.args.get('exam_id') }}'">
+                <option value="">{{ _('Toutes') }}</option>
+                {% for subject in subjects %}
+                    <option value="{{ subject.id }}" {% if subject.id|string == request.args.get('subject_id') %}selected{% endif %}>{{ subject.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="session-select">{{ _('Sélectionnez la session') }}</label>
+            <select id="session-select" class="form-select" onchange="window.location.href='?session_id=' + this.value + '&subject_id={{ request.args.get('subject_id') }}&class_id={{ request.args.get('class_id') }}&exam_id={{ request.args.get('exam_id') }}'">
+                <option value="">{{ _('Toutes') }}</option>
+                {% for session in sessions %}
+                    <option value="{{ session.id }}" {% if session.id|string == request.args.get('session_id') %}selected{% endif %}>{{ session.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="class-select">{{ _('Sélectionnez la classe') }}</label>
+            <select id="class-select" class="form-select" onchange="window.location.href='?class_id=' + this.value + '&subject_id={{ request.args.get('subject_id') }}&session_id={{ request.args.get('session_id') }}&exam_id={{ request.args.get('exam_id') }}'">
+                <option value="">{{ _('Toutes') }}</option>
+                {% for cls in classes %}
+                    <option value="{{ cls.id }}" {% if cls.id|string == request.args.get('class_id') %}selected{% endif %}>{{ cls.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="exam-select">{{ _('Sélectionnez l\'examen') }}</label>
+            <select id="exam-select" class="form-select" onchange="window.location.href='?exam_id=' + this.value + '&subject_id={{ request.args.get('subject_id') }}&session_id={{ request.args.get('session_id') }}&class_id={{ request.args.get('class_id') }}'">
+                <option value="">{{ _('Tous') }}</option>
+                {% for exam in exams %}
+                    <option value="{{ exam.id }}" {% if exam.id|string == request.args.get('exam_id') %}selected{% endif %}>{{ exam.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <form action="{{ url_for('classroom.manage_grades', company_id=company.id) }}" method="PUT" id="UpdateStudentGradesTable">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>{{ _('Prénom') }}</th>
+                    <th>{{ _('Nom') }}</th>
+                    <th>{{ _('Date de naissance') }}</th>
+                    <th>{{ _('Sexe') }}</th>
+                    <th>{{ _('Note') }}</th>
+                </tr>
+            </thead>
+            <tbody id="gradesTableBody">
+                {% for student in students %}
+                    <tr data-student-id="{{ student.user.id }}">
+                        <td>{{ student.user.first_name }}</td>
+                        <td>{{ student.user.last_name }}</td>
+                        <td>{{ student.user.date_of_birth.strftime('%d/%m/%Y') }}</td>
+                        <td>{{ student.user.gender }}</td>
+                        <td>
+                            {% set grade = grades | selectattr('student_id', 'equalto', student.user.id) 
+                                | selectattr('subject_id', 'equalto', request.args.get('subject_id')|int if request.args.get('subject_id') else None) 
+                                | selectattr('session_id', 'equalto', request.args.get('session_id')|int if request.args.get('session_id') else None) 
+                                | selectattr('exam_id', 'equalto', request.args.get('exam_id')|int if request.args.get('exam_id') else None) 
+                                | first %}
+                            <div contenteditable="true" class="px-3 border-1" data-grade-id="{{ grade.id if grade else '' }}">
+                                {{ grade.value if grade else 'Pas de note' }}
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>            
+        </table>
+    </form>
+    
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <li class="page-item {% if current_page == 1 %}disabled{% endif %}">
+                <a class="page-link" href="{{ url_for('classroom.manage_grades', company_id=company.id, page=current_page-1, session_id=request.args.get('session_id'), exam_id=request.args.get('exam_id'), class_id=request.args.get('class_id'), subject_id=request.args.get('subject_id')) }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% for page_num in range(1, total_pages + 1) %}
+                <li class="page-item {% if page_num == current_page %}active{% endif %}">
+                    <a class="page-link" href="{{ url_for('classroom.manage_grades', company_id=company.id, page=page_num, session_id=request.args.get('session_id'), exam_id=request.args.get('exam_id'), class_id=request.args.get('class_id'), subject_id=request.args.get('subject_id')) }}">{{ page_num }}</a>
+                </li>
+            {% endfor %}
+            <li class="page-item {% if current_page == total_pages %}disabled{% endif %}">
+                <a class="page-link" href="{{ url_for('classroom.manage_grades', company_id=company.id, page=current_page+1, session_id=request.args.get('session_id'), exam_id=request.args.get('exam_id'), class_id=request.args.get('class_id'), subject_id=request.args.get('subject_id')) }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="my-3 d-flex justify-content-end gap-2">
+        <button id="saveChangesButton" class="btn btn-info" style="display: none;">
+            <span class="spinner-border spinner-border-sm d-none" id="Spinner"></span>
+            <span id="ButtonText">
+                <i class="bi bi-plus-circle-dotted"></i>
+                {{ _('Enregistrer') }}
+            </span>
+            <span id="LoadingText" class="d-none">
+                {{ _('En cours...') }}
+            </span>
+        </button>
+        <button id="revertChangesButton" class="btn btn-secondary" style="display: none;">
+            {{ _('Annuler') }}
+        </button>
+    </div>
+
+    <!-- Include JavaScript files -->
+    <script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Grades/UpdateStudentGrades.js') }}"></script>
+</div>
+{% endblock %}

@@ -1,0 +1,178 @@
+{% extends 'dashboard/dashboard.html' %}
+
+{% block title %}
+    <title>{{ _('Gérer les prêts : Ressync') }}</title>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <h2>{{ _('Gérer les prêts') }}</h2>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="alert-container">
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            <span class="text-white">{{ message }}</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
+    
+    {% if loans %}
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>{{ _('Livre') }}</th>
+                        <th>{{ _('Emprunteur') }}</th>
+                        <th>{{ _('Date d\'emprunt') }}</th>
+                        <th>{{ _('Date de retour') }}</th>
+                        <th>{{ _('Actions') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for loan in loans %}
+                    <tr>
+                        <td>{{ loan.book.title }}</td>
+                        <td>
+                            {% if loan.user.first_name and loan.user.last_name  %}
+                                {{ loan.user.first_name }} {{ loan.user.last_name }}
+                            {% else %}
+                                {{ loan.user.email }}
+                            {% endif %}
+                        </td>
+                        <td>{{ loan.loan_date.strftime('%Y-%m-%d') }}</td>
+                        <td>{{ loan.return_date.strftime('%Y-%m-%d') if loan.return_date else _('Non retourné') }}</td>
+                        <td>
+                            <button class="shadow-lg btn" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ _('...') }}
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="actionsDropdown-{{ loan.id }}">
+                                {% if not loan.return_date %}
+                                <li>
+                                    <form action="{{ url_for('archive.mark_as_returned', loan_id=loan.id, company_id=company.id) }}" method="POST" class="dropdown-item p-0">
+                                        <button type="submit" class="btn btn-link">
+                                            <i class="fa fa-check-circle"></i> {{ _('Marquer comme retourné') }}
+                                        </button>
+                                    </form>
+                                </li>                                
+                                {% endif %}
+                                <li>
+                                    <a class="dropdown-item" href="{{ url_for('archive.send_reminder', loan_id=loan.id, company_id=company.id) }}">
+                                        <i class="bi bi-bell"></i> {{ _('Envoyer un rappel') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#changeLenderModal-{{ loan.id }}">
+                                        <i class="bi bi-person"></i> {{ _('Changer l\'emprunteur') }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <!-- Change Lender Modal -->
+                    <div class="modal fade" id="changeLenderModal-{{ loan.id }}" tabindex="-1" aria-labelledby="changeLenderModalLabel-{{ loan.id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form action="{{ url_for('archive.switch_lender', loan_id=loan.id, company_id=company.id) }}" method="POST">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="changeLenderModalLabel-{{ loan.id }}">{{ _('Changer l\'emprunteur') }}</h5>
+                                        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="newLenderInput-{{ loan.id }}" class="form-label">{{ _('Nouvel emprunteur') }}</label>
+                                            <input 
+                                                list="newLenderList-{{ loan.id }}" 
+                                                id="newLenderInput-{{ loan.id }}" 
+                                                name="new_lender" 
+                                                class="form-control" 
+                                                placeholder="{{ _('Choisir un emprunteur') }}" 
+                                                required
+                                            >
+                                            <datalist id="newLenderList-{{ loan.id }}">
+                                                {% for user in company.users %}
+                                                    {% if user.role.name != 'Librarian' %}
+                                                        <option value="{{ user.id }}">
+                                                            {{ user.first_name or '' }} {{ user.last_name or '' }} ({{ user.email }})
+                                                        </option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </datalist>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="returnDate-{{ loan.id }}" class="form-label">{{ _('Date de retour') }}</label>
+                                            <input 
+                                                type="date" 
+                                                id="returnDate-{{ loan.id }}" 
+                                                name="return_date" 
+                                                class="form-control" 
+                                                placeholder="{{ _('Choisir une date de retour') }}"
+                                                required
+                                            >
+                                        </div>
+                                    </div>                                    
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Annuler') }}</button>
+                                        <button type="submit" class="btn btn-info">
+                                            <span id="spinner" class="spinner-border spinner-border-sm d-none"></span>
+                                            <span id="ButtonText">
+                                                {{ _('Continuer') }}
+                                            </span>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Pagination Controls -->
+        <nav aria-label="Page navigation" class="d-flex justify-content-center">
+            <ul class="pagination">
+                {% if pagination.has_prev %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('archive.manage_lendings', company_id=company.id, page=pagination.prev_num) }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {% endif %}
+                
+                {% for page_num in pagination.iter_pages() %}
+                    {% if page_num %}
+                        <li class="page-item {% if page_num == pagination.page %}active{% endif %}">
+                            <a class="page-link" href="{{ url_for('archive.manage_lendings', company_id=company.id, page=page_num) }}">{{ page_num }}</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if pagination.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('archive.manage_lendings', company_id=company.id, page=pagination.next_num) }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+
+
+    {% else %}
+        {% include 'dashboard/@support_team/empty/no_lend.html' %}
+    {% endif %}
+</div>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Book/SwitchBookLender.js') }}"></script>
+{% endblock %}

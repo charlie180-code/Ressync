@@ -1,0 +1,92 @@
+<div class="col-lg-8 col-md-6 mb-md-0 mb-4">
+    <div class="card">
+        <div class="card-header pb-0">
+            <div class="row">
+                <div class="col-lg-6 col-7">
+                    <h6>{{ _('Feeds') }}</h6>
+                </div>
+                <div class="col-lg-6 col-5 my-auto text-end">
+                    <div class="dropdown float-lg-end pe-4">
+                        <a class="cursor-pointer" id="dropdownTable" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-ellipsis-v text-secondary"></i>
+                        </a>
+                        <ul class="dropdown-menu px-2 py-3 ms-sm-n4 ms-n5" aria-labelledby="dropdownTable">
+                            <li><a class="dropdown-item border-radius-md" href="javascript:;">{{ _('Partager') }}</a></li>
+                            <li><a class="dropdown-item border-radius-md" href="javascript:;">{{ _('Exporter') }}</a></li>
+                            <li><a class="dropdown-item border-radius-md" href="javascript:;">{{ _('Télécharger') }}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body px-5 pb-2">
+            <div id="productCarousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    {% if current_user.is_reseller() %}
+                    {% if published_products %}
+                        {% for i in range(0, published_products|length, 3) %}
+                            <div class="carousel-item {% if loop.index0 == 0 %}active{% endif %}">
+                                <div class="row">
+                                    {% for product in published_products[i:i+3] %}
+                                        <div class="col-md-4 mb-3">
+                                            <div class="card">
+                                                <img src="{{ product.product_img_url }}" class="d-block blur-shadow-image" alt="{{ product.title }}img">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">{{ product.title }}</h5>
+                                                    <p class="card-text">${{ product.cost }}</p>
+                                                    <p class="card-text">{{ product.stock }}</p>
+                                                    <a href="#" class="btn btn-info">
+                                                        <i class="bi bi-cart4"></i>
+                                                        {{ _('Acheter') }}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {% include 'views/empty/@support_team/no_feed.html' %}
+                    {% endif %}
+                    {% else %}
+                        {% if new_products %}
+                            {% for i in range(0, new_products|length, 3) %}
+                                <div class="carousel-item {% if loop.index0 == 0 and not published_products %}active{% endif %}">
+                                    <div class="row">
+                                        {% for product in new_products[i:i+3] %}
+                                            <div class="col-md-4 mb-3">
+                                                <div class="card">
+                                                    <img src="{{ product.product_img_url }}" class="card-img-top" alt="{{ product.title }}">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">{{ product.title }}</h5>
+                                                        <p class="card-text">${{ product.cost }}</p>
+                                                        <p class="card-text">{{ product.stock }}</p>
+                                                        <a href="#" class="btn btn-info">
+                                                            <i class="bi bi-cart4"></i>
+                                                            {{ _('Acheter') }}
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            {% include 'views/empty/@support_team/no_feed.html' %}
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <a class="carousel-control-prev" href="#productCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#productCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

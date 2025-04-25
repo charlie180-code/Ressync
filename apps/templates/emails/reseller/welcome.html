@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="{{ get_locale() }}">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="http://127.0.0.1:5000/static/css/customs/emails/reseller/welcome.css">
+    <style>
+        /* Additional inline styles for email compatibility */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4; /* Light background for contrast */
+            color: #333333; /* Dark text color */
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #ffffff; /* White background */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            padding: 20px;
+            background-color: #4a148c; /* Dark pink */
+            color: #ffffff; /* White text */
+            border-radius: 8px 8px 0 0;
+        }
+        .content {
+            padding: 20px;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            color: #aaaaaa; /* Light gray text */
+        }
+        .highlight {
+            color: #4a148c; /* Dark pink */
+        }
+        .feature {
+            margin-bottom: 20px; /* Spacing between features */
+        }
+        .login-link {
+            color: #4a148c; /* Dark pink */
+            text-decoration: none; /* Remove underline */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{{ _('Bienvenue sur notre plateforme') }}</h1>
+        </div>
+        <div class="content">
+            <p>{{ _('Bonjour,') }}</p>
+            <p>{{ _('Félicitations ! Vous avez été approuvé en tant que revendeur. Veuillez trouver ci-dessous vos identifiants de connexion :') }}</p>
+            <p>{{ _('Email:') }} <strong class="highlight">{{ email }}</strong></p>
+            <p>{{ _('Mot de passe:') }} <strong class="highlight">{{ password }}</strong></p>
+            <p>{{ _('Veuillez copier votre mot de passe quelque part en sécurité. Vous en aurez besoin pour vous connecter à votre portail de revendeur.') }}</p>
+            
+            <!-- Marketing words with illustrations -->
+            <div class="feature">
+                <h2>{{ _('Gestion de stock intelligente') }}</h2>
+                <p>{{ _('Notre système de gestion de stock utilise une intelligence artificielle pour optimiser vos opérations.') }}</p>
+                <img src="http://127.0.0.1:5000/static/img/illustrations/stock-management.png" alt="{{ _('Gestion de stock') }}" style="width:100%; max-width:300px;">
+            </div>
+
+            <div class="feature">
+                <h2>{{ _('Intégration avec d\'autres fournisseurs') }}</h2>
+                <p>{{ _('Connectez-vous facilement avec d\'autres fournisseurs pour élargir votre gamme de produits.') }}</p>
+                <img src="http://127.0.0.1:5000/static/img/illustrations/integration.png" alt="{{ _('Intégration avec d\'autres fournisseurs') }}" style="width:100%; max-width:300px;">
+            </div>
+
+            <div class="feature">
+                <h2>{{ _('Automatisation des messages') }}</h2>
+                <p>{{ _('Automatisez vos communications avec les clients pour une gestion plus efficace des ventes et du service.') }}</p>
+                <img src="http://127.0.0.1:5000/static/img/illustrations/automated-messaging.png" alt="{{ _('Automatisation des messages') }}" style="width:100%; max-width:300px;">
+            </div>
+
+            <div class="feature">
+                <h2>{{ _('Automatisation des relations clients') }}</h2>
+                <p>{{ _('Améliorez la relation client en automatisant les processus et en offrant un service personnalisé.') }}</p>
+                <img src="http://127.0.0.1:5000/static/img/illustrations/customer-relationship.png" alt="{{ _('Automatisation des relations clients') }}" style="width:100%; max-width:300px;">
+            </div>
+            
+            <p>{{ _('Pour vous connecter à votre portail de revendeur, veuillez cliquer sur le lien ci-dessous :') }}</p>
+            <p><a href="http://127.0.0.1:5000/login" class="login-link">{{ _('Accéder au portail de connexion') }}</a></p>
+            
+            <p>{{ _('Cordialement,') }}</p>
+            <p>{{ _('Ressync plateforms') }}</p>
+            <img src="http://127.0.0.1:5000/static/img/brand/Ressync/apple-touch-icon.svg" alt="{{ _('Ressync logo') }}" style="width:100%; max-width:150px;">
+        </div>
+        <div class="footer">
+            <p>{{ _('&copy; 2024 Ressync plateforms. Tous droits réservés.') }}</p>
+        </div>
+    </div>
+</body>
+</html>

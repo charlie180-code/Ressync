@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authorisation Letter</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .re{
+            font-size: 1rem;
+        }
+        .container {
+            background: white;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            page-break-inside: avoid;
+        }
+        .header {
+            border: 1px solid black;
+            padding: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .date-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 5px;
+        }
+        .date {
+            text-align: right;
+        }
+        .content {
+            text-align: left;
+            margin-top: 5px;
+            padding: 3px;
+            font-size: 0.9rem;
+            line-height: 1.3;
+        }
+        .signature {
+            margin-top: 5px;
+            font-weight: bold;
+        }
+        .sensitivity {
+            margin-top: 5px;
+            font-size: 9px;
+            color: gray;
+            text-align: left;
+        }
+        @media print {
+            body {
+                background-color: white;
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                border: none;
+                width: 100%;
+                max-height: none;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <strong>{{ data.client_last_name }} {{ data.client_first_name }}</strong>
+            </div>
+            <div>
+                <strong>{{ data.client_location }}</strong>
+            </div>
+            <div>
+                {{ data.client_phone_number }}
+            </div>
+            <div>
+                {{ data.client_email_address }}
+            </div>
+        </div>
+        
+        <div class="date-section">
+            <div class="to-section">
+                <p>To</p>
+                <p><strong>MSC Mediterranean Shipping Company S.A.</strong></p>
+                <p><strong>{{ data.shipping_company }}</strong></p>
+                <h2 class="re">Re: Authorisation to agents</h2>
+            </div>
+            <div class="date">
+                <p>{{ date }}</p>
+            </div>
+        </div>
+        
+        <div class="content">
+            <p>Dear Sirs,</p>
+            
+            <p>We write to inform you that this company has appointed <strong>{{ data.agent_last_name }} {{ data.agent_first_name}}</strong> to act as our agents, and that we have authorised them to act on our behalf in effecting delivery of consignments that we have shipped with MSC Mediterranean Shipping Company S.A. (“MSC”).</p>
+            
+            <p>The purpose of this letter is to clarify the terms on which we have granted authority to <strong>{{ data.agent_last_name }} {{ data.agent_first_name}}</strong></p>
+            
+            <p>We expressly authorise <strong>{{ data.agent_last_name }} {{ data.agent_first_name}}</strong> to request delivery from MSC of goods consigned or endorsed to <strong>{{ data.client_last_name }} {{ data.client_first_name}}</strong> under original bills of lading <strong>N° {{ data.lading_bills_identifier }}</strong> and consigned to <strong>{{ data.client_last_name }} {{ data.client_first_name}}</strong> under sea waybills.</p>
+            
+            <p>We expressly authorise MSC to release our goods to <strong>{{ data.agent_last_name }} {{ data.agent_first_name}}</strong> upon presentation of an original bill of lading, or identification against a sea waybill of lading, unless we have given prior notice to the contrary to MSC in writing.</p>
+            
+            <p>In consideration of MSC complying with our above request, we hereby agree to indemnify MSC and {% if data.shipping_company == 'C/o MSC BENIN S.A.' %}{{ _('MSC BENIN S.A.') }}{% elif data.shipping_company == 'C/o MSC Lomé S.A.'  %}{{ _('MSC Togo S.A.') }}{% else %}{{ data.shipping_company }}{% endif %}, their respective servants and agents and to hold all of you harmless in respect of any liability, loss, damage or expenses of whatsoever nature which any of them may sustain by reason of delivering the cargo in accordance with our request.</p>
+            
+            <p>Nothing in this letter operates to relieve MSC of any of its obligations or liabilities under the contract of carriage.</p>
+            
+            <p>The validity of this letter of authority will cease twelve (12) months from the date of this letter, after which time the authorisation shall be deemed to have expired. Within that 12-month period, we reserve the right to cancel this authorisation at any time by notification to MSC in writing.</p>
+        </div>
+        
+        <div class="signature">
+            <p>Yours faithfully</p>
+        </div>
+        
+        <div class="sensitivity">
+            <p>Sensitivity: Internal</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ _('Liste des employés') }} : {{ company.title }}</title>
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 10mm;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff; /* White background */
+        }
+
+        .header {
+            background-color: #ffffff;
+            border: 2px solid #003366; /* Dark blue border */
+            margin: 20px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .header img {
+            width: 80px;
+            height: auto;
+            margin-right: 20px;
+        }
+
+        .header div {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .header h2 {
+            font-size: 28px;
+            margin: 0;
+            color: #003366; /* Dark blue */
+        }
+
+        .header p {
+            font-size: 16px;
+            color: #555;
+            margin: 5px 0 0;
+        }
+
+        .timestamp {
+            text-align: right;
+            font-size: 14px;
+            margin: 20px;
+            color: #555;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-top: 3px solid #ff66b2; /* Pink border at the top of the list */
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #003366; /* Dark blue */
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f0f8ff; /* Light blue rows */
+        }
+
+        tr:hover {
+            background-color: #ffcccb; /* Light pink hover */
+        }
+
+        .footer {
+            background-color: #003366; /* Dark blue */
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        .footer a {
+            color: #fff; /* White links */
+            text-decoration: none;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+        .generated-text {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            font-size: 12px;
+            color: #aaa;
+            font-style: italic;
+        }
+
+        .legal-text {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            font-size: 12px;
+            color: white; /* White text */
+            font-family: 'Arial', sans-serif;
+            font-weight: lighter; /* Thin font */
+            text-align: left;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="{{ company.logo_url }}" alt="{{ company.title }}">
+        <div>
+            <h2>{{ company.title }}</h2>
+            <p>
+                {{ company.location }} <br>
+                {{ company.phone_number or '+1 (408)-xxx-xxx' }} <br>
+                {{ company.email }}
+            </p>
+        </div>
+    </div>
+
+    <div class="timestamp">
+        {{ _('Report generated on:') }} {{ current_time }}
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>{{ _('Nom & Prénom') }}</th>
+                <th>{{ _('Fonction') }}</th>
+                <th>{{ _('Matricule') }}</th>
+                <th>{{ _('Station') }}</th>
+                <th>{{ _('Adresse') }}</th>
+                <th>{{ _('Tel') }}</th>
+                <th>{{ _('Date et Lieu de Naissance') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for emp in employee_data %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ emp.first_name }} {{ emp.last_name or ' ' }}</td>
+                <td>{{ emp.fonction }}</td>
+                <td>{{ emp.matricule }}</td>
+                <td>{{ emp.pipeline_name }}</td>
+                <td>{{ emp.address }}</td>
+                <td>{{ emp.phone_number }}</td>
+                <td>{{ emp.date_of_birth }} {{ emp.place_of_birth }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <p>&copy; 2024 {{ company.title }}. {{ _('Tout droit réservé') }}</p>
+        <p><a href="{{ company.website_url }}">{{ _('Visiter notre site web') }}</a></p>
+    </div>
+
+    <div class="generated-text">
+        {{ _('powered by Bridgemark Technology LLC') }}
+    </div>
+
+    <div class="legal-text">
+        <p>
+            {{ _('This list is the property of Wanda Group.') }} <br>
+            {{ _('Unauthorized distribution or copying is prohibited.') }}
+        </p>
+    </div>
+</body>
+</html>

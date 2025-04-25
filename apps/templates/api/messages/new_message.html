@@ -1,0 +1,74 @@
+{% extends 'dashboard/dashboard.html' %}
+
+{% block title %}
+<title>{{ _('Nouveau message : Ressync') }}</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="d-flex">
+    <div class="my-3">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3">
+          <li class="breadcrumb-item">
+            <a class="link-body-emphasis" href="{{ url_for('user.user_home', company_id=company.id) }}">
+              <i class="bi bi-house-fill"></i>
+              <span class="visually-hidden">{{ _('Accueil') }}</span>
+            </a>
+          </li>
+          <li class="breadcrumb-item" aria-current="page">
+            {{ _('Messages') }}
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            {{ _('Nouveau message') }}
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <h2>{{ _('Nouveau message') }}</h2>
+
+  <form id="messageForm", action="{{ url_for('mail.new_message', company_id=company.id) }}", method="post" data-company-id="{{ company.id }}">
+    <div class="mb-3">
+      <label for="email" class="form-label">{{ _('De') }}</label>
+      <input type="email" class="form-control" id="email" name="email" value="{{ current_user.email }}" readonly>
+    </div>
+    
+    <div class="mb-3">
+      <label for="receiver" class="form-label">{{ _('A') }}</label>
+      <input list="receiver-options" class="form-control" id="receiver" name="receiver" placeholder="{{ _('example@gmail.com') }}">
+      <datalist id="receiver-options" data-company-id="{{ company.id }}">
+        <!-- Options will be populated dynamically -->
+      </datalist>
+    </div>
+
+    <div class="mb-3">
+      <label for="cc" class="form-label">{{ _('CC') }}</label>
+      <input list="cc-options" class="form-control" id="cc" name="cc" placeholder="{{ _('Tapez pour filtrer') }}">
+      <datalist id="cc-options" data-company-id="{{ company.id }}">
+        <!-- Options will be populated dynamically -->
+      </datalist>
+    </div>
+
+    <div class="mb-3">
+      <label for="message" class="form-label">{{ _('Message') }}</label>
+      <textarea class="form-control" id="message" name="message" rows="6" placeholder="{{ _('Entrez votre message') }}"></textarea>
+    </div>
+
+    <div class="my-5 d-flex justify-content-end">
+      <button type="button" class="btn btn-info" id="sendMessageButton">
+        <span class="spinner-border spinner-border-sm d-none" id="spinner"></span>
+        <span id="buttonText">
+          <i class="bi bi-send"></i>
+          {{ _('Envoyer') }}
+        </span>
+      </button>
+    </div>
+  </form>
+</div>
+
+<script type="module" src="{{ url_for('static', filename='js/async/api/customers/Messages/PopulateContact.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/customers/Messages/SendMessage.js') }}"></script>
+
+{% endblock %}

@@ -1,0 +1,39 @@
+[
+    {
+      "company_name": "DHL Aviation",
+      "company_logo": "https://www.ressync.com/static/img/brand/transport_brands/dhl-1.svg",
+      "company_address": "Bonn, Germany",
+      "rating": 4.5
+    },
+    {
+      "company_name": "FedEx Express",
+      "company_logo": "https://www.ressync.com/static/img/brand/transport_brands/fedex-express-6.svg",
+      "company_address": "Memphis, Tennessee, USA",
+      "rating": 4.7
+    },
+    {
+        "company_name": "Fly Emirates",
+        "company_logo": "https://www.ressync.com/static/img/brand/transport_brands/emirates-1.svg",
+        "company_address": "Dubai, UAE",
+        "rating": 4.6
+    },
+    {
+        "company_name": "Turkish Airlines",
+        "company_logo": "https://www.ressync.com/static/img/brand/transport_brands/turkish-airlines-1.svg",
+        "company_address": "Dubai, UAE",
+        "rating": 4.6
+      },
+    {
+      "company_name": "Lufthansa",
+      "company_logo": "https://www.ressync.com/static/img/brand/transport_brands/lufthansa-2.svg",
+      "company_address": "Frankfurt, Germany",
+      "rating": 4.6
+    },
+    {
+      "company_name": "UPS Airlines",
+      "company_logo": "https://www.ressync.com/static/img/brand/transport_brands/ups-united-parcel-service.svg",
+      "company_address": "Louisville, Kentucky, USA",
+      "rating": 4.5
+    }
+  ]
+  

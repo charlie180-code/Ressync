@@ -1,0 +1,120 @@
+<!--
+
+here show the general grades obtained
+by the students in a particular academic session
+use the general grade average in a session
+
+this should be obtained by checking
+all the exams:
+
+check the exam grade, type, related subject and session for a
+student; grades obtained within interro category in the session
+should be additionned like this:
+
+interro1 + interro2 + ....interroN / by the total number of exam interro type if french system
+
+if there are devoir do the same 
+dev1 + dev2 + ....devN / by the total number of exam dev type if french system
+
+now get the average of these:
+Avg1=Interro(all grades avg) + dev(all grades avg) / 2 if french system
+
+    
+now to get get general avg we list all the exams of type exam
+Avg2=exam1+exam2 + ....examN / by the total number of exam exam type if french system
+
+now to get the GPA obtained by a student for a session in a subject
+Avg_in_a_subject=Avg1+Av2/2 if french system
+
+session_avg_in_a_subject = Avg_in_a_subject*subject_weight
+
+Now to get the GPA for a session
+    
+sum of all session_avg_in_a_subject / sum of all subject weights in a class
+
+
+Number of all students, number of all sessions
+
+-->
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-header p-3 pt-2">
+                    <div class="icon icon-lg icon-shape shadow-lg bg-white text-center border-radius-xl mt-n4 position-absolute">
+                        <i class="material-icons opacity-10 text-primary">storage</i>
+                    </div>
+                    <div class="text-end pt-1">
+                        <p class="text-sm mb-0 text-capitalize">
+                            {{ _('Données générées pour les élèves') }}
+                        </p>
+                        <h4 class="mb-0">{{ student_data_size }} bytes</h4>
+                    </div>
+                </div>
+                <hr class="dark horizontal my-0">
+                <div class="card-footer p-3">
+                    <p class="mb-0">
+                        <span class="text-success text-sm font-weight-bolder">
+                            {{ student_count_percentage_difference | round(2) }}%
+                        </span>
+                        {{ _('Par rapport à hier') }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+
+
+        <!-- Student Counts -->
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-header p-3 pt-2">
+                    <div class="icon icon-lg icon-shape shadow-lg bg-white text-center border-radius-xl mt-n4 position-absolute">
+                        <i class="material-icons opacity-10 text-primary">people</i>
+                    </div>
+                    <div class="text-end pt-1">
+                        <p class="text-sm mb-0 text-capitalize">
+                            {{ _('Nombre total d\'élèves') }}
+                        </p>
+                        <h4 class="mb-0">{{ student_count }}</h4>
+                    </div>
+                </div>
+                <hr class="dark horizontal my-0">
+                <div class="card-footer p-3">
+                    <p class="mb-0">
+                        <span class="text-success text-sm font-weight-bolder">
+                            {{ student_count_percentage_difference | round(2) }}%
+                        </span>
+                        {{ _('Par rapport au mois passé') }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-header p-3 pt-2">
+                    <div class="icon icon-lg icon-shape shadow-lg bg-white text-center border-radius-xl mt-n4 position-absolute">
+                        <i class="material-icons opacity-10 text-primary">event</i>
+                    </div>
+                    <div class="text-end pt-1">
+                        <p class="text-sm mb-0 text-capitalize">
+                            {{ _('Sessions créees') }}
+                        </p>
+                        <h4 class="mb-0">{{ session_count }}</h4>
+                    </div>
+                </div>
+                <hr class="dark horizontal my-0">
+                <div class="card-footer p-3">
+                    <p class="mb-0">
+                        <span class="text-danger text-sm font-weight-bolder">
+                            {{ _('Pour l\'année') }} {{ academic_year }}
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

@@ -1,0 +1,20 @@
+{% extends "dashboard/dashboard.html" %}
+{% block title %}<title>{{ _('Accès Refusé : Ressync') }}</title>{% endblock %}
+{% block content %}
+<div class="px-4 text-center">
+    <img class="d-block mx-auto mb-4 img-fluid" src="{{ url_for('static', filename='img/feedbacks/server_error.png') }}" alt="{{ _('Accès Refusé') }}" width="200">
+    <h1 class="display-5 text-body-emphasis">{{ _('Accès Refusé') }}</h1>
+    <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">
+            {{ _("Vous n'avez pas les autorisations nécessaires pour accéder à cette ressource.") }}
+        </p>
+    </div>
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <a href="{{ url_for('users.user_home', company_id=company.id) }}" class="btn btn-info btn-lg px-4 gap-3">
+            <i class="bi bi-arrow-left-circle"></i>
+            {{ _('Retour') }}
+        </a>
+    </div>
+</div>
+<div class="py-5"></div>
+{% endblock %}

@@ -1,0 +1,16 @@
+[
+
+    {
+      "company_name": "Royal Caribbean International",
+      "company_logo": "https://www.ressync.com/static/img/brand/transport_brands/royal-caribbean-1.svg",
+      "company_address": "Miami, Florida, USA",
+      "rating": 4.8
+    },
+    {
+      "company_name": "MSC Mediteraneen Shipping Company",
+      "company_logo": "https://www.ressync.com/static/img/brand/transport_brands/MSC.svg",
+      "company_address": "Miami, Florida, USA",
+      "rating": 4.8
+    }
+  ]
+  

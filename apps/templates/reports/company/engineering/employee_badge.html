@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ employee_name }} Badge</title>
+</head>
+<body>
+    <div class="badge">
+        <!-- Profile Picture -->
+        <img src="{{ company_logo_url }}" alt="{{ company_name }} Logo">
+        
+        <!-- Employee Name and Job Title -->
+        <h2>{{ employee_name }}</h2>
+        <p class="job-title">{{ employee_title }}</p>
+        
+        <!-- Employee ID and Job Title -->
+        <p>{{ _('Employee ID:') }} {{ employee_id }}</p>
+
+        <!-- Company Information -->
+        <div class="company-info">
+            <p class="company-name">{{ company_name }}</p>
+            <p>{{ company_address }}</p>
+            <p>{{ company_phone }}</p>
+        </div>
+
+        <!-- QR Code -->
+        <div class="qr-code">
+            <img src="{{ qr_code_data_uri }}" alt="QR Code">
+        </div>
+
+        <!-- Timestamp -->
+        <div class="timestamp">
+            {{ _('Generated on:') }} {{ generated_time }}
+        </div>
+    </div>
+</body>
+</html>

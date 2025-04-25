@@ -1,0 +1,102 @@
+{
+  "name": "Ressync",
+  "version": "1.0.0",
+  "description": "Optimize processes",
+  "main": "main.js",
+  "author": {
+    "name": "Bridgemark Technology",
+    "email": "support@bridgemark.com"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "concurrently": "^8.2.2",
+    "electron-updater": "^6.3.9",
+    "i18next": "^23.15.1",
+    "i18next-electron-fs-backend": "^3.0.2",
+    "lodash": "^4.17.21",
+    "open": "^8.4.2",
+    "xml2js": "^0.5.0",
+    "yaml": "^2.5.0"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "electron-builder",
+    "publish": "electron-builder --publish always"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/expo180/Ressync.git"
+  },
+  "bugs": {
+    "url": "https://github.com/expo180/Ressync/issues"
+  },
+  "homepage": "https://github.com/expo180/Ressync#readme",
+  "build": {
+    "appId": "com.ressync.app",
+    "productName": "Ressync",
+    "publish": {
+      "provider": "github",
+      "owner": "charlie180-code",
+      "repo": "Ressync",
+      "releaseType": "release",
+      "channel": "latest"
+    },
+    "copyright": "Copyright © 2025 Bridgemark Technology LLC",
+    "files": [
+      "./main.js",
+      "./build/icon.ico",
+      "./splash.html",
+      "./logo-desktop-splash.svg",
+      "server/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "./server/",
+        "to": "server/"
+      }
+    ],
+    "directories": {
+      "buildResources": "build"
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.developer-tools",
+      "icon": "build/icon.icns"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "zip"
+      ],
+      "icon": "build/icon.ico",
+      "artifactName": "Ressync-${version}-win.${ext}"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Development",
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "runAfterFinish": true,
+      "perMachine": false,
+      "include": "./installer.nsh"
+    }
+  }
+}

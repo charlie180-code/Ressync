@@ -1,0 +1,81 @@
+{% extends 'dashboard/dashboard.html' %}
+{% block title %}<title>{{ _('MySails : Accueil') }}</title>{% endblock %}
+{% block content %}
+<div class="container-fluid py-4" style="overflow-x: hidden;">
+  <!-- pattern -->
+  <div class="pattern-1 shadow-lg"></div>
+  
+  <!-- school admin views -->
+  {% if current_user.is_school_admin() %}
+    {% include 'views/school/school_admin_reports.html' %}
+    {% include 'views/school/school_admin_report_charts.html' %}
+  {% endif %}
+  <!-- end school admin views -->
+
+  <!-- school it administrator views -->
+  {% if current_user.is_it_administrator() %}
+    {% include 'views/school/school_it_administrator_reports.html' %}
+    {% include 'views/school/school_it_administrator_report_charts.html' %}
+  {% endif %}
+  <!-- end school it administrator views -->
+
+  <!-- school accountant views -->
+  {% if current_user.is_school_accountant() %}
+    {% include 'views/school/accountant_reports.html' %}
+    {% include 'views/school/accountant_report_charts.html' %}
+  {% endif %}
+  <!-- end school accountant views -->
+
+  <!-- librarian views -->
+  {% if current_user.is_librarian() %}
+    {% include 'views/school/librarian_reports.html' %}
+    {% include 'views/school/librarian_report_charts.html' %}
+  {% endif %}
+  <!-- end librarian views -->
+
+  <!-- school hr manager views -->
+  {% if current_user.is_school_hr_manager() %}
+    {% include 'views/school/school_hr_reports.html' %}
+    {% include 'views/school/school_hr_report_charts.html' %}
+  {% endif %}
+  <!-- end school hr manager views -->
+  
+  <!-- all school employee views -->
+  {% if current_user.is_teacher() or current_user.is_librarian() or current_user.is_school_hr_manager() or current_user.is_school_accountant() or current_user.is_school_admin() or current_user.is_it_administrator() %}
+    <div class="row my-4">
+      <div id="calendar" class="col-lg-8 col-md-8"></div>
+      {% include 'views/general/messages.html' %}
+    </div>
+  {% endif %}
+  <!-- end school employee views -->
+
+  <!-- teacher views -->
+  {% if current_user.is_teacher() %}
+    {% include 'views/school/teacher_reports.html' %}
+  {% endif %}
+  <!-- end teacher views  -->
+
+  <!-- student views -->
+  {% if current_user.is_student() %}
+    <div class="row my-4">
+      {% include 'views/school/student/my_feeds.html' %}
+      {% include 'views/school/student/notifications.html' %}
+    </div>
+  {% endif %}
+  <!-- end student views  -->
+
+  <div class="pattern-2 shadow-lg"></div>
+    
+
+
+</div>
+
+
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/locales/fr.js'></script>
+<script type="module" src="{{ url_for('static', filename='js/_utils/calendar-employee.js') }}"></script>
+<script src="{{ url_for('static', filename='js/lib/plugins/chartjs.min.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/functions/geocoding/realtime_weather.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/insights/school/@support_team/it_admin_charts.js') }}"></script>
+
+{% endblock content %}

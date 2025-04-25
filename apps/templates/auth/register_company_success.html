@@ -1,0 +1,20 @@
+<div id="successModal" tabindex="-1" aria-hidden="true" class="hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full md:inset-0 h-modal md:h-full bg-opacity-50 bg-gray-200">
+  <div class="relative p-6 w-full max-w-md h-full md:h-auto">
+    <div class="relative p-6 text-center bg-white rounded-lg shadow sm:p-7">
+      <div class="w-12 h-12 rounded-full bg-green-100 p-2 flex items-center justify-center mx-auto mb-5">
+        <svg aria-hidden="true" class="w-8 h-8 text-green-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+        </svg>
+        <span class="sr-only">Success</span>
+      </div>
+      <p class="mb-6 text-lg text-gray-900">{{ _('Les instructions et les arguments de connexion ont été envoyés à') }} 
+        <span id="AdminEmail" class="underline text-blue-600">
+          <!-- the admin email goes here -->
+        </span>. Veuillez vérifier dans les spams.
+      </p>
+      <a href="{{ url_for('auth.login') }}" class="py-3 px-4 text-base font-medium text-center text-white rounded-lg bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300">
+        {{ _('Continuer') }}
+      </a>
+    </div>
+  </div>
+</div>

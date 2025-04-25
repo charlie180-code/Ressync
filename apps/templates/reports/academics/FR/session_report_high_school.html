@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="{{ get_locale() }}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ _('Bulletin Scolaire') }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            font-size: 10px;
+            margin: 10px;
+            padding: 0;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #4a90e2;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        .header img {
+            width: 125px; /* Maintain aspect ratio */
+            margin-right: 10px; /* Space between the logo and text */
+        }
+
+        .header .school-info {
+            font-size: 8px;
+            text-align: right;
+        }
+
+        .header .school-info h1 {
+            margin: 0;
+            font-size: 10px;
+            color: #4a90e2;
+        }
+
+        .student-info table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+
+        .student-info table td {
+            padding: 2px 0;
+        }
+
+        .grades-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+            font-size: 9px;
+        }
+
+        .grades-table th,
+        .grades-table td {
+            border: 1px solid #ddd;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .grades-table th {
+            background-color: #4a90e2;
+            color: #fff;
+        }
+
+        .class-info {
+            margin-bottom: 10px;
+        }
+
+        .class-info table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 9px;
+        }
+
+        .class-info th,
+        .class-info td {
+            padding: 3px;
+            text-align: left;
+        }
+
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        .attendance-table {
+            width: 48%;
+            border-collapse: collapse;
+            float: left;
+            font-size: 9px;
+        }
+
+        .attendance-table th,
+        .attendance-table td {
+            border: 1px solid #ddd;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .attendance-table th {
+            background-color: #4a90e2;
+            color: #fff;
+        }
+
+        .director-stamp {
+            width: 48%;
+            float: right;
+            text-align: center;
+            border: 1px solid #ddd;
+            padding: 20px 5px;
+            font-size: 9px;
+        }
+
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 8px;
+            color: #777;
+        }
+
+        .footer p {
+            margin: 3px 0;
+        }
+
+
+        .qr-code {
+            text-align: right;
+            margin-top: 50px;
+        }
+
+        .qr-code img {
+            width: 100px;
+            height: 100px;
+        }
+        .yearly-gpa {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .yearly-gpa h2 {
+            font-size: 12px;
+            color: #4a90e2;
+            margin-bottom: 10px;
+        }
+
+        .yearly-gpa table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 9px;
+        }
+
+        .yearly-gpa th,
+        .yearly-gpa td {
+            border: 1px solid #ddd;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .yearly-gpa th {
+            background-color: #4a90e2;
+            color: #fff;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="bulletin-container">
+        <!-- Header -->
+        <div class="header">
+            <img src="{{ data.school_logo_url }}" alt="Logo de l'école">
+            <div class="school-info">
+                <h1>{{ data.school_name }}</h1>
+                <p>{{ data.school_address }}</p>
+                <p>{{ _('Téléphone:') }} {{ data.school_phone }} | {{ _('Email:') }} {{ data.school_email }}</p>
+            </div>
+        </div>
+
+        <!-- Student Information -->
+        <div class="student-info">
+            <table>
+                <tr>
+                    <td>
+                        <strong>{{ _('Nom et Prénom:') }}</strong>
+                        <span>{{ data.student.user.first_name }} {{ data.student.user.last_name }} ({{ data.student.user.gender }})</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>{{ _('Date et Lieu de naissance:') }}</strong>
+                        <span>{{ data.student.user.date_of_birth }} à {{ data.student.user.place_of_birth }}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>{{ data.session.name }}</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>{{ _('Classe:') }}</strong>
+                        <span>{{ data.student.class_.name }}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>{{ _('Rang:') }}</strong>
+                        <span>{{ data.rank }}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>{{ _('Moyenne Semestrielle:') }}</strong>
+                        <span>{{ data.gpa }}</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Grades Table -->
+        <table class="grades-table">
+            <thead>
+                <tr>
+                    <th>{{ _('Matières') }}</th>
+                    <th>{{ _('Coefficient') }}</th>
+                    <th>{{ _('Moyenne de classe') }}</th>
+                    <th>{{ _('Note de composition') }}</th>
+                    <th>{{ _('Moyenne semestrielle') }}</th>
+                    <th>{{ _('Rang') }}</th>
+                    <th>{{ _('Appréciation') }}</th>
+                    <th>{{ _('Signature du professeur') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in data.grades_data %}
+                <tr>
+                    <td>{{ item.subject }}</td>
+                    <td>{{ item.coefficient }}</td>
+                    <td>{{ item.class_avg }}</td>
+                    <td>{{ item.composition_avg }}</td>
+                    <td>{{ item.weighted_average }}</td>
+                    <td>{{ item.subject_rank }}</td>
+                    <td>{{ item.appreciation }}</td>
+                    <td>{{ item.teacher_signature }}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td><strong>{{ _('Totaux') }}</strong></td>
+                    <td><strong>{{ data.total_weight }}</strong></td>
+                    <td><strong>{{ data.total_class_avg }}</strong></td>
+                    <td><strong>{{ data.total_composition_avg }}</strong></td>
+                    <td><strong>{{ data.total_weighted_average }}</strong></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Class Information -->
+        <div class="class-info">
+            <table>
+                <tr>
+                    <th>{{ _('Moyenne de la classe :') }}</th>
+                    <td>{{ data.class_avg }}</td>
+                    <th>{{ _('Plus haute moyenne :') }}</th>
+                    <td>{{ data.highest_avg }}</td>
+                    <th>{{ _('Plus basse moyenne :') }}</th>
+                    <td>{{ data.lowest_avg }}</td>
+                </tr>
+            </table>
+        </div>
+
+        {% if data.yearly_gpa|length > 0 %}
+            <div class="yearly-gpa">
+                <h2>{{ _('Résultats Annuels') }}</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>{{ _('Année Scolaire') }}</th>
+                            <th>{{ _('Moyenne Annuelle') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for year in data.yearly_gpa %}
+                        <tr>
+                            <td>{{ year.academic_year }}</td>
+                            <td>{{ year.yearly_gpa }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+
+        <!-- Attendance and Director Stamp -->
+        <div class="clearfix">
+            <table class="attendance-table">
+                <thead>
+                    <tr>
+                        <th>{{ _('Absences et Retards') }}</th>
+                        <th>{{ _('Nombre') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ _('Absences justifiées') }}</td>
+                        <td>{{ data.attendance_counts['Absence(s)_justifiée(s)'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ _('Absences non justifiées') }}</td>
+                        <td>{{ data.attendance_counts['Absence(s)_non_justifiée(s)'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ _('Retards motivés') }}</td>
+                        <td>{{ data.attendance_counts['Retard(s)_motivés'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ _('Retards non motivés') }}</td>
+                        <td>{{ data.attendance_counts['Retard(s)_non_motivés'] }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="director-stamp">
+                <p>
+                    {{ _('Signature et appréciations du Directeur') }}
+                </p>
+            </div>
+
+            <div class="qr-code">
+                <img src="{{ data.qr_code_url }}" alt="QR Code">
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>{{ data.school_name }}</p>
+        </div>
+    </div>
+</body>
+
+</html>

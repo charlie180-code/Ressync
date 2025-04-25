@@ -1,0 +1,346 @@
+{% extends 'dashboard/dashboard.html' %}
+{% block title %}<title>{{ _('Table des accès: Ressync') }}</title>{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="my-5 d-flex align-items-center justify-content-between">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                <li class="breadcrumb-item">
+                    <a class="link-body-emphasis" href="{{ url_for('user.user_home', company_id=company.id) }}">
+                        <i class="bi bi-house-door-fill"></i>
+                        <span class="visually-hidden">{{ _('Accueil') }}</span>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">{{ _('Table des accès') }}</li>
+            </ol>
+        </nav>
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#createAdminModal" title="{{ _('Ajouter un nouvel administrateur') }}">
+                <i class="bi bi-plus-circle"></i>
+            </button>
+        </div>
+    </div>
+
+    <h2>
+        {{ _('Gérer les accès') }}
+    </h2>
+
+    <div class="mb-3">
+        <label for="student-search" class="form-label">{{ _('Rechercher un administrateur ou un agent') }}</label>
+        <input type="text" class="form-control" id="admin-search" oninput="filterAdmins()" placeholder="{{ _('Entrez le nom ou l\'email...') }}">
+    </div>
+    
+
+    {% if admins %}
+        <div class="table-responsive">
+            <table class="table align-items-center mb-0 border-bottom">
+                <thead>
+                    <tr>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ _("Nom") }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _("Email") }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _("Rôle") }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _("Options") }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for admin in admins %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ admin.profile_picture_url or url_for('static', filename='img/feedbacks/no_admins.png') }}" class="avatar avatar-sm me-3" alt="{{ admin.first_name or '' }} image">
+                                    <div class="d-flex flex-column">
+                                        <h6 class="mb-0 textto-xs" data-employee-id="{{ admin.id }}">
+                                            {% if admin.first_name %}
+                                                {{ admin.first_name }}
+                                            {% else %}
+                                                {{ admin.email }}
+                                            {% endif %}
+                                        </h6>
+                                        <p class="text-xs text-secondary mb-0">{{ admin.email }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ admin.email }}</td>
+                            <td>{{ roles_translations.get(admin.role.name, admin.role.name) }}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn shadow-lg" type="button" id="actionDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        {{ _('...') }}
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ admin.id }}">
+                                        <li>
+                                            <button type="button" class="dropdown-item" title="{{ _('Voir les détails') }}" data-bs-toggle="modal" data-bs-target="#viewAdminModal{{ admin.id }}">
+                                                <i class="bi bi-eye"></i> {{ _('Voir les détails') }}
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="button" class="dropdown-item edit-button" data-bs-toggle="modal" data-bs-target="#editAdminModal{{ admin.id }}" data-admin-id="{{ admin.id }}" title="{{ _('Modifier') }}">
+                                                <i class="bi bi-pencil"></i> {{ _('Modifier les infos') }}
+                                            </button>
+                                        </li>
+                                        <hr class="dropdown-divider">
+                                        <li>
+                                            <button type="button" class="dropdown-item  delete-button" data-company-id="{{ company.id }}" data-admin-id="{{ admin.id }}" title="{{ _('Supprimer') }}">
+                                                <i class="bi bi-trash"></i> {{ _('Supprimer') }}
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Modal for viewing admin details -->
+                        <div class="modal fade" id="viewAdminModal{{ admin.id }}" tabindex="-1" aria-labelledby="viewAdminModal{{ admin.id }}Label" aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="viewAdminModal{{ admin.id }}Label">{{ _('Détails de l\'agent') }}</h5>
+                                        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="adminName" class="form-label">{{ _('Nom') }}</label>
+                                            <input type="text" class="form-control" id="adminName" value="{{ admin.first_name }}" readonly>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="adminEmail" class="form-label">{{ _('Email') }}</label>
+                                            <input type="email" class="form-control" id="adminEmail" value="{{ admin.email }}" readonly>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="adminRole" class="form-label">{{ _('Rôle') }}</label>
+                                            <input type="text" class="form-control" id="adminRole" value="{{ roles_translations.get(admin.role.name, admin.role.name) }}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Fermer') }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal for editing admin details -->
+                        <div class="modal fade" id="editAdminModal{{ admin.id }}" tabindex="-1" aria-labelledby="editAdminModal{{ admin.id }}Label" aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editAdminModal{{ admin.id }}Label">{{ _('Modifier les détails de l\'agent') }}</h5>
+                                        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Edit Admin Form -->
+                                        <form id="editAdminForm{{ admin.id }}" data-admin-id="{{ admin.id }}" action="{{ url_for('auth.manage_company_admins', company_id=company.id) }}" method="POST">
+                                            <div class="mb-3">
+                                                <label for="editAdminName{{ admin.id }}" class="form-label">{{ _('Nom') }}</label>
+                                                <input type="text" class="form-control" id="editAdminName{{ admin.id }}" name="name" value="{{ admin.first_name }}" required>
+                                                <p class="text-danger d-none my-2" id="FirstNameLengthError{{ admin.id }}">
+                                                    {{ _('Un Prénom ne doit pas dépasser (64) caractères') }}
+                                                </p>
+                                                <p class="text-danger d-none my-2" id="FirstNameEmptyError{{ admin.id }}">
+                                                    {{ _('Vous devez fournir un prénom pour continuer') }}
+                                                </p>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="editAdminEmail{{ admin.id }}" class="form-label">{{ _('Email') }}</label>
+                                                <input type="email" class="form-control" id="editAdminEmail{{ admin.id }}" name="email" value="{{ admin.email }}" required>
+                                                <p class="text-danger d-none my-2" id="EmailError{{ admin.id }}">
+                                                    {{ _('Veuillez entrez une adresse e-mail valide') }}
+                                                </p>
+                                                <p class="text-danger d-none my-2" id="EmailEmptyError{{ admin.id }}">
+                                                    {{ _('Veuillez fournir une adresse e-mail pour continuer') }}
+                                                </p>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="editAdminRole{{ admin.id }}" class="form-label">{{ _('Rôle') }}</label>
+                                                <select class="form-select" id="editAdminRole{{ admin.id }}" name="role_id" required>
+                                                    {% for role in roles %}
+                                                        <option value="{{ role.id }}" {% if admin.role_id == role.id %}selected{% endif %}>{{ roles_translations.get(role.name, role.name) }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Fermer') }}</button>
+                                                <button type="button" class="btn btn-info" id="EditAdminButton{{ admin.id }}">
+                                                    <span class="spinner-border spinner-border-sm d-none" id="EditSpinner{{ admin.id }}"></span>
+                                                    <span id="EditButtonText{{ admin.id }}">
+                                                        <i class="bi bi-check-circle"></i>
+                                                        {{ _('Sauvegarder') }}
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    {% else %}
+        {% include 'auth/school/@support_team/it_admin/admin/empty_admin.html' %}
+    {% endif %}
+
+    <!-- Modal for creating new admin -->
+    <div class="modal fade" id="createAdminModal" tabindex="-1" aria-labelledby="createAdminModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createAdminModalLabel">{{ _('Ajouter un nouvel agent') }}</h5>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="createAdminForm" action="{{ url_for('auth.manage_company_admins', company_id=company.id) }}" method="POST">
+                        <div class="mb-3">
+                            <label for="adminName" class="form-label">{{ _('Prénom') }}<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="NewAgentName" name="name" placeholder="{{ _('Kimberly') }}" required>
+                            <p class="text-danger d-none my-2" id="FirstNameLengthError">
+                                {{ _('Un Prénom ne doit pas dépasser (64) caractères') }}
+                            </p>
+                            <p class="text-danger d-none my-2" id="FirstNameEmptyError">
+                                {{ _('Vous devez fournir un prénom pour continuer') }}
+                            </p>
+                        </div>
+                        <div class="mb-3">
+                            <label for="adminEmail" class="form-label">{{ _('Email') }}<span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="NewAgentEmail" name="email" placeholder="exemple@gmail.com" required>
+                            <p class="text-danger d-none my-2" id="EmailError">
+                                {{ _('Veuillez entrez une adresse e-mail valide') }}
+                            </p>
+                            <p class="text-danger d-none my-2" id="EmailEmptyError">
+                                {{ _('Veuillez fournir une adresse e-mail pour continuer') }}
+                            </p>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="adminRole" class="form-label">{{ _('Rôle') }}<span class="text-danger">*</span></label>                                
+                                <input type="text" class="form-control" id="NewAgentRole" name="role_name" list="roleNames" required>
+                                <datalist id="roleNames">
+                                    {% for role in roles %}
+                                        <option value="{{ roles_translations.get(role.name, role.name) }}" data-role-id="{{ role.id }}"></option>
+                                    {% endfor %}
+                                </datalist>
+                                <input type="hidden" name="role_id" id="roleId" required>
+                            </div>
+                        
+                            <div class="col-md-4">
+                                <label for="position" class="form-label">{{ _('Position') }}<span class="text-danger">*</span></label>
+                                <select class="form-select" id="NewAgentposition" name="position" required>
+                                    <option value="" selected disabled>{{ _('Choisissez le type de position') }}</option>
+                                    <option value="agent">{{ _('Agent') }}</option>
+                                    <option value="responsible">{{ _('Responsable') }}</option>
+                                    <option value="consultant">{{ _('Consultant') }}</option>
+                                    <option value="Sales Manager">{{ _('Chef Commercial') }}</option>
+                                </select>
+                            </div>
+                            {% if company.category == 'Engineering' %}
+                                <div class="col-md-4">
+                                    <label for="station" class="form-label">{{ _('Station') }}</label>
+                                    <select class="form-select" id="NewAgentStation" name="station">
+                                        <option value="" selected disabled>{{ _('Choisissez la station') }}</option>
+                                        {% for pipeline in pipelines %}
+                                            <option value="{{ pipeline.id }}">{{ pipeline.pipeline_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            {% endif %}
+                        </div>                                                                 
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Fermer') }}</button>
+                            <button type="button" class="btn btn-info" id="CreateAdminButton">
+                                <span class="spinner-border d-none spinner-border-sm" id="Spinner" role="status"></span>
+                                <span id="ButtonText">
+                                    <i class="bi bi-plus-circle"></i>
+                                    {{ _('Ajouter') }}
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Pagination Controls -->
+<nav aria-label="Pagination" class="mt-3">
+    <ul class="pagination justify-content-center">
+        {% if pagination.has_prev %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('career.employee_table', company_id=company.id, page=pagination.prev_num) }}">
+                <i class="bi bi-chevron-double-left"></i>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <span class="page-link">
+                <i class="bi bi-chevron-double-left"></i>
+            </span>
+        </li>
+        {% endif %}
+
+        {% for page_num in pagination.iter_pages(left_edge=2, right_edge=2, left_current=2, right_current=2) %}
+            {% if page_num %}
+                {% if page_num == pagination.page %}
+                    <li class="page-item active"><span class="page-link">{{ page_num }}</span></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="{{ url_for('career.employee_table', company_id=company.id, page=page_num) }}">{{ page_num }}</a></li>
+            {% endif %}
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">…</span></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if pagination.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('career.employee_table', company_id=company.id, page=pagination.next_num) }}">
+                <i class="bi bi-chevron-double-right"></i>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <span class="page-link">
+                <i class="bi bi-chevron-double-right"></i>
+            </span>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+
+<script>
+    function filterAdmins() {
+        const searchInput = document.getElementById('admin-search').value.toLowerCase();
+        const tableBody = document.querySelector('tbody');
+        const rows = tableBody.getElementsByTagName('tr');
+        const noResultsMessage = document.getElementById('no-results-message');
+        let resultsFound = false;
+
+        for (let row of rows) {
+            const nameCell = row.cells[0].innerText.toLowerCase();
+            const emailCell = row.cells[1].innerText.toLowerCase();
+
+            if (nameCell.includes(searchInput) || emailCell.includes(searchInput)) {
+                row.style.display = '';
+                resultsFound = true;
+            } else {
+                row.style.display = 'none'; 
+            }
+        }
+
+        if (noResultsMessage) {
+            noResultsMessage.style.display = resultsFound ? 'none' : 'block';
+        }
+    }
+</script>
+
+
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/CompanyAgent/CreateAgent.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/CompanyAgent/EditAgent.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/CompanyAgent/DeleteAgent.js') }}"></script>
+
+{% endblock %}

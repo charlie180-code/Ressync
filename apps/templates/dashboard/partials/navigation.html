@@ -1,0 +1,53 @@
+
+<!-- Navbar -->
+<nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
+  <div class="container-fluid py-1 px-3">
+    <nav aria-label="breadcrumb">
+      <h6 class="font-weight-bolder mb-0">
+        {{ company.title }}
+      </h6>
+    </nav>
+    <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+      
+      <div class="ms-md-auto pe-md-2  ps-2 d-flex align-items-center">
+        
+        <li class="d-flex dropdown align-items-center">
+          <a href="#" class="d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="{{ current_user.profile_picture_url or url_for('static', filename='img/feedbacks/no_admins.png') }}" alt="{{ _('Profile img') }}" class="rounded-circle profile-img">
+          </a>
+          <span class="ms-1 me-2 profile-user-name">
+            {% if current_user.first_name and current_user.last_name %}          
+              {{ current_user.first_name }} {{ current_user.last_name.split(' ')[0] }}            
+            {% else %}
+              {{ current_user.email.split('@')[0] }}
+            {% endif %}
+          </span>   
+        </li>
+        
+        
+      </div>
+      <ul class="navbar-nav justify-content-end">
+
+
+        <li class="nav-item">
+          <a href="{{ url_for('user.settings', company_id=company.id) }}">
+            <i class="bi bi-gear"></i>
+          </a>
+        </li>
+
+        
+
+        <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+          <a href="javascript:;" class="text-body p-0" id="iconNavbarSidenav">
+            <div class="sidenav-toggler-inner">
+              <i class="sidenav-toggler-line"></i>
+              <i class="sidenav-toggler-line"></i>
+              <i class="sidenav-toggler-line"></i>
+            </div>
+          </a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>

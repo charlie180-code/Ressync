@@ -1,0 +1,33 @@
+[
+    {
+      "company_name": "DHL Freight",
+      "company_logo": "https://www.ressync.com/static/img/brand/transport_brands/dhl-1.svg",
+      "company_address": "Bonn, Germany",
+      "rating": 4.6
+    },
+    {
+      "company_name": "FedEx Freight",
+      "company_logo": "https://www.ressync.com/static/img/brand/transport_brands/fedex-express-6.svg",
+      "company_address": "Memphis, Tennessee, USA",
+      "rating": 4.5
+    },
+    {
+      "company_name": "UPS Freight",
+      "company_logo": "https://www.ressync.com/static/img/brand/transport_brands/ups-united-parcel-service.svg",
+      "company_address": "Louisville, Kentucky, USA",
+      "rating": 4.5
+    },
+    {
+      "company_name": "STM Transport Voyageur",
+      "company_logo": "https://www.ressync.com/static/img/brand/transport_brands/stm.png",
+      "company_address": "Niamey, Niger",
+      "rating": 4.0
+    },
+    {
+      "company_name": "Africa Assalam Transport Voyageur",
+      "company_logo": "https://www.ressync.com/static/img/brand/transport_brands/africa_assalam.jpeg",
+      "company_address": "Niamey, Niger",
+      "rating": 3.0
+    }
+  ]
+  

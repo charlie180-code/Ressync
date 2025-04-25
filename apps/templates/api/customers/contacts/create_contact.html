@@ -1,0 +1,98 @@
+{% extends 'dashboard/dashboard.html' %}
+
+{% block title %}
+    <title>{{ _('Ajouter un contact : Ressync') }}</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="d-flex">
+    <div class="my-3">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3">
+          <li class="breadcrumb-item">
+            <a class="link-body-emphasis" href="{{ url_for('user.user_home', company_id=company.id) }}">
+              <i class="bi bi-house-fill"></i>
+              <span class="visually-hidden">{{ _('Accueil') }}</span>
+            </a>
+          </li>
+          <li class="breadcrumb-item" aria-current="page">
+            {{ _('Contacts') }}
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            {{ _('Ajouter un contact') }}
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <h2>{{ _('Ajouter un contact') }}</h2>
+
+  <form method="POST" id="CreateContactForm" action="{{ url_for('msg.create_contact', company_id=company.id) }}">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="first_name" class="form-label">{{ _('Prénom') }} <span class="text-danger">*</span> </label>
+        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="{{ _('Josh') }}" required>
+        <p class="text-danger" id="FirstNameError" style="display: none;">
+          {{ _('Veuillez donner un prénom') }}
+        </p>
+      </div>
+      <div class="col-md-6">
+        <label for="last_name" class="form-label">{{ _('Nom') }} <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="{{ _('Brainer') }}" required>
+        <p class="text-danger" id="LastNameError" style="display: none;">
+          {{ _('Veuillez donner un nom') }}
+        </p>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="email" class="form-label">{{ _('Email') }} <span class="text-danger">*</span></label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="{{ _('josh@gmail.com') }}" required>
+        <p class="text-danger" id="EmailError" style="display: none;">
+          {{ _('Veuillez donner un email valide') }}
+        </p>
+        <p class="text-danger d-none" id="DuplicateEmailContact">
+          {{ _('Cette adresse e-mail existe déja dans vos contacts') }}
+        </p>
+      </div>
+      <div class="col-md-6">
+        <label for="phone" class="form-label">{{ _('Téléphone') }}</label>
+        <input type="text" class="form-control" id="phone" name="phone" placeholder="{{ _('Entrez le numéro de téléphone') }}">
+        <p class="text-danger" id="PhoneError" style="display: none;">
+          {{ _('Veuillez donner un numéro de téléphone') }}
+        </p>
+        <p class="text-danger d-none" id="DuplicatePhoneError">
+          {{ _('Ce numéro existe déja dans vos contacts') }}
+        </p>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="gender" class="form-label">{{ _('Sexe') }}</label>
+        <select id="gender" name="gender" class="form-select">
+          <option value="" disabled selected>{{ _('Sélectionnez le sexe') }}</option>
+          <option value="{{ _('Masculin') }}">{{ _('Homme') }}</option>
+          <option value="{{ _('Masculin') }}">{{ _('Homme') }}</option>
+          <option value="{{ _('Féminin') }}">{{ _('Femme') }}</option>
+          <option value="{{ _('Autre') }}">{{ _('Autre') }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="d-flex justify-content-end my-5">
+        <button type="button" class="btn btn-info" id="addContactButton">
+           <span class="spinner-border spinner-border-sm d-none" id="spinner"></span>
+           <span id="buttonText">
+              <i class="bi bi-plus-circle-dotted"></i>
+              {{ _('Ajouter') }}
+           </span>
+        </button>
+    </div>
+  </form>
+</div>
+<div class="py-5"></div>
+
+<script type="module" src="{{ url_for('static', filename='js/async/api/customers/Contact/StoreContact.js') }}"></script>
+
+{% endblock %}

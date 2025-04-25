@@ -1,0 +1,39 @@
+[
+    {
+      "company_name": "Uber",
+      "company_logo": "https://www.ressync.com/static/img/brand/transport_brands/uber-2.svg",
+      "company_address": "San Francisco, California, USA",
+      "rating": 4.3
+    },
+    {
+      "company_name": "Lyft",
+      "company_logo": "https://www.ressync.com/static/img/brand/transport_brands/Lyft-Logo.wine.svg",
+      "company_address": "San Francisco, California, USA",
+      "rating": 4.4
+    },
+    {
+      "company_name": "Citymapper",
+      "company_logo": "https://www.ressync.com/static/img/brand/transport_brands/citymapper-logo-vector.svg",
+      "company_address": "London, UK",
+      "rating": 4.6
+    },
+    {
+      "company_name": "BlaBlaCar",
+      "company_logo": "https://www.ressync.com/static/img/brand/transport_brands/blablacar-logo-2019.svg",
+      "company_address": "Paris, France",
+      "rating": 4.5
+    },
+    {
+      "company_name": "Didi Chuxing",
+      "company_logo": "https://www.ressync.com/static/img/brand/transport_brands/didi-chuxing.svg",
+      "company_address": "Beijing, China",
+      "rating": 4.7
+    },
+    {
+      "company_name": "Bolt",
+      "company_logo": "https://www.ressync.com/static/img/brand/transport_brands/Bolt-logo_green_rgb.svg",
+      "company_address": "Tallinn, Estonia",
+      "rating": 4.4
+    }
+  ]
+  

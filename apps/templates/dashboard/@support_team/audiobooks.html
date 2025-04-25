@@ -1,0 +1,255 @@
+{% extends 'dashboard/dashboard.html' %}
+
+{% block title %}
+    <title>{{ _('Gestion des livres audio : Ressync') }}</title>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>{{ _('Gestion des livres audio') }}</h2>
+        <div class="btn-group" role="group">
+            <!-- Add Button -->
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addAudioBookModal">
+                <i class="bi bi-plus-lg"></i> 
+            </button>
+            
+            <!-- Sorting Dropdown -->
+            <div class="btn-group" role="group">
+                <button id="btnGroupDrop1" type="button" class="btn btn-outline-secondary" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-sort-alpha-down"></i> <!-- Bootstrap icon for sorting -->
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                    <li><a class="dropdown-item" href="?sort=title">{{ _('Par titre') }}</a></li>
+                    <li><a class="dropdown-item" href="?sort=newest">{{ _('Les plus récents') }}</a></li>
+                    <li><a class="dropdown-item" href="?sort=author">{{ _('Par auteur') }}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div> 
+    
+    <div class="row justify-content-start my-3">
+        <div class="my-3 col-md-8 position-relative">
+            <input type="text" id="searchBar" class="form-control" placeholder="{{ _('Rechercher un livre audio...') }}">
+            <div id="searchResults" class="list-group position-absolute w-100 d-none" style="z-index: 1000;">
+                <!-- Search results will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    {% if audiobooks %}
+        <div class="list-group">
+            {% for audiobook in audiobooks %}
+            <div class="list-group-item d-flex align-items-center mb-3 hoverable">
+                {% if audiobook.audio_url %}
+                    <a href="{{ audiobook.audio_url }}" target="_blank" class="d-flex align-items-center w-100 text-decoration-none text-dark">
+                {% else %}
+                    <div class="d-flex align-items-center w-100">
+                {% endif %}
+                        <img src="{{ audiobook.image_url or url_for('static', filename='img/placeholder.png') }}" alt="{{ audiobook.title }}" class="img-thumbnail me-3 custom-thumbnail">
+                        <div class="flex-grow-1">
+                            <h5 class="mb-1">{{ audiobook.title }}</h5>
+                            <p class="mb-1">{{ audiobook.author }}</p>
+                            <small class="text-muted">{{ _('Durée') }}: {{ audiobook.duration }}s</small>
+                        </div>
+                        <div>
+                            <button type="button" class="btn shadow-lg btn-sm" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ _('...') }}
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editAudioBookModal-{{ audiobook.id }}">
+                                    <i class="bi bi-pencil"></i> 
+                                    {{ _('Modifier') }}
+                                </li>
+                                <li class="dropdown-item">
+                                    <form action="{{ url_for('archive.manage_audiobooks', company_id=company.id) }}" method="POST" class="delete-audiobook-form" data-audiobook-id="{{ audiobook.id }}">
+                                        <button type="submit" class="btn btn-link p-0">
+                                            <i class="bi bi-trash"></i>
+                                            {{ _('Supprimer') }}
+                                        </button>
+                                    </form>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a href="#" class="generate-qr" data-audiobook-id="{{ audiobook.id }}">
+                                        <i class="bi bi-qr-code"></i> 
+                                        {{ _('Générer QR Code') }}
+                                    </a>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a href="#" class="generate-barcode" data-audiobook-id="{{ audiobook.id }}">
+                                        <i class="bi bi-upc"></i> 
+                                        {{ _('Générer Code-barres') }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                {% if audiobook.audio_url %}
+                    </a>
+                {% else %}
+                    </div>
+                {% endif %}
+            </div>
+
+                <!-- Edit AudioBook Modal -->
+                <div class="modal fade" id="editAudioBookModal-{{ audiobook.id }}" tabindex="-1" aria-labelledby="editAudioBookModalLabel-{{ audiobook.id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form action="{{ url_for('archive.manage_audiobooks', company_id=company.id) }}" method="POST">
+                                <input type="hidden" name="_method" value="PUT">
+                                <input type="hidden" name="id" value="{{ audiobook.id }}">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editAudioBookModalLabel-{{ audiobook.id }}">{{ _('Modifier le livre audio') }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="title-{{ audiobook.id }}" class="form-label">{{ _('Titre') }}</label>
+                                        <input type="text" class="form-control" id="title-{{ audiobook.id }}" name="title" value="{{ audiobook.title }}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="author-{{ audiobook.id }}" class="form-label">{{ _('Auteur') }}</label>
+                                        <input type="text" class="form-control" id="author-{{ audiobook.id }}" name="author" value="{{ audiobook.author }}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="narrator-{{ audiobook.id }}" class="form-label">{{ _('Narrateur') }}</label>
+                                        <input type="text" class="form-control" id="narrator-{{ audiobook.id }}" name="narrator" value="{{ audiobook.narrator }}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="duration-{{ audiobook.id }}" class="form-label">{{ _('Durée (en secondes)') }}</label>
+                                        <input type="number" class="form-control" id="duration-{{ audiobook.id }}" name="duration" value="{{ audiobook.duration }}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="release_date-{{ audiobook.id }}" class="form-label">{{ _('Date de sortie') }}</label>
+                                        <input type="date" class="form-control" id="release_date-{{ audiobook.id }}" name="release_date" value="{{ audiobook.release_date }}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="category-{{ audiobook.id }}" class="form-label">{{ _('Catégorie') }}</label>
+                                        <input type="text" class="form-control" id="category-{{ audiobook.id }}" name="category" value="{{ audiobook.category }}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="audio_url-{{ audiobook.id }}" class="form-label">{{ _('URL de l\'audio') }}</label>
+                                        <input type="url" class="form-control" id="audio_url-{{ audiobook.id }}" name="audio_url" value="{{ audiobook.audio_url }}">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Fermer') }}</button>
+                                    <button type="submit" class="btn btn-info">
+                                        <span id="spinner" class="spinner-border-sm spinner-border d-none"></span>
+                                        <span id="ButtonText">
+                                            {{ _('Enregistrer') }}
+                                        </span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination Controls -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center mt-4">
+                {% if page > 1 %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('archive.manage_audiobooks', company_id=company.id, page=page-1) }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+                {% for p in range(1, total_pages + 1) %}
+                    <li class="page-item {{ 'active' if p == page else '' }}">
+                        <a class="page-link" href="{{ url_for('archive.manage_audiobooks', company_id=company.id, page=p) }}">{{ p }}</a>
+                    </li>
+                {% endfor %}
+                {% if page < total_pages %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('archive.manage_audiobooks', company_id=company.id, page=page+1) }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% else %}
+        {% include 'dashboard/@support_team/empty/no_audiobook.html' %}
+    {% endif %}
+</div>
+
+<!-- Add AudioBook Modal -->
+<div class="modal fade" id="addAudioBookModal" tabindex="-1" aria-labelledby="addAudioBookModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{{ url_for('archive.manage_audiobooks', company_id=company.id) }}" method="POST" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addAudioBookModalLabel">{{ _('Ajouter un livre audio') }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">{{ _('Titre') }}<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="title" name="title" placeholder="{{ _('Harry Potter') }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="author" class="form-label">{{ _('Auteur') }}<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="author" name="author" placeholder="{{ _('J.K Rowling') }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="narrator" class="form-label">{{ _('Narrateur') }}<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="narrator" name="narrator" placeholder="{{ _('Narrateur') }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="duration" class="form-label">{{ _('Durée (en secondes)') }}<span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="duration" name="duration" placeholder="{{ _('Durée') }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="release_date" class="form-label">{{ _('Date de sortie') }}<span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="release_date" name="release_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="category" class="form-label">{{ _('Catégorie') }}<span class="text-danger">*</span></label>
+                        <select class="form-select" id="category" name="category" required>
+                            <option value="" disabled selected>{{ _('Choisir une catégorie') }}</option>
+                            <option value="fiction">{{ _('Fiction') }}</option>
+                            <option value="non-fiction">{{ _('Non-Fiction') }}</option>
+                            <option value="science">{{ _('Science') }}</option>
+                            <option value="history">{{ _('Histoire') }}</option>
+                            <option value="biography">{{ _('Biographie') }}</option>
+                            <option value="fantasy">{{ _('Fantasy') }}</option>
+                            <option value="mystery">{{ _('Mystery') }}</option>
+                            <option value="romance">{{ _('Romance') }}</option>
+                            <option value="children">{{ _('Enfants') }}</option>
+                            <option value="reference">{{ _('Référence') }}</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label">{{ _('Image de couverture') }}</label>
+                        <input type="file" class="form-control" id="image" name="image">
+                    </div>
+                    <div class="mb-3">
+                        <label for="audio" class="form-label">{{ _('Fichier audio') }}<span class="text-danger">*</span></label>
+                        <input type="file" class="form-control" id="audio" name="audio" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Fermer') }}</button>
+                    <button type="submit" class="btn btn-info">
+                        <span id="spinner" class="d-none spinner-border spinner-border-sm"></span>
+                        <span id="ButtonText">
+                            <i class="bi bi-plus-circle-dotted"></i>
+                            {{ _('Ajouter le livre audio') }}
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Book/CreateAudioBook.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Book/EditAudioBook.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Book/DeleteAudioBook.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Book/SearchAudioBook.js') }}"></script>
+
+{% endblock %}

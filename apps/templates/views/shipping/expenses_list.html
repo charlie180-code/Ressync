@@ -1,0 +1,30 @@
+<div class="col-lg-4 col-md-6">
+  <div class="card h-100">
+    <div class="card-header pb-0">
+      <h6>Expenses Overview</h6>
+    </div>
+    <div class="card-body p-3">
+      <div class="timeline timeline-one-side">
+        {% for expense in expenses %}
+          <div class="timeline-block mb-3">
+            <span class="timeline-step">
+              {% if expense.is_gain %}
+                <i class="material-icons text-success text-gradient">attach_money</i>
+              {% else %}
+                <i class="material-icons text-danger text-gradient">money_off</i>
+              {% endif %}
+            </span>
+            <div class="timeline-content">
+              <h6 class="text-dark text-sm font-weight-bold mb-0">
+                {{ expense.service_type }} - {{ expense.total_cost }} | {{ expense.currency }}
+              </h6>
+              <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                {{ expense.details['date'] | default('N/A') }}
+              </p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>

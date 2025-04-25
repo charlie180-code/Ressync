@@ -1,0 +1,87 @@
+{% extends 'dashboard/dashboard.html' %}
+
+{% block title %}<title>{{ _('Mes Notes: Ressync') }}</title>{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="my-5">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                <li class="breadcrumb-item">
+                    <a class="link-body-emphasis" href="{{ url_for('user.user_home', company_id=company.id) }}">
+                        <i class="bi bi-house-door-fill"></i>
+                        <span class="visually-hidden">{{ _('Accueil') }}</span>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">{{ _('Mes Notes') }}</li>
+            </ol>
+        </nav>
+    </div>
+
+    <h2>{{ _('Voir Mes Notes') }}</h2>
+
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <label for="academic-year-select">{{ _('Sélectionnez l\'Année Académique') }}</label>
+            <select id="academic-year-select" class="form-select" onchange="window.location.href='?academic_year_id=' + this.value + '&subject_id={{ request.args.get('subject_id') }}&session_id={{ request.args.get('session_id') }}&exam_id={{ request.args.get('exam_id') }}'">
+                <option value="">{{ _('Toutes') }}</option>
+                {% for academic_year in academic_years %}
+                    <option value="{{ academic_year.id }}" {% if academic_year.id|string == request.args.get('academic_year_id') %}selected{% endif %}>{{ academic_year.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="subject-select">{{ _('Sélectionnez la Matière') }}</label>
+            <select id="subject-select" class="form-select" onchange="window.location.href='?subject_id=' + this.value + '&academic_year_id={{ request.args.get('academic_year_id') }}&session_id={{ request.args.get('session_id') }}&exam_id={{ request.args.get('exam_id') }}'">
+                <option value="">{{ _('Toutes') }}</option>
+                {% for subject in subjects %}
+                    <option value="{{ subject.id }}" {% if subject.id|string == request.args.get('subject_id') %}selected{% endif %}>{{ subject.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="session-select">{{ _('Sélectionnez la Session') }}</label>
+            <select id="session-select" class="form-select" onchange="window.location.href='?session_id=' + this.value + '&academic_year_id={{ request.args.get('academic_year_id') }}&subject_id={{ request.args.get('subject_id') }}&exam_id={{ request.args.get('exam_id') }}'">
+                <option value="">{{ _('Toutes') }}</option>
+                {% for session in sessions %}
+                    <option value="{{ session.id }}" {% if session.id|string == request.args.get('session_id') %}selected{% endif %}>{{ session.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="exam-select">{{ _('Sélectionnez l\'Examen') }}</label>
+            <select id="exam-select" class="form-select" onchange="window.location.href='?exam_id=' + this.value + '&academic_year_id={{ request.args.get('academic_year_id') }}&subject_id={{ request.args.get('subject_id') }}&session_id={{ request.args.get('session_id') }}'">
+                <option value="">{{ _('Tous') }}</option>
+                {% for exam in exams %}
+                    <option value="{{ exam.id }}" {% if exam.id|string == request.args.get('exam_id') %}selected{% endif %}>{{ exam.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>{{ _('Matière') }}</th>
+                <th>{{ _('Session') }}</th>
+                <th>{{ _('Examen') }}</th>
+                <th>{{ _('Note') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for grade in grades %}
+                <tr>
+                    <td>{{ subject_dict[grade.subject_id] }}</td>
+                    <td>{{ session_dict[grade.session_id] }}</td>
+                    <td>{{ exam_dict[grade.exam_id] }}</td>
+                    <td>{{ grade.value }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="text-center">{{ _('Aucune note disponible') }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

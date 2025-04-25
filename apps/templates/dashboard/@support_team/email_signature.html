@@ -1,0 +1,77 @@
+{% extends 'dashboard/dashboard.html' %}
+{% block title %}
+    <title>{{ _('Signature : Ressync') }}</title>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="my-5">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                    <li class="breadcrumb-item">
+                        <a class="link-body-emphasis" href="#">
+                            <i class="bi bi-house-door-fill"></i>
+                            <span class="visually-hidden">{{ _('Accueil') }}</span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active">{{ _('Signature') }}</li>
+                </ol>
+            </nav>
+        </div>
+    
+        <h2>
+            {{ _('Signature') }}
+        </h2>
+
+        <div class="row">
+            <div class="col-md-6">
+                <form id="signature-form" enctype="multipart/form-data" action="{{ url_for('msg.email_signature', user_id=user.id) }}">
+                    <input type="hidden" id="UserId" value="{{ user.id }}">
+                    <div class="form-group mb-3">
+                        <label>{{ _('Nom complet') }}</label>
+                        <input type="text" class="form-control" name="name" value="{{ current_user.signature_name or '' }}" placeholder="{{ _('Cersei Lannister') }}">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>{{ _('Poste') }}</label>
+                        <input type="text" class="form-control" name="title" value="{{ current_user.signature_title or '' }}" placeholder="{{ _('Responsable cotation maritime') }}">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>{{ _('Téléphone') }}</label>
+                        <input type="text" class="form-control" name="phone" value="{{ current_user.signature_phone or '' }}" placeholder="{{ _('+227 74411794 / +22789172536') }}">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>{{ _('Mot de signature') }}</label>
+                        <input type="text" class="form-control" name="word" value="{{ current_user.signature_word or '' }}" placeholder="{{ _('Cordialement,') }}">
+                    </div>
+
+                    
+                    <div id="badges-data" data-badges="{{ badges|tojson|safe }}"></div>
+                    <div class="form-group mb-3">
+                        <label>{{ _('Badge(s)/Image(s) additionnelle(s)') }}</label>
+                        <input class="form-control" type="file" name="badges" id="badge-upload" multiple accept="image/*">
+                        <div id="badges-container" class="mt-2">
+                            {% for badge in badges %}
+                                <img src="{{ badge }}" class="signature-badge mr-2 mb-2">
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="my-5 d-flex justify-content-end">
+                        <button type="button" id="CreateSignatureButton" class="btn btn-info">
+                            <div class="spinner-border spinner-border-sm d-none" id="Spinner"></div>
+                            <span id="LoadingText" class="d-none">{{ _('En cours') }}</span>
+                            <i class="bi bi-plus-circle-dotted"></i>
+                            <span id="ButtonText">{{ _('Enregistrer') }}</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="preview-header mb-3">{{ _('Aperçu de la signature') }}</div>
+                <div id="signature-preview" class="signature-preview"></div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="{{ url_for('static', filename='js/async/api/customers/Contact/SaveSignature.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/async/api/customers/Contact/SignaturePreview.js') }}"></script>
+{% endblock %}

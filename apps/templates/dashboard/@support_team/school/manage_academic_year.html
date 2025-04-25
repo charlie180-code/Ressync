@@ -1,0 +1,196 @@
+{% extends 'dashboard/dashboard.html' %}
+{% block title %}<title>{{ _('Gestion des années académiques: Ressync') }}</title>{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="my-5 d-flex justify-content-between align-items-center mb-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                <li class="breadcrumb-item">
+                    <a class="link-body-emphasis" href="{{ url_for('user.user_home', company_id=company.id) }}">
+                        <i class="bi bi-house-door-fill"></i>
+                        <span class="visually-hidden">{{ _('Accueil') }}</span>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">{{ _('Années académiques') }}</li>
+            </ol>
+        </nav>
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#createNewAcademicYearModal" title="{{ _('Créer une nouvelle année académique') }}">
+                <i class="bi bi-plus-circle"></i>
+            </button>
+        </div>
+    </div>
+
+    <h2>{{ _('Années académiques') }}</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="alert-container">
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            <span class="text-white">{{ message }}</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+  {% endwith %}
+
+    <form id="academicYearForm" method="PUT" action="{{ url_for('session.manage_academic_years', company_id=company.id) }}">
+        <input type="hidden" name="_method" value="PUT">
+        {% if academic_years %}
+            <table class="table align-items-center mb-0 border-bottom">
+                <thead>
+                    <tr>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ _('Nom') }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _('Date de début') }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ _('Date de fin') }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ _('Frais') }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ _('Devise') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for year in academic_years %}
+                        <tr>
+                            <td><input type="text" id="name_{{ year.id }}" name="name_{{ year.id }}" value="{{ year.name }}" class="form-control"></td>
+                            <td><input type="date" id="start_date_{{ year.id }}" name="start_date_{{ year.id }}" value="{{ year.start_date.strftime('%Y-%m-%d') }}" class="form-control"></td>
+                            <td><input type="date" id="end_date_{{ year.id }}" name="end_date_{{ year.id }}" value="{{ year.end_date.strftime('%Y-%m-%d') }}" class="form-control"></td>
+                            <td><input type="number" id="tuition_fees_{{ year.id }}" name="tuition_fees_{{ year.id }}" value="{{ year.tuition_fees }}" class="form-control"></td>
+                            <td><input type="text" id="currency_{{ year.id }}" name="currency_{{ year.id }}" value="{{ year.currency }}" class="form-control"></td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-link p-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-three-dots-vertical text-secondary"></i>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item delete-btn" data-year-id="{{ year.id }}" title="{{ _('Supprimer') }}" href="#">
+                                            {{ _('Supprimer') }}
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            {{ _('Clôturer l\'année') }}
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>                            
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-end my-5 gap-2">
+                <button type="button" class="btn btn-secondary" id="discardButton" style="display: none;">
+                    {{ _('Annuler') }}
+                </button>
+                <button type="button" class="btn btn-info" id="saveButton" disabled>
+                    <span id="Spinner" class="spinner-border-sm spinner-border d-none"></span>
+                    <span id="ButtonText">{{ _('Enregistrer') }}</span>
+                </button>
+            </div>            
+        {% else %}
+            {% include 'dashboard/@support_team/empty/no_academic_year.html' %}
+        {% endif %}
+    </form>
+</div>
+
+<!-- Modal for Creating New Academic Year -->
+<div class="modal fade" id="createNewAcademicYearModal" tabindex="-1" aria-labelledby="createNewAcademicYearModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createNewAcademicYearModalLabel">{{ _('Créer une nouvelle année académique') }}</h5>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="{{ url_for('session.manage_academic_years', company_id=company.id) }}">
+                <input type="hidden" name="_method" value="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="yearName" class="form-label">{{ _('Titre de l\'année académique') }} <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="yearName" name="name" placeholder="{{ _('2024-2025') }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="startDate" class="form-label">{{ _('Date de début') }} <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="startDate" name="start_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="endDate" class="form-label">{{ _('Date de fin') }} <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="endDate" name="end_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tuition_fees" class="form-label">{{ _('Frais de scolarité') }}<span class="text-danger">*</span></label>
+                        <input type="number" step="0.01" class="form-control" id="tuition_fees" name="tuition_fees" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="currency" class="form-label">{{ _('Devise') }}</label>
+                        <select name="currency" id="currency" class="form-select">
+                            <option value="" disabled selected>{{ _('Sélectionnez la monnaie') }}</option>
+                            <option value="USD">{{ _('USD') }}</option>
+                            <option value="EUR">{{ _('EUR') }}</option>
+                            <option value="GBP">{{ _('GBP') }}</option>
+                            <option value="JPY">{{ _('JPY') }}</option>
+                            <option value="AUD">{{ _('AUD') }}</option>
+                            <option value="CAD">{{ _('CAD') }}</option>
+                            <option value="CHF">{{ _('CHF') }}</option>
+                            <option value="CNY">{{ _('CNY') }}</option>
+                            <option value="INR">{{ _('INR') }}</option>
+                            <option value="BRL">{{ _('BRL') }}</option>
+                            <option value="RUB">{{ _('RUB') }}</option>
+                            <option value="ZAR">{{ _('ZAR') }}</option>
+                            <option value="MXN">{{ _('MXN') }}</option>
+                            <option value="HKD">{{ _('HKD') }}</option>
+                            <option value="SGD">{{ _('SGD') }}</option>
+                            <option value="NOK">{{ _('NOK') }}</option>
+                            <option value="SEK">{{ _('SEK') }}</option>
+                            <option value="NZD">{{ _('NZD') }}</option>
+                            <option value="KRW">{{ _('KRW') }}</option>
+                            <option value="TRY">{{ _('TRY') }}</option>
+                            <option value="IDR">{{ _('IDR') }}</option>
+                            <option value="THB">{{ _('THB') }}</option>
+                            <option value="MYR">{{ _('MYR') }}</option>
+                            <option value="PLN">{{ _('PLN') }}</option>
+                            <option value="CZK">{{ _('CZK') }}</option>
+                            <option value="HUF">{{ _('HUF') }}</option>
+                            <option value="ILS">{{ _('ILS') }}</option>
+                            <option value="PHP">{{ _('PHP') }}</option>
+                            <option value="AED">{{ _('AED') }}</option>
+                            <option value="SAR">{{ _('SAR') }}</option>
+                            <option value="PKR">{{ _('PKR') }}</option>
+                            <option value="EGP">{{ _('EGP') }}</option>
+                            <option value="NGN">{{ _('NGN') }}</option>
+                            <option value="VND">{{ _('VND') }}</option>
+                            <option value="XOF">{{ _('XOF') }}</option>
+                            <option value="XAF">{{ _('XAF') }}</option>
+                            <option value="KES">{{ _('KES') }}</option>
+                            <option value="GHS">{{ _('GHS') }}</option>
+                            <option value="TZS">{{ _('TZS') }}</option>
+                            <option value="UGX">{{ _('UGX') }}</option>
+                            <option value="MGA">{{ _('MGA') }}</option>
+                            <option value="BWP">{{ _('BWP') }}</option>
+                            <option value="ETB">{{ _('ETB') }}</option>
+                            <option value="DZD">{{ _('DZD') }}</option>
+                            <option value="MAD">{{ _('MAD') }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Annuler') }}</button>
+                    <button type="submit" class="btn btn-info">
+                        <span id="Spinner" class="spinner-border-sm spinner-border d-none"></span>
+                        <span id="ButtonText">
+                            <i class="bi bi-plus-circle-dotted"></i>
+                            {{ _('Créer') }}
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/SessionManagement/CreateSchoolYear.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/SessionManagement/DeleteSchoolYear.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/SessionManagement/UpdateSchoolYear.js') }}"></script>
+
+{% endblock %}

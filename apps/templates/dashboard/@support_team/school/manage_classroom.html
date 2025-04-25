@@ -1,0 +1,262 @@
+{% extends 'dashboard/dashboard.html' %}
+{% block title %}<title>{{ _('Gestion des classes: Ressync') }}</title>{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="my-5 d-flex align-items-center justify-content-between">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                <li class="breadcrumb-item">
+                    <a class="link-body-emphasis" href="{{ url_for('user.user_home', company_id=company.id) }}">
+                        <i class="bi bi-house-door-fill"></i>
+                        <span class="visually-hidden">{{ _('Accueil') }}</span>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">{{ _('Gestion des classes') }}</li>
+            </ol>
+        </nav>
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#createNewClassModal" title="{{ _('Créer une nouvelle classe') }}">
+                <i class="bi bi-plus-circle"></i>
+            </button>
+            <!--
+                <button type="button" class="btn btn-outline-secondary dropdown-toggle" id="SortClassesButton" data-bs-toggle="dropdown" aria-expanded="false" title="{{ _('Trier les classes') }}">
+                    <i class="bi bi-sort-up"></i>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">{{ _('Organiser par nom') }}</a></li>
+                    <li><a class="dropdown-item" href="#">{{ _('Organiser par niveau') }}</a></li>
+                </ul>
+            -->
+        </div>
+        
+    </div>
+
+    <h2>{{ _('Salles de classe ou Filères') }}</h2>
+
+    <!-- Table for Classes -->
+    <form method="PUT" action="{{ url_for('classroom.manage_classes', company_id=company.id) }}" id="UpdateClassForm">
+        {% if classes %}
+            <table class="table align-items-center mb-0 border-bottom">
+                <thead>
+                    <tr>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ _('Nom') }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" ps-2>{{ _('Niveau suivant') }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ _('Frais de scolarité') }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ _('Devise') }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ _('Nombre de versements') }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ _('Moyenne de passage') }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ _('Session') }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ _('Section') }}</th>  
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cls in classes %}
+                        <tr>
+                            <td><input type="text" name="name_{{ cls.id }}" value="{{ cls.name }}" class="form-control"></td>
+                            <td><input type="text" name="next_level_{{ cls.id }}" value="{{ cls.next_level }}" class="form-control"></td>
+                            <td><input type="number" step="0.01" name="tuition_{{ cls.id }}" value="{{ cls.tuition }}" class="form-control"></td>
+                            <td><input type="text" name="currency_{{ cls.id }}" value="{{ cls.currency }}" class="form-control"></td>
+                            <td><input type="number" name="installments_{{ cls.id }}" value="{{ cls.installments }}" class="form-control"></td>
+                            <td><input type="number" step="0.01" name="passing_gpa_{{ cls.id }}" value="{{ cls.passing_gpa }}" class="form-control"></td>
+                            <td><input type="text" name="session_id_{{ cls.id }}" value="{{ cls.session_id }}" class="form-control"></td>
+                            <td><input type="text" name="section_{{ cls.id }}" value="{{ cls.section.name }}" class="form-control" readonly></td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-sm delete-btn" data-class-id="{{ cls.id }}" title="{{ _('Supprimer') }}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="d-flex justify-content-end my-5 gap-2">
+                <button type="button" class="btn btn-secondary" id="discardButton" style="display: none;">
+                    {{ _('Annuler') }}
+                </button>
+                <button type="submit" class="btn btn-info" id="saveButton" disabled>
+                    <span id="Spinner" class="spinner-border-sm spinner-border d-none"></span>
+                    <span id="ButtonText">{{ _('Enregistrer') }}</span>
+                </button>
+            </div>   
+
+            <nav aria-label="Page navigation" class="justify-content-center d-flex gap-2 my-2">
+                <ul class="pagination">
+                    {% if pagination.has_prev %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('classroom.manage_classes', company_id=company.id, page=pagination.prev_num) }}" aria-label="{{ _('Previous') }}">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% for page_num in pagination.iter_pages() %}
+                        {% if page_num %}
+                            <li class="page-item {% if page_num == pagination.page %}active{% endif %}">
+                                <a class="page-link" href="{{ url_for('classroom.manage_classes', company_id=company.id, page=page_num) }}">{{ page_num }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if pagination.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('classroom.manage_classes', company_id=company.id, page=pagination.next_num) }}" aria-label="{{ _('Next') }}">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% else %}
+            <p class="text-center">{{ _('Aucune classe trouvée.') }}</p>
+        {% endif %}
+    </form>
+
+    <!-- Modal for Creating a New Class -->
+    <div class="modal fade" id="createNewClassModal" tabindex="-1" aria-labelledby="createNewClassModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg"> <!-- Make the modal large -->
+            <div class="modal-content">
+                <form method="POST" action="{{ url_for('classroom.manage_classes', company_id=company.id) }}">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createNewClassModalLabel">{{ _('Créer une nouvelle classe') }}</h5>
+                        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">
+                                {{ _('Nom de la classe') }} <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="{{ _('Nom de la classe') }}" required list="class-names">
+                            <datalist id="class-names">
+                                {% for level in next_levels %}
+                                    <option value="{{ level }}">{{ level }}</option>
+                                {% endfor %}
+                            </datalist>
+                        </div>                        
+                        <div class="mb-3">
+                            <label for="nextLevel" class="form-label">{{ _('Niveau suivant') }} <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="nextLevel" name="next_level" placeholder="{{ _('Niveau suivant') }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tuition" class="form-label">{{ _('Frais de scolarité') }} <span class="text-danger">*</span></label>
+                            <input type="number" step="0.01" class="form-control" id="tuition" name="tuition" placeholder="{{ _('Frais de scolarité') }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="currency" class="form-label">{{ _('Monnaie') }}<span class="text-danger">*</span></label>
+                            <select id="currency" name="currency" class="form-select" required>
+                                <option value="" disabled selected>{{ _('Devise') }}</option>
+                                <option value="USD">{{ _('USD') }}</option>
+                                <option value="EUR">{{ _('EUR') }}</option>
+                                <option value="GBP">{{ _('GBP') }}</option>
+                                <option value="JPY">{{ _('JPY') }}</option>
+                                <option value="AUD">{{ _('AUD') }}</option>
+                                <option value="CAD">{{ _('CAD') }}</option>
+                                <option value="CHF">{{ _('CHF') }}</option>
+                                <option value="CNY">{{ _('CNY') }}</option>
+                                <option value="INR">{{ _('INR') }}</option>
+                                <option value="BRL">{{ _('BRL') }}</option>
+                                <option value="RUB">{{ _('RUB') }}</option>
+                                <option value="ZAR">{{ _('ZAR') }}</option>
+                                <option value="MXN">{{ _('MXN') }}</option>
+                                <option value="HKD">{{ _('HKD') }}</option>
+                                <option value="SGD">{{ _('SGD') }}</option>
+                                <option value="NOK">{{ _('NOK') }}</option>
+                                <option value="SEK">{{ _('SEK') }}</option>
+                                <option value="NZD">{{ _('NZD') }}</option>
+                                <option value="KRW">{{ _('KRW') }}</option>
+                                <option value="TRY">{{ _('TRY') }}</option>
+                                <option value="IDR">{{ _('IDR') }}</option>
+                                <option value="THB">{{ _('THB') }}</option>
+                                <option value="MYR">{{ _('MYR') }}</option>
+                                <option value="PLN">{{ _('PLN') }}</option>
+                                <option value="CZK">{{ _('CZK') }}</option>
+                                <option value="HUF">{{ _('HUF') }}</option>
+                                <option value="ILS">{{ _('ILS') }}</option>
+                                <option value="PHP">{{ _('PHP') }}</option>
+                                <option value="AED">{{ _('AED') }}</option>
+                                <option value="SAR">{{ _('SAR') }}</option>
+                                <option value="PKR">{{ _('PKR') }}</option>
+                                <option value="EGP">{{ _('EGP') }}</option>
+                                <option value="NGN">{{ _('NGN') }}</option>
+                                <option value="VND">{{ _('VND') }}</option>
+                                <option value="XOF">{{ _('XOF') }}</option>
+                                <option value="XAF">{{ _('XAF') }}</option>
+                                <option value="KES">{{ _('KES') }}</option>
+                                <option value="GHS">{{ _('GHS') }}</option>
+                                <option value="TZS">{{ _('TZS') }}</option>
+                                <option value="UGX">{{ _('UGX') }}</option>
+                                <option value="MGA">{{ _('MGA') }}</option>
+                                <option value="BWP">{{ _('BWP') }}</option>
+                                <option value="ETB">{{ _('ETB') }}</option>
+                                <option value="DZD">{{ _('DZD') }}</option>
+                                <option value="MAD">{{ _('MAD') }}</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="installments" class="form-label">{{ _('Nombre de versements') }}</label>
+                            <input type="number" class="form-control" id="installments" name="installments" placeholder="{{ _('Nombre de versements') }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="gradingSystem" class="form-label">{{ _('Système de notation') }} <span class="text-danger">*</span></label>
+                            <select id="gradingSystem" name="grading_system" class="form-select" required>
+                                <option value="" disabled selected>{{ _('Sélectionnez un système de notation') }}</option>
+                                <option value="French">{{ _('Français(0-20)') }}</option>
+                                <option value="FrenchSec">{{ _('Français(0-10)') }}</option>
+                                <option value="Japanese">{{ _('Japonais (1-5)') }}</option>
+                                <option value="American_GPA">{{ _('Américain (GPA 0-4.0)') }}</option>
+                                <option value="American_AF">{{ _('Américain (A-F)') }}</option>
+                                <option value="British_Percentage">{{ _('Britannique (Pourcentage)') }}</option>
+                                <option value="British_Letter">{{ _('Britannique (A-F)') }}</option>
+                            </select>
+                            <p class="my-1 warning-messages">
+                                <span class="text-danger">
+                                    {{ _('!!! Attention') }}
+                                </span> <br>
+                                {{ _('Cette notation indique comment seront calculées les moyennes à la fin de la session') }}
+                            </p>
+                        </div>
+                        <div class="mb-3">
+                            <label for="section" class="form-label">{{ _('Section') }} <span class="text-danger">*</span></label>
+                            <select id="section" name="section_id" class="form-select">
+                                <option value="" disabled selected>{{ _('Choisissez une section') }}</option>
+                                {% for section in sections %}
+                                    <option value="{{ section.id }}">{{ section.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="passingGpa" class="form-label">{{ _('Moyenne de passage') }} <span class="text-danger">*</span></label>
+                            <input type="number" step="0.01" class="form-control" id="passingGpa" name="passing_gpa" placeholder="{{ _('Moyenne de passage') }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="session" class="form-label">{{ _('Session') }}<span class="text-danger">*</span></label>
+                            <select id="session" name="session_id" class="form-select">
+                                <option value="" disabled selected>{{ _('Choisissez une session') }}</option>
+                                {% for session in sessions %}
+                                    <option value="{{ session.id }}">{{ session.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Annuler') }}</button>
+                        <button type="submit" class="btn btn-info">
+                            <span id="Spinner" class="spinner-border-sm spinner-border d-none"></span>
+                            <span id="ButtonText">
+                                <i class="bi bi-plus-circle-dotted"></i>
+                                {{ _('Créer') }}
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/ClassroomManagement/DeleteClass.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/ClassroomManagement/UpdateClass.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/ClassroomManagement/CreateClass.js') }}"></script>
+</div>
+{% endblock %}

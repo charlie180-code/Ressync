@@ -1,0 +1,344 @@
+<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3" id="sidenav-main">
+    <div class="sidenav-header text-center">
+        <i class="bi bi-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+        <div class="d-flex align-items-center justify-content-center my-4 flex-column">
+            <div class="logo-square mb-5">
+                <img src="{{ company.logo_url }}" alt="{{ company.title }} {{ _('Logo') }}">
+            </div>
+        </div>
+    </div>
+    <hr class="horizontal light my-2">
+    <div class="collapse navbar-collapse w-auto max-height-vh-100" id="sidenav-collapse-main">
+        <ul class="navbar-nav">
+            <!-- Common Link -->
+            <li class="nav-item">
+                <a class="nav-link text-white {% if request.path == url_for('user.user_home', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('user.user_home', company_id=company.id) }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">home</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Accueil') }}</span>
+                </a>
+            </li>
+
+            {% if current_user.is_school_admin() %}
+                <!-- School Admin Links -->
+                <li class="nav-item">
+                    <a class="nav-link text-white {% if request.path == url_for('calendar.events_calendar', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('calendar.events_calendar', company_id=company.id) }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">event</i>
+                        </div>
+                        <span class="nav-link-text ms-1">{{ _('Meets') }}</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <div class="text-white" data-bs-toggle="collapse" href="#MyNotes" role="button" aria-expanded="false" aria-controls="MyNotes">
+                        <div class="text-white text-center d-flex align-items-start justify-content-start dashboard-toggler">
+                            <i class="material-icons opacity-10">note</i>
+                            <span class="nav-link-text ms-2">{{ _('Notes') }}</span>
+                        </div>
+                    </div>
+                    <div class="collapse" id="MyNotes">
+                        <ul class="navbar-nav ps-3">
+                            <li class="nav-item">
+                                <a class="nav-link text-white {% if request.path == url_for('note.add_notes', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('note.add_notes', company_id=company.id) }}">
+                                    <span class="nav-link-text ms-1">{{ _('Ajouter une note') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white {% if request.path == url_for('note.previous_notes', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('note.previous_notes', company_id=company.id) }}">
+                                    <span class="nav-link-text ms-1">{{ _('Notes récentes') }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white {% if request.path == url_for('task.tasks', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('task.tasks', company_id=company.id) }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">task</i>
+                        </div>
+                        <span class="nav-link-text ms-1">{{ _('Tâches') }}</span>
+                    </a>
+                </li>
+                
+    
+            {% endif %}
+
+
+            {% if current_user.is_school_accountant() %}
+            <!-- School Accountant Links -->
+            <li class="nav-item">
+                <a class="nav-link text-white {% if request.path == url_for('accounting.manage_student_fees', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('accounting.manage_student_fees', company_id=company.id) }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">attach_money</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Gérer les scolarités') }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {% if request.path == url_for('accounting.manage_wages', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('accounting.manage_wages', company_id=company.id) }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">payments</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Gérer les salaires') }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {% if request.path == url_for('accounting.manage_expenses', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('accounting.manage_expenses', company_id=company.id) }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">savings</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Gérer les dépenses') }}</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if current_user.is_school_hr_manager() %}
+            <!-- School HR Manager Links -->
+            <li class="nav-item">
+                <a class="nav-link text-white {% if request.path == url_for('career.manage_employees', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('career.manage_employees', company_id=company.id) }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">people</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Gérer les employés') }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {% if request.path == url_for('career.manage_recruitment', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('career.manage_recruitment', company_id=company.id) }}">
+                    <span class="nav-link-text ms-1">{{ _('Gérer le recrutement') }}</span>
+                </a>
+            </li>
+           
+            {% endif %}
+
+            {% if current_user.is_librarian() %}
+            <!-- Librarian Links -->
+            <li class="nav-item">
+                <a class="nav-link text-white {% if request.path == url_for('archive.manage_books', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('archive.manage_books', company_id=company.id) }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">book</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Gérer les livres') }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {% if request.path == url_for('archive.manage_audiobooks', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('archive.manage_audiobooks', company_id=company.id) }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">headphones</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Gérer les livres audio') }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {% if request.path == url_for('archive.manage_lendings', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('archive.manage_lendings', company_id=company.id) }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">assignment_returned</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Gérer les prêts') }}</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if current_user.is_teacher() %}
+            <!-- Teacher Links -->
+            <li class="nav-item">
+                <a class="nav-link text-white {% if request.path == url_for('classroom.manage_grades', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('classroom.manage_grades', company_id=company.id) }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">grade</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Gérer les notes') }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {% if request.path == url_for('classroom.manage_attendance', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('classroom.manage_attendance', company_id=company.id) }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">calendar_today</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Gérer l\'assiduité') }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {% if request.path == url_for('classroom.manage_exams', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('classroom.manage_exams', company_id=company.id) }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">quiz</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Gérer les examens') }}</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if current_user.is_teacher() or current_user.is_librarian() or current_user.is_school_hr_manager() or current_user.is_school_accountant() or current_user.is_it_administrator() %}
+            <li class="nav-item">
+                <a class="nav-link text-white position-relative {% if request.path == url_for('task.my_tasks', user_id=current_user.id, company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('task.my_tasks', user_id=current_user.id, company_id=company.id) }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center position-relative">
+                        <i class="material-icons opacity-10">task</i>
+                        {% if tasks|length > 0 %}
+                            <span class="badge bg-danger rounded-circle position-absolute top-0 start-100 translate-middle">{{ tasks|length }}</span>
+                        {% endif %}
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Mes tâches') }}</span>
+                </a>
+            </li>
+                         
+            {% endif %}
+
+            {% if current_user.is_it_administrator() %}
+            <!-- IT Administrator Links -->
+            <li class="nav-item">
+                <a class="nav-link text-white {% if request.path == url_for('auth.manage_admins', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('auth.manage_admins', company_id=company.id) }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">admin_panel_settings</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Gérer les admins') }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {% if request.path == url_for('auth.manage_students', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('auth.manage_students', company_id=company.id) }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">school</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Gérer les étudiants') }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {% if request.path == url_for('auth.manage_teachers', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('auth.manage_teachers', company_id=company.id) }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">person_outline</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Gérer les enseignants') }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {% if request.path == url_for('session.manage_sessions', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('session.manage_sessions', company_id=company.id) }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">calendar_today</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Gérer les sessions') }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {% if request.path == url_for('classroom.manage_classes', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('classroom.manage_classes', company_id=company.id) }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">class</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Gérer les classes') }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {% if request.path == url_for('section.manage_sections', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('section.manage_sections', company_id=company.id) }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">layers</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Gérer les sections') }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {% if request.path == url_for('classroom.manage_subjects', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('classroom.manage_subjects', company_id=company.id) }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">subject</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Gérer les matières') }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {% if request.path == url_for('session.manage_academic_years', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('session.manage_academic_years', company_id=company.id) }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">calendar_view_day</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Gérer les années') }}</span>
+                </a>
+            </li>
+           
+        {% endif %}
+
+            {% if current_user.is_parent() %}
+            <li class="nav-item">
+                <a class="nav-link text-white {% if request.path == url_for('promote.view_child_grades', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('promote.view_child_grades', company_id=company.id) }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">grade</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Cahier de Notes') }}</span>
+                </a>
+            </li>
+            <!--
+                <li class="nav-item">
+                    <a class="nav-link text-white {% if request.path == url_for('promote.view_child_attendance', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('promote.view_child_attendance', company_id=company.id) }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">rule</i>
+                        </div>
+                        <span class="nav-link-text ms-1">{{ _('Discipline') }}</span>
+                    </a>
+                </li>
+            -->
+            {% endif %}
+    
+            {% if current_user.is_student() %}
+            <li class="nav-item">
+                <a class="nav-link text-white" data-bs-toggle="collapse" href="#academicsCollapse" role="button" aria-expanded="false" aria-controls="academicsCollapse">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">school</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Académie') }}</span>
+                </a>
+                <div class="collapse" id="academicsCollapse">
+                    <ul class="navbar-nav ps-3">
+                        <li class="nav-item">
+                            <a class="nav-link text-white {% if request.path == url_for('promote.view_my_grades', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('promote.view_my_grades', company_id=company.id) }}">
+                                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="material-icons opacity-10">grade</i>
+                                </div>
+                                <span class="nav-link-text ms-1">{{ _('Mes Notes') }}</span>
+                            </a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </li>
+
+                <!-- Friends Link -->
+                <!--
+                    <li class="nav-item">
+                    <a class="nav-link text-white {% if request.path == url_for('user.friends', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('user.friends', company_id=company.id) }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">people</i>
+                        </div>
+                        <span class="nav-link-text ms-1">{{ _('Amis') }}</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-white {% if request.path == url_for('user.chats', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('user.chats', company_id=company.id) }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">chat</i>
+                        </div>
+                        <span class="nav-link-text ms-1">{{ _('Messages') }}</span>
+                    </a>
+                </li>
+                -->
+
+            {% endif %}
+
+            <li class="nav-item">
+                <!--
+                    Here use a dropdown for profile settings, system config
+                    like company name etc...
+                -->
+                <a class="nav-link text-white {% if request.path == url_for('user.settings', company_id=company.id) %}active bg-gradient-primary{% endif %}" href="{{ url_for('user.settings', company_id=company.id) }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">settings</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Paramètres') }}</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="sidenav-footer position-absolute w-100 bottom-0 ">
+        <div class="mx-3">
+              <a class="btn bg-light mt-4 w-100" href="{{ url_for('auth.logout') }}" type="button">
+                  <i class="bi bi-box-arrow-left"></i>
+                  {{ _('Se déconnecter') }}
+              </a>
+        </div>
+    </div>
+</aside>

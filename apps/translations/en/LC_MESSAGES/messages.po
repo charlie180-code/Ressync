@@ -1,0 +1,4862 @@
+# English translations for PROJECT.
+# Copyright (C) 2024 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-07-11 10:42+0100\n"
+"PO-Revision-Date: 2024-06-02 01:46+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.15.0\n"
+
+#: api/controllers.py:393
+msgid "Offre mise à jour avec succès"
+msgstr "Offer updated successfully"
+
+#: api/controllers.py:476
+msgid "Votre candidature a été soumise avec succès!"
+msgstr "Your application has been successfully submitted!"
+
+#: main/emails.py:9
+msgid "Welcome to the Reseller Portal"
+msgstr ""
+
+#: main/emails.py:10
+msgid ""
+"\n"
+"    Bonjour,\n"
+"\n"
+"    Félicitations ! Vous avez été approuvé en tant que revendeur. "
+"Veuillez trouver ci-dessous vos identifiants de connexion :\n"
+"\n"
+"    Email: {email}\n"
+"    Mot de passe: {password}\n"
+"\n"
+"    Veuillez copier votre mot de passe quelque part en sécurité. Vous en "
+"aurez besoin pour vous connecter à votre portail de revendeur.\n"
+"\n"
+"    Cordialement,\n"
+"    Votre nom de l'entreprise\n"
+"    "
+msgstr ""
+
+#: templates/api/@support_team/employees/edit_employee_infos.html:2
+msgid "Modifier les infos employé : Ressync"
+msgstr "Edit employee infos : Afrilog"
+
+#: templates/api/@support_team/employees/edit_employee_infos.html:12
+#: templates/api/@support_team/jobs/create_job.html:12
+#: templates/api/@support_team/notice/create_notice.html:13
+#: templates/api/customers/authorizations/apply.html:12
+#: templates/api/customers/contacts/create_contact.html:16
+#: templates/api/customers/goods/purchase_request.html:13
+#: templates/api/customers/jobs/apply.html:11
+#: templates/api/docs/spreadsheet_doc.html:13
+#: templates/api/docs/text_doc.html:13
+#: templates/api/messages/new_message.html:12
+#: templates/dashboard/@support_team/ads.html:11
+#: templates/dashboard/@support_team/calendar.html:14
+#: templates/dashboard/@support_team/employees_listing.html:12
+#: templates/dashboard/@support_team/events.html:14
+#: templates/dashboard/@support_team/finance_reports.html:16
+#: templates/dashboard/@support_team/folders.html:11
+#: templates/dashboard/@support_team/invoices.html:14
+#: templates/dashboard/@support_team/marketplace.html:16
+#: templates/dashboard/@support_team/my_task.html:11
+#: templates/dashboard/@support_team/new_purchases.html:13
+#: templates/dashboard/@support_team/previous_created_jobs.html:17
+#: templates/dashboard/@support_team/previous_notes.html:16
+#: templates/dashboard/@support_team/products.html:15
+#: templates/dashboard/@support_team/quotes_list.html:15
+#: templates/dashboard/@support_team/stores.html:12
+#: templates/dashboard/@support_team/tasks.html:12
+#: templates/dashboard/calculator.html:13
+#: templates/dashboard/customers/inbox.html:15
+#: templates/dashboard/customers/live_tracking.html:16
+#: templates/dashboard/customers/previous_purchase_requests.html:12
+#: templates/dashboard/customers/previous_quotes.html:12
+#: templates/dashboard/customers/view_contacts.html:16
+#: templates/dashboard/jobs_listing.html:13
+#: templates/dashboard/new_messages.html:12
+#: templates/dashboard/partials/sidebar.html:16
+#: templates/dashboard/sent_messages.html:12
+#: templates/dashboard/settings.html:23
+#: templates/includes/basic_navigation.html:21
+#: templates/includes/footer.html:10
+msgid "Accueil"
+msgstr "Home"
+
+#: templates/api/@support_team/employees/edit_employee_infos.html:18
+#: templates/api/@support_team/employees/edit_employee_infos.html:23
+#: templates/dashboard/@support_team/employees_listing.html:73
+#: templates/dashboard/customers/previous_quotes.html:164
+msgid "Modifier les infos"
+msgstr "Edit infos"
+
+#: templates/api/@support_team/employees/edit_employee_infos.html:27
+#: templates/api/customers/authorizations/apply.html:31
+#: templates/api/customers/contacts/create_contact.html:35
+#: templates/api/customers/goods/purchase_request.html:44
+#: templates/api/customers/jobs/apply.html:25
+#: templates/dashboard/@support_team/applicants_list.html:79
+#: templates/dashboard/@support_team/employees_listing.html:97
+#: templates/dashboard/customers/view_contacts.html:39
+#: templates/dashboard/customers/view_contacts.html:96
+#: templates/dashboard/settings.html:40 templates/main/contact.html:17
+msgid "Prénom"
+msgstr "First Name"
+
+#: templates/api/@support_team/employees/edit_employee_infos.html:31
+#: templates/api/customers/jobs/apply.html:29
+#: templates/dashboard/@support_team/applicants_list.html:83
+#: templates/dashboard/@support_team/employees_listing.html:101
+msgid "Nom de Famille"
+msgstr "Last Name"
+
+#: templates/api/@support_team/employees/edit_employee_infos.html:35
+#: templates/dashboard/@support_team/employees_listing.html:29
+#: templates/dashboard/@support_team/employees_listing.html:105
+msgid "Fonction"
+msgstr "Position"
+
+#: templates/api/@support_team/employees/edit_employee_infos.html:39
+#: templates/dashboard/@support_team/employees_listing.html:109
+msgid "Identifiant / Matricule"
+msgstr "Identifier"
+
+#: templates/api/@support_team/employees/edit_employee_infos.html:50
+#: templates/api/@support_team/jobs/edit_job.html:39
+#: templates/dashboard/@support_team/events.html:56
+#: templates/dashboard/@support_team/folders.html:200
+#: templates/dashboard/@support_team/folders.html:254
+#: templates/dashboard/@support_team/invoices.html:141
+#: templates/dashboard/@support_team/products.html:190
+#: templates/dashboard/@support_team/quotes_list.html:155
+#: templates/dashboard/@support_team/stores.html:170
+#: templates/dashboard/@support_team/tasks.html:176
+#: templates/dashboard/customers/previous_quotes.html:213
+#: templates/dashboard/settings.html:92
+msgid "Enregistrer"
+msgstr "Save"
+
+#: templates/api/@support_team/empty/no_job.html:2
+#: templates/dashboard/@support_team/empty/no_quote.html:2
+#: templates/dashboard/customers/empty/no_quote.html:2
+#: templates/dashboard/empty/no_job.html:2
+msgid "Aucune offre àa afficher image"
+msgstr "No offer to display for now"
+
+#: templates/api/@support_team/empty/no_job.html:3
+msgid "Aucune offre d'emploi créee"
+msgstr "No created job for now"
+
+#: templates/api/@support_team/empty/no_job.html:6
+msgid "Les nouvelles offres d'emplois créees vont s'afficher ici"
+msgstr "All newly created job will be shown here"
+
+#: templates/api/@support_team/empty/no_job.html:12
+msgid "Créer une nouvelle offre"
+msgstr "Create a new job offer"
+
+#: templates/api/@support_team/empty/no_notice.html:2
+msgid "Aucune note à afficher image"
+msgstr "No note to display for now image"
+
+#: templates/api/@support_team/empty/no_notice.html:3
+msgid "Aucune note à afficher"
+msgstr "No note to display for now"
+
+#: templates/api/@support_team/empty/no_notice.html:6
+msgid "Les notes que vous créerez seront affichée ici"
+msgstr "Your newly created notes will be displayed here"
+
+#: templates/api/@support_team/folders/reply_to_quote.html:6
+msgid "Répondre à la demande"
+msgstr "Reply to the quote"
+
+#: templates/api/@support_team/jobs/create_job.html:2
+msgid "Créer une offre d'emploi - Ressync"
+msgstr "Create a job offer"
+
+#: templates/api/@support_team/jobs/create_job.html:16
+#: templates/dashboard/@support_team/previous_created_jobs.html:21
+#: templates/dashboard/jobs_listing.html:17
+#: templates/dashboard/partials/sidebar.html:316
+msgid "Careers"
+msgstr "Careers"
+
+#: templates/api/@support_team/jobs/create_job.html:19
+#: templates/dashboard/partials/sidebar.html:323
+msgid "Ajouter une offre"
+msgstr "Add an offer"
+
+#: templates/api/@support_team/jobs/create_job.html:30
+msgid "Ajouter une nouvelle offre"
+msgstr "Add a new offer"
+
+#: templates/api/@support_team/jobs/create_job.html:38
+#: templates/api/@support_team/notice/create_notice.html:37
+#: templates/dashboard/@support_team/ads.html:39
+#: templates/dashboard/@support_team/ads.html:80
+#: templates/dashboard/@support_team/ads.html:137
+#: templates/dashboard/@support_team/ads.html:204
+#: templates/dashboard/@support_team/events.html:40
+#: templates/dashboard/@support_team/invoices.html:44
+#: templates/dashboard/@support_team/invoices.html:89
+#: templates/dashboard/@support_team/invoices.html:124
+#: templates/dashboard/@support_team/invoices.html:167
+#: templates/dashboard/@support_team/my_task.html:39
+#: templates/dashboard/@support_team/new_purchases.html:30
+#: templates/dashboard/@support_team/previous_created_jobs.html:40
+#: templates/dashboard/@support_team/previous_notes.html:39
+#: templates/dashboard/@support_team/previous_notes.html:96
+#: templates/dashboard/@support_team/products.html:42
+#: templates/dashboard/@support_team/products.html:98
+#: templates/dashboard/@support_team/products.html:151
+#: templates/dashboard/@support_team/products.html:223
+#: templates/dashboard/@support_team/tasks.html:39
+#: templates/dashboard/@support_team/tasks.html:101
+#: templates/dashboard/@support_team/tasks.html:150
+#: templates/dashboard/applied_jobs_listing.html:13
+#: templates/dashboard/jobs_listing.html:36 templates/views/invoices.html:40
+msgid "Titre"
+msgstr "Title"
+
+#: templates/api/@support_team/jobs/create_job.html:39
+msgid "Développeur ASPNET C#"
+msgstr "ASPNET C# Developer"
+
+#: templates/api/@support_team/jobs/create_job.html:41
+msgid "Veuillez entrer le titre du poste"
+msgstr "Please enter job title"
+
+#: templates/api/@support_team/jobs/create_job.html:45
+#: templates/api/@support_team/jobs/edit_job.html:16
+#: templates/api/customers/goods/purchase_request.html:139
+#: templates/dashboard/@support_team/ads.html:84
+#: templates/dashboard/@support_team/ads.html:141
+#: templates/dashboard/@support_team/ads.html:208
+#: templates/dashboard/@support_team/folders.html:117
+#: templates/dashboard/@support_team/folders.html:169
+#: templates/dashboard/@support_team/folders.html:301
+#: templates/dashboard/@support_team/invoices.html:93
+#: templates/dashboard/@support_team/invoices.html:129
+#: templates/dashboard/@support_team/invoices.html:172
+#: templates/dashboard/@support_team/my_task.html:41
+#: templates/dashboard/@support_team/new_purchases.html:100
+#: templates/dashboard/@support_team/tasks.html:106
+#: templates/dashboard/@support_team/tasks.html:155
+#: templates/dashboard/customers/previous_purchase_requests.html:131
+msgid "Description"
+msgstr "Description"
+
+#: templates/api/@support_team/jobs/create_job.html:48
+msgid "Veuillez décrire le poste"
+msgstr "Please describe the position"
+
+#: templates/api/@support_team/jobs/create_job.html:52
+#: templates/api/@support_team/jobs/edit_job.html:20
+#: templates/dashboard/@support_team/new_purchases.html:84
+#: templates/dashboard/@support_team/previous_created_jobs.html:43
+#: templates/dashboard/jobs_listing.html:39
+msgid "Lieu"
+msgstr "Location"
+
+#: templates/api/@support_team/jobs/create_job.html:55
+msgid "Veuillez spécifier le lieu"
+msgstr "Please specify the job Location"
+
+#: templates/api/@support_team/jobs/create_job.html:59
+#: templates/api/@support_team/jobs/edit_job.html:24
+#: templates/dashboard/@support_team/previous_created_jobs.html:42
+#: templates/dashboard/jobs_listing.html:38
+msgid "Salaire"
+msgstr "Wage"
+
+#: templates/api/@support_team/jobs/create_job.html:62
+msgid "Veuillez indiquer le salaire"
+msgstr "Please indicate the wage"
+
+#: templates/api/@support_team/jobs/create_job.html:66
+#: templates/api/@support_team/jobs/edit_job.html:28
+msgid "Date de publication"
+msgstr "Publication date"
+
+#: templates/api/@support_team/jobs/create_job.html:69
+msgid "Veuillez indiquer la date de publication"
+msgstr "Please indicate the publication date"
+
+#: templates/api/@support_team/jobs/create_job.html:73
+#: templates/api/@support_team/jobs/edit_job.html:32
+#: templates/dashboard/@support_team/previous_created_jobs.html:44
+#: templates/dashboard/jobs_listing.html:40
+msgid "Date de clôture"
+msgstr "Deadline"
+
+#: templates/api/@support_team/jobs/create_job.html:76
+msgid "Veuillez indiquer la date de clôture"
+msgstr "Please indicate the deadline"
+
+#: templates/api/@support_team/jobs/create_job.html:86
+#: templates/dashboard/@support_team/ads.html:240
+#: templates/dashboard/@support_team/invoices.html:187
+#: templates/dashboard/@support_team/products.html:280
+#: templates/dashboard/@support_team/stores.html:121
+#: templates/dashboard/@support_team/tasks.html:127
+msgid "Ajouter"
+msgstr "Add"
+
+#: templates/api/@support_team/jobs/edit_job.html:3
+msgid "Modifier l'Offre"
+msgstr "Edit offer"
+
+#: templates/api/@support_team/jobs/edit_job.html:3
+msgid "Ressync"
+msgstr "Wage"
+
+#: templates/api/@support_team/jobs/edit_job.html:9
+msgid "Edit Job"
+msgstr "Edit Job"
+
+#: templates/api/@support_team/jobs/edit_job.html:12
+msgid "Title"
+msgstr "Title"
+
+#: templates/api/@support_team/notice/create_notice.html:2
+msgid "Ajouter une nouvelle note : Ressync"
+msgstr "Add a new note"
+
+#: templates/api/@support_team/notice/create_notice.html:17
+#: templates/dashboard/@support_team/previous_notes.html:20
+#: templates/dashboard/partials/sidebar.html:220
+msgid "Notes"
+msgstr "Notes"
+
+#: templates/api/@support_team/notice/create_notice.html:20
+#: templates/api/@support_team/notice/create_notice.html:28
+msgid "Ajouter une nouvelle note"
+msgstr "Add a new note"
+
+#: templates/api/@support_team/notice/create_notice.html:40
+msgid "Politique de non-discrimination"
+msgstr "Non-discrimination policy"
+
+#: templates/api/@support_team/notice/create_notice.html:42
+msgid "Veuillez donner un titre à votre notice"
+msgstr "Please give a title to your note"
+
+#: templates/api/@support_team/notice/create_notice.html:47
+#: templates/dashboard/@support_team/previous_notes.html:106
+msgid "Nature"
+msgstr "Type"
+
+#: templates/api/@support_team/notice/create_notice.html:55
+msgid "Veuillez communiquer le type d'information"
+msgstr "Please communicate the type of information"
+
+#: templates/api/@support_team/notice/create_notice.html:65
+#: templates/dashboard/@support_team/previous_notes.html:40
+#: templates/dashboard/@support_team/previous_notes.html:101
+msgid "Contenu"
+msgstr "Content"
+
+#: templates/api/@support_team/notice/create_notice.html:68
+msgid "Tous les agents se doivent..."
+msgstr "All agents must..."
+
+#: templates/api/@support_team/notice/create_notice.html:70
+#: templates/dashboard/@support_team/previous_notes.html:103
+msgid "Veuillez écrire le contenu de votre note"
+msgstr "Please write the content of your note"
+
+#: templates/api/@support_team/notice/create_notice.html:80
+#: templates/dashboard/@support_team/ads.html:171
+#: templates/dashboard/@support_team/ads.html:238
+#: templates/dashboard/@support_team/invoices.html:185
+#: templates/dashboard/@support_team/previous_notes.html:118
+#: templates/dashboard/@support_team/stores.html:119
+#: templates/dashboard/@support_team/stores.html:168
+#: templates/dashboard/@support_team/tasks.html:125
+#: templates/dashboard/@support_team/tasks.html:174
+#: templates/dashboard/customers/view_contacts.html:134
+#: templates/dashboard/settings.html:91
+msgid "En cours..."
+msgstr "In progress..."
+
+#: templates/api/@support_team/notice/create_notice.html:82
+msgid "Publier"
+msgstr "Publish"
+
+#: templates/api/customers/authorizations/apply.html:2
+msgid "Formulaire de demande de procuration : Ressync"
+msgstr "Power of attorney request form: Afrilog"
+
+#: templates/api/customers/authorizations/apply.html:16
+#: templates/api/customers/authorizations/apply.html:24
+msgid "Demande de procuration"
+msgstr "Power of attorney request"
+
+#: templates/api/customers/authorizations/apply.html:34
+#: templates/api/customers/authorizations/apply.html:41
+#: templates/api/customers/authorizations/apply.html:94
+#: templates/api/customers/authorizations/apply.html:101
+msgid ""
+"Un nom doit contenir seulement des lettres, les chiffres, les espaces et "
+"les caractères spéciaux sont interdits"
+msgstr ""
+"A name must contain only letters, numbers, spaces and special characters "
+"are prohibited"
+
+#: templates/api/customers/authorizations/apply.html:38
+#: templates/api/customers/goods/purchase_request.html:35
+#: templates/dashboard/settings.html:44 templates/main/contact.html:25
+msgid "Nom de famille"
+msgstr "Last Name"
+
+#: templates/api/customers/authorizations/apply.html:50
+#: templates/api/customers/contacts/create_contact.html:52
+#: templates/dashboard/@support_team/stores.html:110
+#: templates/dashboard/@support_team/stores.html:159
+#: templates/dashboard/customers/view_contacts.html:42
+#: templates/dashboard/customers/view_contacts.html:111
+msgid "Téléphone"
+msgstr "Phone"
+
+#: templates/api/customers/authorizations/apply.html:53
+msgid "Veuillez entrer un numéro de téléphone valide"
+msgstr "Please enter a valid phone number"
+
+#: templates/api/customers/authorizations/apply.html:57
+msgid "Votre signature"
+msgstr "Your signature"
+
+#: templates/api/customers/authorizations/apply.html:60
+msgid "Veuillez télécharger votre signature"
+msgstr "Please upload your signature"
+
+#: templates/api/customers/authorizations/apply.html:69
+msgid "Votre pays"
+msgstr "Your country"
+
+#: templates/api/customers/authorizations/apply.html:74
+#: templates/api/customers/goods/purchase_request.html:152
+msgid "Veuillez sélectionner votre pays"
+msgstr "Please select your country"
+
+#: templates/api/customers/authorizations/apply.html:78
+msgid "Numéro de suivi"
+msgstr "Tracking number"
+
+#: templates/api/customers/authorizations/apply.html:81
+msgid "Veuillez entrer un numéro de valide"
+msgstr "Please enter a valid number"
+
+#: templates/api/customers/authorizations/apply.html:91
+#: templates/dashboard/customers/previous_quotes.html:192
+msgid "Prénom du transitaire"
+msgstr "Forwarder Name"
+
+#: templates/api/customers/authorizations/apply.html:98
+msgid "Nom de famille du transitaire"
+msgstr "Forwarder last name"
+
+#: templates/api/customers/authorizations/apply.html:110
+#: templates/dashboard/customers/previous_quotes.html:200
+#: templates/main/aerien.html:57 templates/main/pricing.html:11
+msgid "Compagnie"
+msgstr "Company"
+
+#: templates/api/customers/authorizations/apply.html:116
+msgid "Veuillez sélectionner une compagnie"
+msgstr "Please select a company"
+
+#: templates/api/customers/authorizations/apply.html:120
+#: templates/dashboard/customers/previous_quotes.html:150
+msgid "Carte d'identité"
+msgstr "National ID Card"
+
+#: templates/api/customers/authorizations/apply.html:123
+msgid "Veuillez télécharger votre carte d'identité"
+msgstr "Please upload your ID card"
+
+#: templates/api/customers/authorizations/apply.html:134
+#: templates/api/customers/goods/purchase_request.html:179
+msgid "Envoi..."
+msgstr "Sending"
+
+#: templates/api/customers/authorizations/apply.html:136
+#: templates/api/customers/goods/purchase_request.html:182
+#: templates/dashboard/@support_team/new_purchases.html:155
+#: templates/includes/main/shop/hero.html:81 templates/main/contact.html:95
+msgid "Envoyer"
+msgstr "Submit"
+
+#: templates/api/customers/authorizations/world_countries.html:1
+msgid "Sélectionnez un pays"
+msgstr "Select a country"
+
+#: templates/api/customers/blog/comment.html:6
+msgid "Commenter - Afrilog"
+msgstr "Comment - Afrilog"
+
+#: templates/api/customers/blog/saved_articles_listing.html:6
+msgid "Articles enregistrés - Afrilog"
+msgstr "Saved articles"
+
+#: templates/api/customers/contacts/create_contact.html:4
+msgid "Ajouter un contact : Ressync"
+msgstr ""
+
+#: templates/api/customers/contacts/create_contact.html:20
+#: templates/dashboard/customers/view_contacts.html:20
+#: templates/dashboard/partials/sidebar.html:245
+msgid "Contacts"
+msgstr "Contacts"
+
+#: templates/api/customers/contacts/create_contact.html:23
+#: templates/api/customers/contacts/create_contact.html:30
+#: templates/dashboard/partials/sidebar.html:254
+msgid "Ajouter un contact"
+msgstr "Add a new contact"
+
+#: templates/api/customers/contacts/create_contact.html:36
+msgid "Josh"
+msgstr ""
+
+#: templates/api/customers/contacts/create_contact.html:37
+#: templates/dashboard/customers/view_contacts.html:98
+msgid "Veuillez donner un prénom"
+msgstr "Please enter a valid first name"
+
+#: templates/api/customers/contacts/create_contact.html:40
+#: templates/dashboard/@support_team/stores.html:39
+#: templates/dashboard/@support_team/stores.html:95
+#: templates/dashboard/@support_team/stores.html:144
+#: templates/dashboard/customers/view_contacts.html:40
+#: templates/dashboard/customers/view_contacts.html:101
+msgid "Nom"
+msgstr "First Name"
+
+#: templates/api/customers/contacts/create_contact.html:41
+msgid "Brainer"
+msgstr ""
+
+#: templates/api/customers/contacts/create_contact.html:42
+#: templates/dashboard/customers/view_contacts.html:103
+msgid "Veuillez donner un nom"
+msgstr "Please give your note a title"
+
+#: templates/api/customers/contacts/create_contact.html:47
+#: templates/api/customers/jobs/apply.html:33
+#: templates/dashboard/@support_team/stores.html:41
+#: templates/dashboard/@support_team/stores.html:105
+#: templates/dashboard/@support_team/stores.html:154
+#: templates/dashboard/customers/view_contacts.html:41
+#: templates/dashboard/customers/view_contacts.html:106
+msgid "Email"
+msgstr "Email"
+
+#: templates/api/customers/contacts/create_contact.html:48
+msgid "josh@gmail.com"
+msgstr ""
+
+#: templates/api/customers/contacts/create_contact.html:49
+msgid "Veuillez donner un email valide"
+msgstr "Please enter a valid amount"
+
+#: templates/api/customers/contacts/create_contact.html:53
+msgid "Entrez le numéro de téléphone"
+msgstr "Phone Number"
+
+#: templates/api/customers/contacts/create_contact.html:54
+#: templates/dashboard/customers/view_contacts.html:113
+msgid "Veuillez donner un numéro de téléphone"
+msgstr "Please enter a valid phone number"
+
+#: templates/api/customers/contacts/create_contact.html:59
+#: templates/dashboard/customers/view_contacts.html:44
+#: templates/dashboard/customers/view_contacts.html:121
+msgid "Sexe"
+msgstr ""
+
+#: templates/api/customers/contacts/create_contact.html:61
+msgid "Sélectionnez le sexe"
+msgstr "Select a country"
+
+#: templates/api/customers/contacts/create_contact.html:62
+#: templates/api/customers/contacts/create_contact.html:63
+msgid "Masculin"
+msgstr ""
+
+#: templates/api/customers/contacts/create_contact.html:62
+#: templates/api/customers/contacts/create_contact.html:63
+#: templates/dashboard/customers/view_contacts.html:123
+msgid "Homme"
+msgstr "Summary\""
+
+#: templates/api/customers/contacts/create_contact.html:64
+msgid "Féminin"
+msgstr ""
+
+#: templates/api/customers/contacts/create_contact.html:64
+#: templates/dashboard/customers/view_contacts.html:124
+msgid "Femme"
+msgstr "Close"
+
+#: templates/api/customers/contacts/create_contact.html:65
+#: templates/api/customers/goods/purchase_request.html:76
+#: templates/dashboard/@support_team/folders.html:321
+#: templates/dashboard/@support_team/products.html:254
+#: templates/dashboard/customers/view_contacts.html:125
+msgid "Autre"
+msgstr "Type"
+
+#: templates/api/customers/contacts/create_contact.html:72
+msgid "Ajouter le contact"
+msgstr "Add a note"
+
+#: templates/api/customers/goods/privacy_policy.html:7
+msgid "En utilisant nos services, vous acceptez notre "
+msgstr "By using our services, you agree to our "
+
+#: templates/api/customers/goods/privacy_policy.html:7
+#: templates/main/contact.html:70
+msgid "politique de confidentialité"
+msgstr "Privacy policy"
+
+#: templates/api/customers/goods/privacy_policy.html:20
+msgid "Politique de Confidentialité"
+msgstr "Privacy policy"
+
+#: templates/api/customers/goods/privacy_policy.html:26
+msgid ""
+"Nous collectons des informations personnelles telles que le nom, "
+"l'adresse et les coordonnées pour fournir nos services de livraison."
+msgstr ""
+"We collect personal information such as name, the address and contact "
+"details to provide our delivery services."
+
+#: templates/api/customers/goods/privacy_policy.html:27
+msgid ""
+"Vos données peuvent être utilisées pour suivre et améliorer nos "
+"opérations logistiques."
+msgstr "Your data may be used to monitor and improve our logistics operations."
+
+#: templates/api/customers/goods/privacy_policy.html:28
+msgid ""
+"Nous pouvons partager vos informations avec des prestataires de services "
+"tiers pour les besoins de la livraison."
+msgstr ""
+"We may share your information with service providers third party for "
+"delivery purposes."
+
+#: templates/api/customers/goods/privacy_policy.html:29
+msgid ""
+"Nous accordons une importance particulière à la sécurité de vos données "
+"et utilisons des mesures standard de l'industrie pour les protéger."
+msgstr ""
+"We attach particular importance to the security of your data and use "
+"industry standard measures to protect them."
+
+#: templates/api/customers/goods/privacy_policy.html:30
+msgid ""
+"En utilisant nos services, vous acceptez d'être majeur dans votre "
+"juridiction pour consentir à notre politique de confidentialité."
+msgstr ""
+"By using our services, you agree to be of legal age in your jurisdiction "
+"to consent to our privacy policy."
+
+#: templates/api/customers/goods/privacy_policy.html:33
+#: templates/dashboard/@support_team/ads.html:119
+#: templates/dashboard/@support_team/ads.html:169
+#: templates/dashboard/@support_team/ads.html:236
+#: templates/dashboard/@support_team/applicants_list.html:105
+#: templates/dashboard/@support_team/employees_listing.html:115
+#: templates/dashboard/@support_team/events.html:53
+#: templates/dashboard/@support_team/folders.html:150
+#: templates/dashboard/@support_team/folders.html:251
+#: templates/dashboard/@support_team/invoices.html:106
+#: templates/dashboard/@support_team/new_purchases.html:109
+#: templates/dashboard/@support_team/quotes_list.html:110
+#: templates/dashboard/@support_team/quotes_list.html:159
+#: templates/dashboard/customers/previous_purchase_requests.html:89
+#: templates/main/home.html:549 templates/main/home.html:581
+msgid "Fermer"
+msgstr "Close"
+
+#: templates/api/customers/goods/purchase_request.html:2
+msgid "Passer une commande : Ressync"
+msgstr "Place an order: Afrilog"
+
+#: templates/api/customers/goods/purchase_request.html:17
+#: templates/dashboard/customers/live_tracking.html:20
+#: templates/dashboard/customers/previous_purchase_requests.html:16
+msgid "Mes commandes"
+msgstr "My orders"
+
+#: templates/api/customers/goods/purchase_request.html:20
+#: templates/api/customers/goods/purchase_request.html:28
+msgid "Passer une commande"
+msgstr "Place an order"
+
+#: templates/api/customers/goods/purchase_request.html:36
+msgid "Bertram"
+msgstr "Bertram"
+
+#: templates/api/customers/goods/purchase_request.html:39
+msgid "Veuillez entrer un nom de famille valide"
+msgstr "Please enter a valid last name"
+
+#: templates/api/customers/goods/purchase_request.html:45
+msgid "Gillfoyle"
+msgstr "Gillfoyle"
+
+#: templates/api/customers/goods/purchase_request.html:48
+msgid "Veuillez entrer un prénom valide"
+msgstr "Please enter a valid first name"
+
+#: templates/api/customers/goods/purchase_request.html:55
+#: templates/dashboard/@support_team/products.html:224
+#: templates/dashboard/customers/previous_purchase_requests.html:33
+#: templates/dashboard/customers/previous_purchase_requests.html:111
+msgid "Nom du produit"
+msgstr "Product Name"
+
+#: templates/api/customers/goods/purchase_request.html:58
+msgid "Veuillez entrer le nom de votre produit"
+msgstr "Please enter the name of your product"
+
+#: templates/api/customers/goods/purchase_request.html:64
+#: templates/dashboard/@support_team/new_purchases.html:32
+#: templates/dashboard/@support_team/products.html:118
+#: templates/dashboard/@support_team/products.html:159
+#: templates/dashboard/@support_team/products.html:243
+msgid "Catégorie"
+msgstr "Category"
+
+#: templates/api/customers/goods/purchase_request.html:66
+#: templates/dashboard/@support_team/folders.html:311
+#: templates/dashboard/@support_team/products.html:120
+#: templates/dashboard/@support_team/products.html:162
+#: templates/dashboard/@support_team/products.html:246
+msgid "Électronique"
+msgstr "Electronics"
+
+#: templates/api/customers/goods/purchase_request.html:67
+#: templates/dashboard/@support_team/products.html:121
+#: templates/dashboard/@support_team/products.html:163
+#: templates/dashboard/@support_team/products.html:247
+msgid "Vêtements"
+msgstr "Clothing"
+
+#: templates/api/customers/goods/purchase_request.html:68
+#: templates/dashboard/@support_team/products.html:122
+#: templates/dashboard/@support_team/products.html:164
+#: templates/dashboard/@support_team/products.html:248
+msgid "Livres"
+msgstr "Books"
+
+#: templates/api/customers/goods/purchase_request.html:69
+#: templates/dashboard/@support_team/folders.html:318
+msgid "Meubles"
+msgstr "Meets"
+
+#: templates/api/customers/goods/purchase_request.html:70
+msgid "Aliments"
+msgstr "Client"
+
+#: templates/api/customers/goods/purchase_request.html:71
+msgid "Jouets"
+msgstr "Options"
+
+#: templates/api/customers/goods/purchase_request.html:72
+msgid "Appareils électroménagers"
+msgstr ""
+
+#: templates/api/customers/goods/purchase_request.html:73
+#: templates/dashboard/@support_team/products.html:126
+#: templates/dashboard/@support_team/products.html:168
+#: templates/dashboard/@support_team/products.html:253
+#: templates/includes/main/header/resources.html:6
+msgid "Outils"
+msgstr "Options"
+
+#: templates/api/customers/goods/purchase_request.html:74
+msgid "Articles de sport"
+msgstr "Type of Transport"
+
+#: templates/api/customers/goods/purchase_request.html:75
+msgid "Bijoux"
+msgstr ""
+
+#: templates/api/customers/goods/purchase_request.html:79
+msgid "Veuillez sélectionner la catégorie de votre produit"
+msgstr "Please select the category of your product"
+
+#: templates/api/customers/goods/purchase_request.html:87
+#: templates/api/customers/goods/purchase_request.html:88
+msgid "Longueur du produit"
+msgstr "Product Length"
+
+#: templates/api/customers/goods/purchase_request.html:93
+#: templates/api/customers/goods/purchase_request.html:94
+msgid "Largeur du produit"
+msgstr "Product Width"
+
+#: templates/api/customers/goods/purchase_request.html:101
+#: templates/main/contact.html:49
+msgid "Numéro de téléphone"
+msgstr "Phone Number"
+
+#: templates/api/customers/goods/purchase_request.html:105
+msgid "Votre numéro de téléphone est requis"
+msgstr "Your phone number is required"
+
+#: templates/api/customers/goods/purchase_request.html:111
+msgid "Votre Adresse E-mail"
+msgstr "Your Email Address"
+
+#: templates/api/customers/goods/purchase_request.html:114
+msgid "Votre adresse E-mail est requise"
+msgstr "Your email address is required"
+
+#: templates/api/customers/goods/purchase_request.html:117
+msgid "Cette adresse E-mail est invalide"
+msgstr "This email address is invalid"
+
+#: templates/api/customers/goods/purchase_request.html:125
+#: templates/dashboard/@support_team/new_purchases.html:76
+#: templates/dashboard/@support_team/products.html:110
+#: templates/dashboard/@support_team/products.html:235
+msgid "Fournisseur"
+msgstr "Supplier"
+
+#: templates/api/customers/goods/purchase_request.html:131
+#: templates/dashboard/@support_team/new_purchases.html:104
+msgid "Image du produit"
+msgstr "Product Image"
+
+#: templates/api/customers/goods/purchase_request.html:140
+msgid "Autre chose sur votre produit..."
+msgstr "Anything else about your product..."
+
+#: templates/api/customers/goods/purchase_request.html:147
+msgid "Votre Pays"
+msgstr "Your Country"
+
+#: templates/api/customers/goods/purchase_request.html:158
+msgid "Adresse physique"
+msgstr "Physical Address"
+
+#: templates/api/customers/goods/purchase_request.html:159
+msgid "Entrez votre adresse"
+msgstr "Enter your address"
+
+#: templates/api/customers/goods/purchase_request.html:161
+msgid "Veuillez entrer une adresse valide"
+msgstr "Please enter a valid address"
+
+#: templates/api/customers/goods/purchase_request.html:167
+msgid "Document ou Manuel"
+msgstr "Document or Manual"
+
+#: templates/api/customers/jobs/apply.html:2
+msgid "Formulaire de candidature : Afrilog"
+msgstr "Application Form: Afrilog"
+
+#: templates/api/customers/jobs/apply.html:17
+#: templates/api/customers/jobs/apply.html:22
+msgid "Formulaire de candidature"
+msgstr "Application Form"
+
+#: templates/api/customers/jobs/apply.html:34
+msgid "exemple@gmail.com"
+msgstr ""
+
+#: templates/api/customers/jobs/apply.html:37
+msgid "Dites brièvement pourquoi on devrait vous choisir pour ce poste"
+msgstr ""
+
+#: templates/api/customers/jobs/apply.html:41
+msgid "LinkedIn URL"
+msgstr "LinkedIn URL"
+
+#: templates/api/customers/jobs/apply.html:45
+msgid "GitHub URL"
+msgstr "GitHub URL"
+
+#: templates/api/customers/jobs/apply.html:49
+msgid "Dribble URL"
+msgstr "Dribble URL"
+
+#: templates/api/customers/jobs/apply.html:53
+#: templates/dashboard/@support_team/applicants_list.html:95
+msgid "Date de Naissance"
+msgstr "Date of Birth"
+
+#: templates/api/customers/jobs/apply.html:57
+msgid "Adresse Physique"
+msgstr "Physical Address"
+
+#: templates/api/customers/jobs/apply.html:61
+msgid "Télécharger votre CV"
+msgstr "Download"
+
+#: templates/api/customers/jobs/apply.html:68
+msgid "Soumettre"
+msgstr "Submit"
+
+#: templates/api/docs/spreadsheet_doc.html:2
+msgid "Nouvelle Feuille: Afrilog"
+msgstr "New Sheet: Afrilog"
+
+#: templates/api/docs/spreadsheet_doc.html:17
+#: templates/api/docs/text_doc.html:17
+#: templates/dashboard/partials/sidebar.html:167
+msgid "Documents"
+msgstr "Folders"
+
+#: templates/api/docs/spreadsheet_doc.html:20
+msgid "Nouvelle feuille"
+msgstr "New Sheet"
+
+#: templates/api/docs/spreadsheet_doc.html:32
+msgid "Créer une nouvelle feuille"
+msgstr "Create a new sheet"
+
+#: templates/api/docs/text_doc.html:2
+msgid "Nouveau document: Afrilog"
+msgstr "New Document: Afrilog"
+
+#: templates/api/docs/text_doc.html:20
+msgid "Nouveau document"
+msgstr "New Document"
+
+#: templates/api/docs/text_doc.html:32
+msgid "Créer un nouveau document"
+msgstr "Create a new document"
+
+#: templates/api/messages/new_message.html:2
+msgid "Nouveau message : Afrilog"
+msgstr "New Message: Afrilog"
+
+#: templates/api/messages/new_message.html:16
+#: templates/dashboard/customers/inbox.html:19
+#: templates/dashboard/new_messages.html:16
+#: templates/dashboard/partials/sidebar.html:274
+#: templates/dashboard/sent_messages.html:16
+msgid "Messages"
+msgstr "Messages"
+
+#: templates/api/messages/new_message.html:19
+#: templates/api/messages/new_message.html:31
+#: templates/dashboard/partials/sidebar.html:283
+msgid "Nouveau message"
+msgstr "New Message"
+
+#: templates/auth/layout.html:5 templates/auth/login.html:2
+msgid "Ressync : Se connecter"
+msgstr "Afrilog: Login"
+
+#: templates/auth/login.html:8 templates/auth/login.html:110
+msgid "Connexion"
+msgstr "Login"
+
+#: templates/auth/login.html:10 templates/auth/login.html:15
+#: templates/auth/signup.html:53 templates/auth/signup.html:58
+#: templates/dashboard/@support_team/applicants_list.html:30
+#: templates/dashboard/@support_team/applicants_list.html:87
+#: templates/dashboard/settings.html:49 templates/main/contact.html:41
+msgid "Adresse E-mail"
+msgstr "Email Address"
+
+#: templates/auth/login.html:40 templates/auth/signup.html:83
+msgid "Adresse e-mail invalide"
+msgstr "Invalid email address"
+
+#: templates/auth/login.html:44
+msgid "Adresse e-mail incorrect"
+msgstr "Incorrect email address"
+
+#: templates/auth/login.html:48
+msgid "Votre adresse est e-mail est requise"
+msgstr "Your email address is required"
+
+#: templates/auth/login.html:53
+msgid "Mot de Passe"
+msgstr "Password"
+
+#: templates/auth/login.html:55
+msgid "Mot de passe oublié?"
+msgstr "Forgot password?"
+
+#: templates/auth/login.html:62
+msgid "8 caractères min"
+msgstr "8 characters min"
+
+#: templates/auth/login.html:91
+msgid "Mot de passe incorrect"
+msgstr "Incorrect password"
+
+#: templates/auth/login.html:95
+msgid "Votre mot de passe est requis"
+msgstr "Your password is required"
+
+#: templates/auth/login.html:101
+msgid "Se souvenir de moi"
+msgstr ""
+
+#: templates/auth/login.html:151
+msgid "Se connecter avec Google"
+msgstr "Login with Google"
+
+#: templates/auth/login.html:174
+msgid "Vous n'avez pas de compte?"
+msgstr "Don't have an account?"
+
+#: templates/auth/login.html:175
+msgid "Créer un compte ici"
+msgstr "Create an account here"
+
+#: templates/auth/signup.html:2
+msgid "Ressync : Créer un nouveau compte"
+msgstr "Afrilog: Create a new account"
+
+#: templates/auth/signup.html:8
+msgid "productif image"
+msgstr ""
+
+#: templates/auth/signup.html:13
+msgid "Créer un nouveau compte"
+msgstr "Create a new account"
+
+#: templates/auth/signup.html:15
+msgid "Booster votre productivité et accélerer vos livraisons"
+msgstr "Boost your productivity and speed up your deliveries"
+
+#: templates/auth/signup.html:26
+msgid "Continuer avec Google"
+msgstr "Continue with Google"
+
+#: templates/auth/signup.html:87
+msgid "Adresse e-mail requise!"
+msgstr "Email address required!"
+
+#: templates/auth/signup.html:91
+msgid "Votre compte existe déja!"
+msgstr "Your account already exists!"
+
+#: templates/auth/signup.html:96
+msgid "Créer Mot de Passe"
+msgstr "Create Password"
+
+#: templates/auth/signup.html:98
+msgid "Au moins 08 caractères"
+msgstr "At least 08 characters"
+
+#: templates/auth/signup.html:105
+msgid "Mot de passe"
+msgstr "Password"
+
+#: templates/auth/signup.html:134
+msgid "Mot de passe requis!"
+msgstr "Password required!"
+
+#: templates/auth/signup.html:138
+msgid "Un mot de passe doit contenir au moins 08 caractères!"
+msgstr "A password must contain at least 08 characters!"
+
+#: templates/auth/signup.html:143 templates/auth/signup.html:149
+msgid "Confirmer Mot de Passe"
+msgstr "Confirm Password"
+
+#: templates/auth/signup.html:156
+msgid "Les deux mots de passe ne correspondent pas"
+msgstr "The two passwords do not match"
+
+#: templates/auth/signup.html:160
+msgid "Confirmation requise pour continuer!"
+msgstr "Confirmation required to continue!"
+
+#: templates/auth/signup.html:164
+msgid "En continuant vous aviez lu et accepté nos"
+msgstr "By continuing you have read and accepted our"
+
+#: templates/auth/signup.html:164
+msgid "conditions générales d'utilisation."
+msgstr "terms of use."
+
+#: templates/auth/signup.html:172 templates/includes/main/shop/hero.html:17
+#: templates/main/calculate_air_freight.html:61
+#: templates/main/calculate_sea_freight.html:61
+msgid "Continuer"
+msgstr "Continue"
+
+#: templates/auth/signup.html:179
+msgid "Avez-vous déja un compte?"
+msgstr "Already have an account?"
+
+#: templates/auth/signup.html:180
+msgid "Connectez vous ici"
+msgstr "Login here"
+
+#: templates/dashboard/applied_jobs_listing.html:2
+msgid "Mes Candidatures : Ressync"
+msgstr "Application Form: Afrilog"
+
+#: templates/dashboard/applied_jobs_listing.html:6
+msgid "Mes Candidatures"
+msgstr "Application Date"
+
+#: templates/dashboard/applied_jobs_listing.html:14
+msgid "Date de Soumission"
+msgstr "Publication date"
+
+#: templates/dashboard/@support_team/my_task.html:40
+#: templates/dashboard/@support_team/new_purchases.html:33
+#: templates/dashboard/@support_team/tasks.html:41
+#: templates/dashboard/applied_jobs_listing.html:15
+#: templates/dashboard/customers/previous_quotes.html:38
+msgid "Statut"
+msgstr "Status"
+
+#: templates/dashboard/applied_jobs_listing.html:26
+msgid "En Attente"
+msgstr "Pending"
+
+#: templates/dashboard/applied_jobs_listing.html:28
+msgid "Approuvé"
+msgstr ""
+
+#: templates/dashboard/applied_jobs_listing.html:30
+msgid "Rejeté"
+msgstr "Reject"
+
+#: templates/dashboard/applied_jobs_listing.html:32
+msgid "Non Défini"
+msgstr ""
+
+#: templates/dashboard/calculator.html:2
+msgid "Calculatrice : Ressync"
+msgstr "Calculator: Afrilog"
+
+#: templates/dashboard/calculator.html:17
+#: templates/dashboard/calculator.html:25
+msgid "Calculatrice"
+msgstr "Calculator"
+
+#: templates/dashboard/calculator.html:39
+msgid "Longueur (m)"
+msgstr "Length (m)"
+
+#: templates/dashboard/calculator.html:43
+msgid "Largeur (m)"
+msgstr "Width (m)"
+
+#: templates/dashboard/calculator.html:47
+msgid "Hauteur (m)"
+msgstr "Height (m)"
+
+#: templates/dashboard/calculator.html:51
+msgid "Type de transport"
+msgstr "Type of Transport"
+
+#: templates/dashboard/calculator.html:53
+msgid "Transport aérien"
+msgstr "Air Transport"
+
+#: templates/dashboard/calculator.html:54
+msgid "Transport maritime"
+msgstr "Maritime Transport"
+
+#: templates/dashboard/dashboard.html:55
+msgid "MySails : Dashboard"
+msgstr "MyAfrilog: Dashboard"
+
+#: templates/dashboard/jobs_listing.html:2
+msgid "Nouvelles offres d'emploi : Ressync"
+msgstr "New Job Offers: Afrilog"
+
+#: templates/dashboard/jobs_listing.html:20
+msgid "Nouvelles offres"
+msgstr "New Offers"
+
+#: templates/dashboard/jobs_listing.html:28
+msgid "Nouvelles offres d'emploi"
+msgstr "New Job Offers"
+
+#: templates/dashboard/@support_team/folders.html:63
+#: templates/dashboard/@support_team/invoices.html:43
+#: templates/dashboard/@support_team/previous_created_jobs.html:39
+#: templates/dashboard/@support_team/previous_notes.html:38
+#: templates/dashboard/@support_team/products.html:41
+#: templates/dashboard/@support_team/quotes_list.html:31
+#: templates/dashboard/@support_team/stores.html:38
+#: templates/dashboard/@support_team/tasks.html:38
+#: templates/dashboard/customers/view_contacts.html:38
+#: templates/dashboard/jobs_listing.html:35 templates/views/invoices.html:39
+msgid "ID"
+msgstr "ID"
+
+#: templates/dashboard/@support_team/previous_created_jobs.html:41
+#: templates/dashboard/@support_team/tasks.html:40
+#: templates/dashboard/jobs_listing.html:37
+msgid "Desc"
+msgstr "Desc"
+
+#: templates/dashboard/jobs_listing.html:55
+msgid "postuler"
+msgstr "apply"
+
+#: templates/dashboard/customers/inbox.html:4
+#: templates/dashboard/new_messages.html:2
+msgid "Boîte de réception : Ressync"
+msgstr "Inbox: Afrilog"
+
+#: templates/dashboard/customers/inbox.html:22
+#: templates/dashboard/new_messages.html:19
+#: templates/dashboard/new_messages.html:27 templates/views/messages.html:5
+msgid "Boîte de réception"
+msgstr "Inbox"
+
+#: templates/dashboard/sent_messages.html:2
+msgid "Messages envoyés : Ressync"
+msgstr "Sent Messages: Afrilog"
+
+#: templates/dashboard/sent_messages.html:19
+#: templates/dashboard/sent_messages.html:27
+msgid "Messages envoyés"
+msgstr "Sent Messages"
+
+#: templates/dashboard/partials/sidebar.html:366
+#: templates/dashboard/settings.html:6 templates/dashboard/settings.html:9
+#: templates/dashboard/settings.html:27 templates/dashboard/settings.html:34
+msgid "Paramètres"
+msgstr "Settings"
+
+#: templates/dashboard/settings.html:53
+msgid "Adresse Maison"
+msgstr "Home Address"
+
+#: templates/dashboard/settings.html:58
+msgid "Nom d'utilisateur"
+msgstr "Username"
+
+#: templates/dashboard/settings.html:66
+msgid "Ancien mot de passe"
+msgstr "Create Password"
+
+#: templates/dashboard/settings.html:70
+msgid "Nouveau mot de passe"
+msgstr "Password"
+
+#: templates/dashboard/settings.html:74
+msgid "Confirmer mot de passe"
+msgstr "Confirm Password"
+
+#: templates/dashboard/settings.html:79
+msgid "Exigences du mot de passe"
+msgstr "Create Password"
+
+#: templates/dashboard/settings.html:80
+msgid ""
+"Pour créer un nouveau mot de passe, vous devez répondre à toutes les "
+"exigences suivantes:"
+msgstr ""
+
+#: templates/dashboard/settings.html:82
+msgid "Minimum 8 caractères"
+msgstr "At least 08 characters"
+
+#: templates/dashboard/settings.html:83
+msgid "Au moins un caractère spécial"
+msgstr "At least 08 characters"
+
+#: templates/dashboard/settings.html:84
+msgid "Au moins un numéro"
+msgstr ""
+
+#: templates/dashboard/settings.html:85
+msgid "Ne peut pas être le même que l'ancien mot de passe"
+msgstr ""
+
+#: templates/dashboard/user_home.html:2
+msgid "MyRessync : Accueil"
+msgstr "MyAfrilog: Home"
+
+#: templates/dashboard/@support_team/ads.html:2
+msgid "Campagnes pub : Ressync"
+msgstr "Ad Campaigns: Afrilog"
+
+#: templates/dashboard/@support_team/ads.html:14
+#: templates/dashboard/@support_team/ads.html:20
+#: templates/dashboard/partials/sidebar.html:197
+msgid "Ads"
+msgstr "Ads"
+
+#: templates/dashboard/@support_team/ads.html:25
+msgid "Créer une nouvelle campagnes"
+msgstr "Create a new campaign"
+
+#: templates/dashboard/@support_team/ads.html:28
+msgid "Trier les campagnes"
+msgstr "Sort campaigns"
+
+#: templates/dashboard/@support_team/ads.html:40
+#: templates/dashboard/@support_team/ads.html:92
+#: templates/dashboard/@support_team/ads.html:149
+#: templates/dashboard/@support_team/ads.html:216
+msgid "Débute"
+msgstr "Starts"
+
+#: templates/dashboard/@support_team/ads.html:41
+#: templates/dashboard/@support_team/ads.html:97
+#: templates/dashboard/@support_team/ads.html:153
+#: templates/dashboard/@support_team/ads.html:220
+#: templates/dashboard/@support_team/events.html:48
+msgid "Termine à"
+msgstr "Ends at"
+
+#: templates/dashboard/@support_team/ads.html:42
+#: templates/dashboard/@support_team/ads.html:101
+#: templates/dashboard/@support_team/ads.html:157
+#: templates/dashboard/@support_team/ads.html:224
+msgid "Budget Min"
+msgstr "Min Budget"
+
+#: templates/dashboard/@support_team/ads.html:43
+#: templates/dashboard/@support_team/ads.html:105
+#: templates/dashboard/@support_team/ads.html:161
+#: templates/dashboard/@support_team/ads.html:228
+msgid "Budget Max"
+msgstr "Max Budget"
+
+#: templates/dashboard/@support_team/ads.html:44
+#: templates/dashboard/@support_team/applicants_list.html:33
+#: templates/dashboard/@support_team/applicants_list.html:46
+#: templates/dashboard/@support_team/employees_listing.html:32
+#: templates/dashboard/@support_team/employees_listing.html:63
+#: templates/dashboard/@support_team/folders.html:71
+#: templates/dashboard/@support_team/invoices.html:46
+#: templates/dashboard/@support_team/my_task.html:43
+#: templates/dashboard/@support_team/previous_created_jobs.html:45
+#: templates/dashboard/@support_team/previous_created_jobs.html:60
+#: templates/dashboard/@support_team/previous_notes.html:42
+#: templates/dashboard/@support_team/products.html:45
+#: templates/dashboard/@support_team/products.html:58
+#: templates/dashboard/@support_team/quotes_list.html:34
+#: templates/dashboard/@support_team/stores.html:42
+#: templates/dashboard/@support_team/tasks.html:42
+#: templates/dashboard/customers/previous_quotes.html:58
+#: templates/dashboard/customers/view_contacts.html:45
+msgid "Options"
+msgstr "Options"
+
+#: templates/dashboard/@support_team/ads.html:57
+#: templates/dashboard/@support_team/folders.html:91
+#: templates/dashboard/@support_team/invoices.html:62
+#: templates/dashboard/@support_team/quotes_list.html:50
+#: templates/dashboard/customers/previous_purchase_requests.html:59
+#: templates/dashboard/customers/previous_quotes.html:63
+msgid "Voir les détails"
+msgstr "View details"
+
+#: templates/dashboard/@support_team/ads.html:60
+#: templates/dashboard/@support_team/folders.html:100
+#: templates/dashboard/@support_team/invoices.html:65
+#: templates/dashboard/@support_team/previous_created_jobs.html:65
+#: templates/dashboard/@support_team/previous_notes.html:66
+#: templates/dashboard/@support_team/products.html:68
+#: templates/dashboard/@support_team/quotes_list.html:53
+#: templates/dashboard/@support_team/stores.html:60
+#: templates/dashboard/@support_team/tasks.html:66
+#: templates/dashboard/customers/previous_quotes.html:68
+#: templates/dashboard/customers/view_contacts.html:66
+msgid "Modifier"
+msgstr "Edit"
+
+#: templates/dashboard/@support_team/ads.html:63
+#: templates/dashboard/@support_team/applicants_list.html:59
+#: templates/dashboard/@support_team/employees_listing.html:79
+#: templates/dashboard/@support_team/folders.html:101
+#: templates/dashboard/@support_team/invoices.html:70
+#: templates/dashboard/@support_team/new_purchases.html:56
+#: templates/dashboard/@support_team/previous_created_jobs.html:70
+#: templates/dashboard/@support_team/previous_notes.html:71
+#: templates/dashboard/@support_team/quotes_list.html:58
+#: templates/dashboard/@support_team/stores.html:65
+#: templates/dashboard/@support_team/tasks.html:71
+#: templates/dashboard/customers/previous_purchase_requests.html:61
+#: templates/dashboard/customers/previous_quotes.html:73
+#: templates/dashboard/customers/view_contacts.html:71
+msgid "Supprimer"
+msgstr "Delete"
+
+#: templates/dashboard/@support_team/ads.html:73
+msgid "Détails de la campagne"
+msgstr "Campaign Details"
+
+#: templates/dashboard/@support_team/ads.html:88
+#: templates/dashboard/@support_team/ads.html:145
+#: templates/dashboard/@support_team/ads.html:212
+msgid "Objectifs"
+msgstr "Objectives"
+
+#: templates/dashboard/@support_team/ads.html:109
+#: templates/dashboard/@support_team/ads.html:165
+#: templates/dashboard/@support_team/ads.html:232
+msgid "Dette"
+msgstr "Debt"
+
+#: templates/dashboard/@support_team/ads.html:114
+msgid "Temps restant"
+msgstr "Time remaining"
+
+#: templates/dashboard/@support_team/ads.html:129
+msgid "Modifier les détails de la campagne"
+msgstr "Edit campaign details"
+
+#: templates/dashboard/@support_team/ads.html:173
+msgid "Sauvegarder"
+msgstr "Save"
+
+#: templates/dashboard/@support_team/ads.html:196
+#: templates/dashboard/@support_team/empty/no_Ads.html:12
+msgid "Créer une nouvelle campagne"
+msgstr "Create a new campaign"
+
+#: templates/dashboard/@support_team/ads.html:205
+msgid "Campagne N°1"
+msgstr "Campaign No. 1"
+
+#: templates/dashboard/@support_team/ads.html:209
+msgid "Entrez la description de la campagne..."
+msgstr "Enter the campaign description..."
+
+#: templates/dashboard/@support_team/ads.html:213
+msgid "Entrez les objectifs de la campagne..."
+msgstr "Enter the campaign objectives..."
+
+#: templates/dashboard/@support_team/applicant_desc.html:6
+#: templates/dashboard/@support_team/quote_desc.html:6
+msgid " - Ressync"
+msgstr ""
+
+#: templates/dashboard/@support_team/applicants_list.html:2
+msgid "Applications Récentes : Ressync"
+msgstr "Recent Applications: Afrilog"
+
+#: templates/dashboard/@support_team/applicants_list.html:5
+msgid "Applications Récentes"
+msgstr "Recent Applications"
+
+#: templates/dashboard/@support_team/applicants_list.html:10
+msgid "Sélectionner un Poste"
+msgstr "Select a Position"
+
+#: templates/dashboard/@support_team/applicants_list.html:12
+msgid "Choisir un Poste"
+msgstr "Choose a Position"
+
+#: templates/dashboard/@support_team/applicants_list.html:29
+msgid "Nom du Candidat"
+msgstr "Candidate Name"
+
+#: templates/dashboard/@support_team/applicants_list.html:31
+#: templates/dashboard/@support_team/applicants_list.html:91
+msgid "Localisation"
+msgstr "Location"
+
+#: templates/dashboard/@support_team/applicants_list.html:32
+msgid "Date de Candidature"
+msgstr "Application Date"
+
+#: templates/dashboard/@support_team/applicants_list.html:52
+#: templates/dashboard/@support_team/employees_listing.html:68
+#: templates/main/cgu.html:147
+msgid "Voir plus"
+msgstr "See more"
+
+#: templates/dashboard/@support_team/applicants_list.html:99
+msgid "Motivation"
+msgstr "Motivation"
+
+#: templates/dashboard/@support_team/applicants_list.html:107
+msgid "Accepter"
+msgstr "Accept"
+
+#: templates/dashboard/@support_team/applicants_list.html:110
+msgid "Rejeter"
+msgstr "Reject"
+
+#: templates/dashboard/@support_team/applicants_list.html:114
+msgid "Imprimer fichier"
+msgstr "Print file"
+
+#: templates/dashboard/@support_team/calendar.html:3
+msgid "Calendrier : Ressync"
+msgstr "Calendar: Afrilog"
+
+#: templates/dashboard/@support_team/calendar.html:17
+#: templates/dashboard/@support_team/calendar.html:22
+#: templates/dashboard/partials/sidebar.html:62
+msgid "Calendrier"
+msgstr "Calendar"
+
+#: templates/dashboard/@support_team/employees_listing.html:2
+msgid "Table des employés : Ressync"
+msgstr "Employee Table: Afrilog"
+
+#: templates/dashboard/@support_team/employees_listing.html:16
+#: templates/dashboard/@support_team/employees_listing.html:21
+#: templates/dashboard/partials/sidebar.html:338
+msgid "Table des employés"
+msgstr "Employee Table"
+
+#: templates/dashboard/@support_team/employees_listing.html:28
+msgid "Nom & Prénom"
+msgstr "First and Last Name"
+
+#: templates/dashboard/@support_team/employees_listing.html:30
+msgid "Matricule/Identifiant"
+msgstr "ID Number"
+
+#: templates/dashboard/@support_team/employees_listing.html:31
+msgid "Depuis"
+msgstr "Since"
+
+#: templates/dashboard/@support_team/employees_listing.html:118
+msgid "Imprimer carte"
+msgstr "Print card"
+
+#: templates/dashboard/@support_team/events.html:3
+msgid "Evènements : Ressync"
+msgstr ""
+
+#: templates/dashboard/@support_team/events.html:17
+#: templates/dashboard/@support_team/events.html:22
+#: templates/dashboard/partials/sidebar.html:186
+msgid "Meets"
+msgstr "Meets"
+
+#: templates/dashboard/@support_team/events.html:33
+msgid "Ajouter un événement"
+msgstr "Add an event"
+
+#: templates/dashboard/@support_team/events.html:41
+msgid "Rencontre avec..."
+msgstr ""
+
+#: templates/dashboard/@support_team/events.html:44
+msgid "Commence à"
+msgstr "Starts at"
+
+#: templates/dashboard/@support_team/finance_reports.html:4
+msgid "Rapport financier : Ressync"
+msgstr "Financial Report: Afrilog"
+
+#: templates/dashboard/@support_team/finance_reports.html:20
+#: templates/dashboard/@support_team/marketplace.html:20
+msgid "Rapports"
+msgstr "Reports"
+
+#: templates/dashboard/@support_team/finance_reports.html:23
+msgid "Rapport financier"
+msgstr "Financial Report"
+
+#: templates/dashboard/@support_team/folders.html:2
+msgid "Dossiers : Ressync"
+msgstr "Folders : Ressync"
+
+#: templates/dashboard/@support_team/folders.html:14
+#: templates/dashboard/@support_team/folders.html:19
+msgid "Dossiers"
+msgstr "Folders"
+
+#: templates/dashboard/@support_team/folders.html:23
+msgid "Rechercher un dossier"
+msgstr "Search a folder"
+
+#: templates/dashboard/@support_team/empty/no_folder.html:12
+#: templates/dashboard/@support_team/folders.html:31
+#: templates/dashboard/@support_team/folders.html:292
+msgid "Créer un nouveau dossier"
+msgstr "Create a new document"
+
+#: templates/dashboard/@support_team/folders.html:35
+msgid "Trier les dossiers"
+msgstr "Sort campaigns"
+
+#: templates/dashboard/@support_team/folders.html:41
+msgid "Par dossiers non traités"
+msgstr "By unprocessed files"
+
+#: templates/dashboard/@support_team/folders.html:46
+msgid "Par dossiers traités"
+msgstr "By processed files"
+
+#: templates/dashboard/@support_team/folders.html:64
+msgid "Ouvert le"
+msgstr "Opened at"
+
+#: templates/dashboard/@support_team/folders.html:65
+#: templates/dashboard/@support_team/previous_notes.html:41
+msgid "Type"
+msgstr "Type"
+
+#: templates/dashboard/@support_team/folders.html:66
+#: templates/dashboard/@support_team/folders.html:129
+#: templates/dashboard/@support_team/folders.html:177
+#: templates/dashboard/@support_team/folders.html:325
+#: templates/dashboard/customers/previous_quotes.html:35
+msgid "Client"
+msgstr "Client"
+
+#: templates/dashboard/@support_team/folders.html:67
+#: templates/dashboard/@support_team/folders.html:133
+#: templates/dashboard/@support_team/folders.html:181
+#: templates/dashboard/@support_team/folders.html:329
+#: templates/main/home.html:435
+msgid "Transport"
+msgstr "Transport"
+
+#: templates/dashboard/@support_team/folders.html:68
+#: templates/dashboard/@support_team/folders.html:137
+#: templates/dashboard/@support_team/folders.html:185
+msgid "Poids"
+msgstr "Weight(kg)"
+
+#: templates/dashboard/@support_team/folders.html:69
+#: templates/dashboard/@support_team/folders.html:141
+#: templates/dashboard/@support_team/folders.html:189
+#: templates/dashboard/@support_team/folders.html:344
+msgid "Connaissements"
+msgstr "Bills of Ladding"
+
+#: templates/dashboard/@support_team/folders.html:70
+#: templates/dashboard/@support_team/folders.html:145
+#: templates/dashboard/@support_team/folders.html:193
+#: templates/dashboard/@support_team/folders.html:348
+msgid "Date limite"
+msgstr "Deadline"
+
+#: templates/dashboard/@support_team/folders.html:88
+#: templates/dashboard/@support_team/invoices.html:58
+#: templates/dashboard/@support_team/new_purchases.html:34
+#: templates/dashboard/@support_team/new_purchases.html:47
+#: templates/dashboard/@support_team/quotes_list.html:46
+#: templates/dashboard/customers/previous_purchase_requests.html:37
+#: templates/dashboard/customers/previous_purchase_requests.html:56
+#: templates/dashboard/customers/previous_quotes.html:39
+msgid "Actions"
+msgstr "Actions"
+
+#: templates/dashboard/@support_team/folders.html:92
+msgid "Fermer le dossier"
+msgstr "Close the file"
+
+#: templates/dashboard/@support_team/folders.html:95
+#: templates/dashboard/@support_team/folders.html:217
+msgid "Ajouter des fichiers"
+msgstr "Upload files"
+
+#: templates/dashboard/@support_team/folders.html:97
+msgid "Joindre des fichiers"
+msgstr "Upload files"
+
+#: templates/dashboard/@support_team/folders.html:110
+msgid "Détails du dossier"
+msgstr "Folder details"
+
+#: templates/dashboard/@support_team/folders.html:121
+msgid "Date d'ouverture"
+msgstr "Deadline"
+
+#: templates/dashboard/@support_team/folders.html:125
+#: templates/dashboard/@support_team/folders.html:173
+#: templates/dashboard/@support_team/folders.html:305
+msgid "Type de produit"
+msgstr "Product Image"
+
+#: templates/dashboard/@support_team/folders.html:161
+msgid "Modifier les détails du dossier"
+msgstr "Edit campaign details"
+
+#: templates/dashboard/@support_team/folders.html:197
+#: templates/dashboard/@support_team/folders.html:352
+#: templates/dashboard/@support_team/previous_notes.html:115
+#: templates/dashboard/@support_team/products.html:191
+#: templates/dashboard/@support_team/products.html:282
+#: templates/dashboard/customers/view_contacts.html:131
+#: templates/includes/main/shop/hero.html:74
+msgid "Annuler"
+msgstr "Cancel"
+
+#: templates/dashboard/@support_team/folders.html:226
+msgid "Ajouter un autre fichier"
+msgstr "Add an offer"
+
+#: templates/dashboard/@support_team/folders.html:229
+msgid "Sélectionner pour supprimer des fichiers"
+msgstr "Select folders to delete"
+
+#: templates/dashboard/@support_team/folders.html:236
+msgid "Label"
+msgstr "Label"
+
+#: templates/dashboard/@support_team/folders.html:237
+msgid "Entrez le titre du fichier..."
+msgstr "Please enter job title"
+
+#: templates/dashboard/@support_team/folders.html:240
+msgid "Fichier"
+msgstr "Print file"
+
+#: templates/dashboard/@support_team/folders.html:244
+msgid "Supprimer le fichier"
+msgstr "Print file"
+
+#: templates/dashboard/@support_team/folders.html:302
+msgid "Entrez la description du dossier..."
+msgstr "Enter the campaign description..."
+
+#: templates/dashboard/@support_team/folders.html:307
+msgid "Sélectionner le type de produit"
+msgstr "Please select the category of your product"
+
+#: templates/dashboard/@support_team/folders.html:308
+msgid "Matières premières"
+msgstr "Weekly aricles"
+
+#: templates/dashboard/@support_team/folders.html:309
+msgid "Produits finis"
+msgstr "Products"
+
+#: templates/dashboard/@support_team/folders.html:310
+msgid "Biens de consommation"
+msgstr "Consumer goods"
+
+#: templates/dashboard/@support_team/folders.html:312
+msgid "Automobile"
+msgstr "Automotive"
+
+#: templates/dashboard/@support_team/folders.html:313
+msgid "Vêtements et textiles"
+msgstr "Clothing"
+
+#: templates/dashboard/@support_team/folders.html:314
+msgid "Aliments et boissons"
+msgstr "Terms and conditions"
+
+#: templates/dashboard/@support_team/folders.html:315
+msgid "Produits chimiques"
+msgstr "Products"
+
+#: templates/dashboard/@support_team/folders.html:316
+msgid "Produits pharmaceutiques"
+msgstr "Pharmaceutical products"
+
+#: templates/dashboard/@support_team/folders.html:317
+msgid "Matériaux de construction"
+msgstr "Construction materials"
+
+#: templates/dashboard/@support_team/folders.html:317
+msgid "Matériaux  de construction"
+msgstr "Construction materials"
+
+#: templates/dashboard/@support_team/folders.html:319
+msgid "Équipement médical"
+msgstr "Medical equipement"
+
+#: templates/dashboard/@support_team/folders.html:320
+msgid "Produits périssables"
+msgstr "Perishable products"
+
+#: templates/dashboard/@support_team/folders.html:326
+msgid "Entrez le nom complet du client"
+msgstr "Client full name"
+
+#: templates/dashboard/@support_team/folders.html:331
+msgid "Sélectionner le mode de transport..."
+msgstr "Select the mode of transport..."
+
+#: templates/dashboard/@support_team/folders.html:332
+msgid "Camion"
+msgstr "Location"
+
+#: templates/dashboard/@support_team/folders.html:333
+msgid "Navire"
+msgstr "Type"
+
+#: templates/dashboard/@support_team/folders.html:334
+msgid "Avion"
+msgstr "Actions"
+
+#: templates/dashboard/@support_team/folders.html:335
+msgid "Train"
+msgstr ""
+
+#: templates/dashboard/@support_team/folders.html:336
+msgid "Fourgon"
+msgstr ""
+
+#: templates/dashboard/@support_team/folders.html:340
+#: templates/main/components/air/rate-estimation-inputs.html:30
+#: templates/main/components/sea/rate-estimation-inputs.html:29
+msgid "Poids(kg)"
+msgstr "Weight(kg)"
+
+#: templates/dashboard/@support_team/folders.html:345
+msgid "Entrez le connaissement"
+msgstr "Enter your address"
+
+#: templates/dashboard/@support_team/folders.html:354
+msgid "Chargement..."
+msgstr ""
+
+#: templates/dashboard/@support_team/folders.html:357
+msgid "Créer"
+msgstr "Careers"
+
+#: templates/dashboard/@support_team/invoices.html:3
+msgid "Factures : Ressync"
+msgstr "Invoices: Afrilog"
+
+#: templates/dashboard/@support_team/invoices.html:17
+#: templates/dashboard/@support_team/invoices.html:23
+#: templates/dashboard/partials/sidebar.html:156
+#: templates/views/invoices.html:7
+msgid "Factures"
+msgstr "Invoices"
+
+#: templates/dashboard/@support_team/invoices.html:45
+#: templates/dashboard/@support_team/invoices.html:100
+#: templates/dashboard/@support_team/invoices.html:133
+#: templates/dashboard/@support_team/invoices.html:176
+#: templates/views/invoices.html:41
+msgid "Montant"
+msgstr "Amount"
+
+#: templates/dashboard/@support_team/invoices.html:80
+msgid "Détails de la facture"
+msgstr "Invoice Details"
+
+#: templates/dashboard/@support_team/invoices.html:90
+msgid "Titre non spécifié"
+msgstr "Title not specified"
+
+#: templates/dashboard/@support_team/invoices.html:94
+msgid "Description non disponible"
+msgstr "Description not available"
+
+#: templates/dashboard/@support_team/invoices.html:101
+msgid "Montant non spécifié"
+msgstr "Amount not specified"
+
+#: templates/dashboard/@support_team/invoices.html:116
+msgid "Modifier la facture"
+msgstr "Edit invoice"
+
+#: templates/dashboard/@support_team/invoices.html:126
+msgid "Veuillez entrer le titre de la facture"
+msgstr "Please enter the invoice title"
+
+#: templates/dashboard/@support_team/invoices.html:135
+msgid "Veuillez entrer le montant de la facture"
+msgstr "Please enter the invoice amount"
+
+#: templates/dashboard/@support_team/invoices.html:136
+msgid "Veuillez entrer un montant valide"
+msgstr "Please enter a valid amount"
+
+#: templates/dashboard/@support_team/invoices.html:159
+msgid "Créer une nouvelle facture"
+msgstr "Create a new invoice"
+
+#: templates/dashboard/@support_team/invoices.html:168
+msgid "Nouveau moniteur"
+msgstr "New monitor"
+
+#: templates/dashboard/@support_team/invoices.html:173
+msgid "Ajouter une description supplémentaire"
+msgstr "Add additional description"
+
+#: templates/dashboard/@support_team/job_details.html:6
+msgid "- Ressync"
+msgstr ""
+
+#: templates/dashboard/@support_team/marketplace.html:4
+msgid "Marketplace : Ressync"
+msgstr "Marketplace: Afrilog"
+
+#: templates/dashboard/@support_team/marketplace.html:23
+msgid "Marketplace"
+msgstr "Marketplace"
+
+#: templates/dashboard/@support_team/my_task.html:2
+msgid "Mes tâches : Ressync"
+msgstr "My Tasks: Afrilog"
+
+#: templates/dashboard/@support_team/my_task.html:14
+#: templates/dashboard/@support_team/my_task.html:20
+#: templates/dashboard/partials/sidebar.html:73
+msgid "Mes tâches"
+msgstr "My Tasks"
+
+#: templates/dashboard/@support_team/my_task.html:42
+#: templates/dashboard/@support_team/tasks.html:111
+#: templates/dashboard/@support_team/tasks.html:160
+msgid "Assigné à"
+msgstr "Assigned to"
+
+#: templates/dashboard/@support_team/new_purchases.html:3
+msgid "Nouveaux achats : Ressync"
+msgstr "New Purchases: Afrilog"
+
+#: templates/dashboard/@support_team/new_purchases.html:16
+msgid "Nouveaux achats"
+msgstr "New Purchases"
+
+#: templates/dashboard/@support_team/new_purchases.html:22
+msgid "Nouveaux Achats"
+msgstr "New Purchases"
+
+#: templates/dashboard/@support_team/new_purchases.html:31
+msgid "Auteur"
+msgstr "Author"
+
+#: templates/dashboard/@support_team/new_purchases.html:43
+msgid "Répondu"
+msgstr "Replied"
+
+#: templates/dashboard/@support_team/new_purchases.html:43
+msgid "En attente"
+msgstr "Pending"
+
+#: templates/dashboard/@support_team/new_purchases.html:50
+msgid "Voir détails"
+msgstr "View details"
+
+#: templates/dashboard/@support_team/new_purchases.html:51
+msgid "Répondre"
+msgstr "Reply"
+
+#: templates/dashboard/@support_team/new_purchases.html:67
+msgid "Détails de l'achat"
+msgstr "Purchase Details"
+
+#: templates/dashboard/@support_team/new_purchases.html:80
+#: templates/dashboard/customers/previous_purchase_requests.html:157
+msgid "Adresse de l'auteur"
+msgstr "Author's Address"
+
+#: templates/dashboard/@support_team/new_purchases.html:90
+#: templates/dashboard/customers/previous_purchase_requests.html:147
+msgid "Adresse e-mail de l'auteur"
+msgstr "Author's Email Address"
+
+#: templates/dashboard/@support_team/new_purchases.html:94
+msgid "Dimensions du produit"
+msgstr "Product Dimensions"
+
+#: templates/dashboard/@support_team/new_purchases.html:120
+msgid "Répondre à"
+msgstr "Reply to"
+
+#: templates/dashboard/@support_team/new_purchases.html:131
+#: templates/main/calculate_air_freight.html:31
+#: templates/main/calculate_sea_freight.html:31
+msgid "De"
+msgstr "From"
+
+#: templates/dashboard/@support_team/new_purchases.html:135
+#: templates/main/calculate_air_freight.html:42
+#: templates/main/calculate_sea_freight.html:42
+msgid "A"
+msgstr "To"
+
+#: templates/dashboard/@support_team/new_purchases.html:139
+#: templates/dashboard/customers/view_contacts.html:43
+#: templates/dashboard/customers/view_contacts.html:116
+#: templates/main/contact.html:57
+msgid "Message"
+msgstr "Message"
+
+#: templates/dashboard/@support_team/new_purchases.html:140
+msgid "Ecrire quelque chose..."
+msgstr "Write something..."
+
+#: templates/dashboard/@support_team/new_purchases.html:143
+msgid "Télécharger des fichiers"
+msgstr "Upload files"
+
+#: templates/dashboard/@support_team/new_purchases.html:147
+msgid "Liens utiles"
+msgstr "Useful links"
+
+#: templates/dashboard/@support_team/previous_created_jobs.html:4
+msgid "Offres publiées : Ressync"
+msgstr "Published Offers: Afrilog"
+
+#: templates/dashboard/@support_team/previous_created_jobs.html:24
+#: templates/dashboard/@support_team/previous_created_jobs.html:32
+msgid "Offres publiées"
+msgstr "Published Offers"
+
+#: templates/dashboard/@support_team/previous_notes.html:4
+msgid "Notes récentes : Ressync"
+msgstr "Recent Notes: Afrilog"
+
+#: templates/dashboard/@support_team/previous_notes.html:23
+#: templates/dashboard/@support_team/previous_notes.html:31
+#: templates/dashboard/partials/sidebar.html:231
+msgid "Notes récentes"
+msgstr "Recent Notes"
+
+#: templates/dashboard/@support_team/previous_notes.html:90
+msgid "Modifier la note"
+msgstr "Edit note"
+
+#: templates/dashboard/@support_team/previous_notes.html:98
+msgid "Veuillez donner un titre à votre note"
+msgstr "Please give your note a title"
+
+#: templates/dashboard/@support_team/previous_notes.html:108
+msgid "Avertissement"
+msgstr "Warning"
+
+#: templates/dashboard/@support_team/previous_notes.html:109
+msgid "Information"
+msgstr "Information"
+
+#: templates/dashboard/@support_team/previous_notes.html:117
+#: templates/dashboard/customers/view_contacts.html:133
+msgid "Mettre à jour"
+msgstr "Update"
+
+#: templates/dashboard/@support_team/products.html:4
+msgid "Produits : Ressync"
+msgstr ""
+
+#: templates/dashboard/@support_team/products.html:18
+#: templates/includes/footer.html:22 templates/main/top_product.html:4
+msgid "Produits"
+msgstr "Products"
+
+#: templates/dashboard/@support_team/products.html:22
+msgid "Gestionnaire de stock"
+msgstr "Storage warehouse"
+
+#: templates/dashboard/@support_team/products.html:43
+#: templates/dashboard/@support_team/products.html:102
+#: templates/dashboard/@support_team/products.html:155
+msgid "Coût"
+msgstr ""
+
+#: templates/dashboard/@support_team/products.html:44
+#: templates/dashboard/@support_team/products.html:106
+#: templates/dashboard/@support_team/products.html:172
+#: templates/dashboard/@support_team/products.html:231
+#: templates/dashboard/partials/sidebar.html:38
+msgid "Stock"
+msgstr "token"
+
+#: templates/dashboard/@support_team/products.html:63
+msgid "Voir les details"
+msgstr "View details"
+
+#: templates/dashboard/@support_team/products.html:74
+msgid "Générer le Code-barres"
+msgstr ""
+
+#: templates/dashboard/@support_team/products.html:93
+msgid "Détails du Produit"
+msgstr "Product Dimensions"
+
+#: templates/dashboard/@support_team/products.html:114
+#: templates/dashboard/@support_team/products.html:239
+msgid "Emplacement du Fournisseur"
+msgstr ""
+
+#: templates/dashboard/@support_team/products.html:123
+#: templates/dashboard/@support_team/products.html:165
+#: templates/dashboard/@support_team/products.html:249
+msgid "Cadeaux"
+msgstr ""
+
+#: templates/dashboard/@support_team/products.html:124
+#: templates/dashboard/@support_team/products.html:166
+#: templates/dashboard/@support_team/products.html:250
+msgid "Maison et jardin"
+msgstr ""
+
+#: templates/dashboard/@support_team/products.html:125
+#: templates/dashboard/@support_team/products.html:167
+#: templates/dashboard/@support_team/products.html:251
+msgid "Bébés et enfants"
+msgstr ""
+
+#: templates/dashboard/@support_team/products.html:131
+#: templates/dashboard/@support_team/products.html:187
+#: templates/dashboard/@support_team/products.html:275
+msgid "Publier dans notre centrale d'achat"
+msgstr "Marketplace"
+
+#: templates/dashboard/@support_team/products.html:144
+msgid "Modifier le Produit"
+msgstr "Edit note"
+
+#: templates/dashboard/@support_team/products.html:161
+#: templates/dashboard/@support_team/products.html:245
+msgid "Sélectionner la catégorie"
+msgstr "Select a purchase"
+
+#: templates/dashboard/@support_team/products.html:176
+msgid "Image URL"
+msgstr "Product Image"
+
+#: templates/dashboard/@support_team/products.html:179
+#: templates/dashboard/@support_team/products.html:264
+msgid "Formats d'image acceptés : "
+msgstr ""
+
+#: templates/dashboard/@support_team/products.html:179
+#: templates/dashboard/@support_team/products.html:264
+msgid "JPG, PNG, GIF."
+msgstr ""
+
+#: templates/dashboard/@support_team/products.html:180
+#: templates/dashboard/@support_team/products.html:265
+msgid "Taille maximale de l'image : "
+msgstr ""
+
+#: templates/dashboard/@support_team/products.html:180
+#: templates/dashboard/@support_team/products.html:265
+msgid "5MB."
+msgstr ""
+
+#: templates/dashboard/@support_team/products.html:181
+#: templates/dashboard/@support_team/products.html:266
+msgid "Résolution recommandée : "
+msgstr ""
+
+#: templates/dashboard/@support_team/products.html:181
+#: templates/dashboard/@support_team/products.html:266
+msgid "800x800 px"
+msgstr ""
+
+#: templates/dashboard/@support_team/products.html:181
+#: templates/dashboard/@support_team/products.html:266
+msgid "ou plus pour une meilleure qualité d'affichage."
+msgstr ""
+
+#: templates/dashboard/@support_team/products.html:182
+#: templates/dashboard/@support_team/products.html:267
+msgid ""
+"L'image n'est pas obligatoire si vous ne prévoyez pas de publier le "
+"produit."
+msgstr ""
+
+#: templates/dashboard/@support_team/products.html:215
+msgid "Ajouter un Nouveau Produit"
+msgstr "Add a new note"
+
+#: templates/dashboard/@support_team/products.html:227
+msgid "Prix unitaire(USD)"
+msgstr ""
+
+#: templates/dashboard/@support_team/products.html:228
+msgid "Coût du produit"
+msgstr "Product Name"
+
+#: templates/dashboard/@support_team/products.html:232
+msgid "Stock disponible"
+msgstr "Description not available"
+
+#: templates/dashboard/@support_team/products.html:236
+msgid "Nom du fournisseur"
+msgstr "Supplier"
+
+#: templates/dashboard/@support_team/products.html:240
+msgid "Emplacement du fournisseur"
+msgstr ""
+
+#: templates/dashboard/@support_team/products.html:252
+msgid "Produit pharmaceutique"
+msgstr ""
+
+#: templates/dashboard/@support_team/products.html:257
+msgid "Veuillez sélectionner une catégorie valide pour le produit."
+msgstr "Please select the category of your product"
+
+#: templates/dashboard/@support_team/products.html:261
+msgid "Image du Produit"
+msgstr "Product Image"
+
+#: templates/dashboard/@support_team/products.html:270
+msgid "Veuillez télécharger une image valide pour le produit."
+msgstr "Please enter the name of your product"
+
+#: templates/dashboard/@support_team/quotes_list.html:4
+msgid "Demandes de procurations : Ressync"
+msgstr "Authorization Requests: Afrilog"
+
+#: templates/dashboard/@support_team/quotes_list.html:18
+msgid "Demandes de procurations"
+msgstr "Authorization Requests"
+
+#: templates/dashboard/@support_team/quotes_list.html:24
+msgid "Demandes de devis"
+msgstr "Quote Requests"
+
+#: templates/dashboard/@support_team/quotes_list.html:32
+#: templates/dashboard/@support_team/quotes_list.html:81
+#: templates/dashboard/@support_team/quotes_list.html:132
+#: templates/dashboard/customers/previous_quotes.html:176
+msgid "Nom du client"
+msgstr "Client Name"
+
+#: templates/dashboard/@support_team/quotes_list.html:33
+#: templates/dashboard/@support_team/quotes_list.html:95
+#: templates/dashboard/@support_team/quotes_list.html:144
+msgid "Titre de la compagnie de transport"
+msgstr "Shipping company title"
+
+#: templates/dashboard/@support_team/quotes_list.html:68
+msgid "Détails de la demande de devis"
+msgstr "Quote request details"
+
+#: templates/dashboard/@support_team/quotes_list.html:77
+#: templates/dashboard/@support_team/quotes_list.html:128
+#: templates/dashboard/customers/previous_quotes.html:172
+msgid "Prénom du client"
+msgstr "Customer first name"
+
+#: templates/dashboard/@support_team/quotes_list.html:85
+#: templates/dashboard/@support_team/quotes_list.html:136
+msgid "Numéro de téléphone du client"
+msgstr "Customer phone number"
+
+#: templates/dashboard/@support_team/quotes_list.html:89
+#: templates/dashboard/@support_team/quotes_list.html:140
+msgid "Adresse e-mail du client"
+msgstr "Customer email address"
+
+#: templates/dashboard/@support_team/quotes_list.html:99
+#: templates/dashboard/@support_team/quotes_list.html:148
+msgid "Identifiant des documents de chargement"
+msgstr "Load document identifier"
+
+#: templates/dashboard/@support_team/quotes_list.html:103
+#: templates/dashboard/@support_team/quotes_list.html:152
+msgid "Frais de service"
+msgstr "Service charge"
+
+#: templates/dashboard/@support_team/quotes_list.html:120
+msgid "Modifier la demande de devis"
+msgstr "Edit quote request"
+
+#: templates/dashboard/@support_team/stores.html:3
+msgid "Magasins: Ressync"
+msgstr "Stores: Ressync"
+
+#: templates/dashboard/@support_team/stores.html:15
+#: templates/dashboard/@support_team/stores.html:19
+#: templates/dashboard/partials/sidebar.html:26
+msgid "Magasins"
+msgstr "Stores"
+
+#: templates/dashboard/@support_team/stores.html:40
+#: templates/dashboard/@support_team/stores.html:100
+#: templates/dashboard/@support_team/stores.html:149
+msgid "Location"
+msgstr "Location"
+
+#: templates/dashboard/@support_team/stores.html:86
+msgid "Ajouter un nouveau magasin"
+msgstr "Add a new store"
+
+#: templates/dashboard/@support_team/stores.html:96
+msgid "Nom du magasin"
+msgstr "Store name"
+
+#: templates/dashboard/@support_team/stores.html:97
+#: templates/dashboard/@support_team/stores.html:146
+msgid "Veuillez entrer le nom du magasin pour continuer"
+msgstr "Please enter the task title to continue"
+
+#: templates/dashboard/@support_team/stores.html:101
+msgid "Emplacement du magasin"
+msgstr "Store Location"
+
+#: templates/dashboard/@support_team/stores.html:102
+#: templates/dashboard/@support_team/stores.html:151
+msgid "Veuillez entrer l'emplacement du magasin pour continuer"
+msgstr "Please enter the task title to continue"
+
+#: templates/dashboard/@support_team/stores.html:106
+msgid "Email du magasin"
+msgstr "Store e-mail"
+
+#: templates/dashboard/@support_team/stores.html:107
+#: templates/dashboard/@support_team/stores.html:156
+msgid "Veuillez entrer l'email du magasin pour continuer"
+msgstr "Please enter the task title to continue"
+
+#: templates/dashboard/@support_team/stores.html:111
+msgid "Téléphone du magasin"
+msgstr "Phone"
+
+#: templates/dashboard/@support_team/stores.html:114
+#: templates/dashboard/@support_team/stores.html:163
+msgid "Logo"
+msgstr "Logo"
+
+#: templates/dashboard/@support_team/stores.html:136
+msgid "Modifier le magasin"
+msgstr "Edit infos"
+
+#: templates/dashboard/@support_team/tasks.html:3
+msgid "Tâches : Ressync"
+msgstr "Tasks: Afrilog"
+
+#: templates/dashboard/@support_team/tasks.html:15
+#: templates/dashboard/@support_team/tasks.html:19
+#: templates/dashboard/partials/sidebar.html:178
+msgid "Tâches"
+msgstr "Tasks"
+
+#: templates/dashboard/@support_team/tasks.html:53
+#: templates/dashboard/customers/previous_quotes.html:52
+msgid "En cours"
+msgstr "In progress..."
+
+#: templates/dashboard/@support_team/tasks.html:55
+msgid "Effectuée"
+msgstr "Done"
+
+#: templates/dashboard/@support_team/tasks.html:92
+msgid "Ajouter une nouvelle tâche"
+msgstr "Add a new task"
+
+#: templates/dashboard/@support_team/tasks.html:102
+msgid "Analyse concurrentielle"
+msgstr "Competitive analysis"
+
+#: templates/dashboard/@support_team/tasks.html:103
+#: templates/dashboard/@support_team/tasks.html:152
+msgid "Veuillez entrer le titre de la tâche pour continuer"
+msgstr "Please enter the task title to continue"
+
+#: templates/dashboard/@support_team/tasks.html:107
+msgid "Etudier les stratégies mises en place..."
+msgstr "Study the strategies put in place..."
+
+#: templates/dashboard/@support_team/tasks.html:108
+#: templates/dashboard/@support_team/tasks.html:157
+msgid "Veuillez décrire brièvement la tâche pour continuer"
+msgstr "Please briefly describe the task to continue"
+
+#: templates/dashboard/@support_team/tasks.html:118
+#: templates/dashboard/@support_team/tasks.html:167
+msgid "Aucun agent trouvé"
+msgstr "No agents found"
+
+#: templates/dashboard/@support_team/tasks.html:121
+#: templates/dashboard/@support_team/tasks.html:170
+msgid "Veuillez assigner cette tâche à un agent pour continuer"
+msgstr "Please assign this task to an agent to continue"
+
+#: templates/dashboard/@support_team/tasks.html:142
+msgid "Modifier la tâche"
+msgstr "Edit task"
+
+#: templates/dashboard/@support_team/empty/no_Ads.html:2
+msgid "Aucune campagne commencé"
+msgstr "No campaign started"
+
+#: templates/dashboard/@support_team/empty/no_Ads.html:3
+msgid "Aucune campagne disponible"
+msgstr "No campaigns available"
+
+#: templates/dashboard/@support_team/empty/no_Ads.html:6
+msgid ""
+"Ici vous pouvez gérer les campagnes publicitaires plus efficacement avec "
+"de puissants outils d'analyse de données"
+msgstr ""
+"Here you can manage advertising campaigns more efficiently with powerful "
+"data analysis tools"
+
+#: templates/dashboard/@support_team/empty/no_application.html:2
+#: templates/dashboard/@support_team/empty/no_application.html:3
+msgid "Aucune candidature à afficher"
+msgstr "No applications to display"
+
+#: templates/dashboard/@support_team/empty/no_application.html:6
+msgid "Aucune demande d'emploi disponible pour cette offre"
+msgstr "No job applications available for this offer"
+
+#: templates/dashboard/@support_team/empty/no_employee.html:2
+#: templates/dashboard/@support_team/empty/no_employee.html:3
+msgid "Aucun employé à afficher"
+msgstr "No employees to display"
+
+#: templates/dashboard/@support_team/empty/no_employee.html:6
+msgid "Les employés vont s'afficher automatiquement ici"
+msgstr "Employees will automatically appear here"
+
+#: templates/dashboard/@support_team/empty/no_folder.html:2
+#: templates/dashboard/@support_team/empty/no_folder.html:3
+msgid "Aucun dossier à afficher"
+msgstr "No Folder to display"
+
+#: templates/dashboard/@support_team/empty/no_folder.html:6
+msgid "Ici vous pouvez gérer les dossiers de vos clients de manière efficace"
+msgstr ""
+
+#: templates/dashboard/@support_team/empty/no_job.html:6
+msgid "Aucun emploi trouvé - Afrilog"
+msgstr "No employee founded - Afrilog"
+
+#: templates/dashboard/@support_team/empty/no_product.html:2
+msgid "Aucun produit"
+msgstr "Product Width"
+
+#: templates/dashboard/@support_team/empty/no_product.html:3
+msgid "Aucun produit à afficher"
+msgstr "No note to display for now"
+
+#: templates/dashboard/@support_team/empty/no_product.html:6
+msgid "Tous les produits que vous aurez publié vont s'afficher ici"
+msgstr "The purchases you make will all be displayed here"
+
+#: templates/dashboard/@support_team/empty/no_purchase.html:2
+msgid "Aucune achat effectué"
+msgstr "No purchases made"
+
+#: templates/dashboard/@support_team/empty/no_purchase.html:3
+#: templates/dashboard/customers/empty/no_purchase.html:2
+#: templates/views/empty/user/no_purchase.html:7
+msgid "Aucun achat effectué"
+msgstr "No purchases made"
+
+#: templates/dashboard/@support_team/empty/no_purchase.html:6
+msgid "Aucun achat n'a été effectué pour le moment"
+msgstr "No purchases made at this time"
+
+#: templates/dashboard/@support_team/empty/no_quote.html:3
+#: templates/dashboard/customers/empty/no_quote.html:3
+msgid "Aucune demande de procuration"
+msgstr "No power of attorney request"
+
+#: templates/dashboard/@support_team/empty/no_quote.html:6
+#: templates/dashboard/customers/empty/no_quote.html:6
+msgid "Aucune demande de procuration effectuée pour le moment"
+msgstr "No power of attorney request at this time"
+
+#: templates/dashboard/@support_team/empty/no_store.html:2
+msgid "Aucune magasin à afficher image"
+msgstr "No email to display"
+
+#: templates/dashboard/@support_team/empty/no_store.html:3
+msgid "Aucun magasin à afficher"
+msgstr "No shop to display"
+
+#: templates/dashboard/@support_team/empty/no_store.html:6
+msgid "Aucun magasin ajouté pour le moment"
+msgstr "No store added yet"
+
+#: templates/dashboard/@support_team/empty/no_tasks.html:2
+msgid "Aucune tâche assignée"
+msgstr "No task assigned for now"
+
+#: templates/dashboard/@support_team/empty/no_tasks.html:3
+msgid "Aucune tâche ne vous a été assignée"
+msgstr "You have not been assigned any tasks"
+
+#: templates/dashboard/@support_team/empty/no_tasks.html:6
+msgid "Ici vous pouvez gérer et organiser les tâches qu'on vous aura assigné."
+msgstr "Here you can manage and organize the tasks assigned to you."
+
+#: templates/dashboard/customers/live_tracking.html:4
+msgid "Suivre mon colis : Ressync"
+msgstr "Track my package: Afrilog"
+
+#: templates/dashboard/customers/live_tracking.html:23
+#: templates/dashboard/customers/live_tracking.html:30
+msgid "Suivre mon colis"
+msgstr "Track my package"
+
+#: templates/dashboard/customers/live_tracking.html:36
+#: templates/main/pricing.html:308 templates/main/sea.html:118
+msgid "Port de départ"
+msgstr "Port of departure"
+
+#: templates/dashboard/customers/live_tracking.html:37
+msgid "Entrer le port de départ"
+msgstr "Enter departure port"
+
+#: templates/dashboard/customers/live_tracking.html:42
+msgid "Port de destination"
+msgstr "Destination port"
+
+#: templates/dashboard/customers/live_tracking.html:43
+msgid "Entrer le port de destination"
+msgstr "Enter pestination port"
+
+#: templates/dashboard/customers/live_tracking.html:47
+msgid "Sélectionner un achat"
+msgstr "Select a purchase"
+
+#: templates/dashboard/customers/live_tracking.html:48
+msgid "Tapez pour rechercher"
+msgstr "Type to search"
+
+#: templates/dashboard/customers/live_tracking.html:50
+msgid "Aucun achat trouvé"
+msgstr "No purchase found"
+
+#: templates/dashboard/customers/live_tracking.html:73
+msgid "Suivre"
+msgstr "Track"
+
+#: templates/dashboard/customers/previous_purchase_requests.html:2
+msgid "Commandes récentes : Ressync"
+msgstr "Previous orders : Afrilog"
+
+#: templates/dashboard/customers/previous_purchase_requests.html:19
+#: templates/dashboard/customers/previous_purchase_requests.html:26
+msgid "Commandes récentes"
+msgstr "Prévious orders"
+
+#: templates/dashboard/customers/previous_purchase_requests.html:34
+#: templates/dashboard/customers/previous_purchase_requests.html:115
+msgid "Token"
+msgstr "token"
+
+#: templates/dashboard/customers/previous_purchase_requests.html:35
+#: templates/dashboard/customers/previous_purchase_requests.html:121
+msgid "Status"
+msgstr "Statut"
+
+#: templates/dashboard/customers/previous_purchase_requests.html:36
+#: templates/dashboard/customers/previous_quotes.html:37
+#: templates/dashboard/customers/previous_quotes.html:136
+msgid "Date"
+msgstr "Date"
+
+#: templates/dashboard/customers/previous_purchase_requests.html:47
+#: templates/includes/main/shop/hero.html:87
+msgid "en cours..."
+msgstr "In progress..."
+
+#: templates/dashboard/customers/previous_purchase_requests.html:49
+msgid "reçu..."
+msgstr "received..."
+
+#: templates/dashboard/customers/previous_purchase_requests.html:80
+msgid "Détails de la commande"
+msgstr "Order details"
+
+#: templates/dashboard/customers/previous_purchase_requests.html:125
+msgid "Date de création"
+msgstr "Creation date"
+
+#: templates/dashboard/customers/previous_purchase_requests.html:137
+msgid "Prénom de l'auteur"
+msgstr "Author first name"
+
+#: templates/dashboard/customers/previous_purchase_requests.html:141
+msgid "Nom de l'auteur"
+msgstr "Author last name"
+
+#: templates/dashboard/customers/previous_purchase_requests.html:151
+msgid "Numéro de téléphone de l'auteur"
+msgstr "Author's phone number"
+
+#: templates/dashboard/customers/previous_purchase_requests.html:161
+msgid "Pays de l'auteur"
+msgstr "Author's country"
+
+#: templates/dashboard/customers/previous_purchase_requests.html:167
+msgid "QR Code"
+msgstr "QR Code"
+
+#: templates/dashboard/customers/previous_quotes.html:2
+msgid "Demandes récentes : Ressync"
+msgstr "Recent requests: Afrilog"
+
+#: templates/dashboard/customers/previous_quotes.html:16
+msgid "Demandes"
+msgstr "Requests"
+
+#: templates/dashboard/customers/previous_quotes.html:19
+#: templates/dashboard/customers/previous_quotes.html:27
+#: templates/dashboard/partials/sidebar.html:101
+msgid "Demandes récentes"
+msgstr "Previous requests"
+
+#: templates/dashboard/customers/previous_quotes.html:36
+#: templates/dashboard/customers/previous_quotes.html:114
+#: templates/dashboard/customers/previous_quotes.html:188
+msgid "Lading Number"
+msgstr "Ladding Number"
+
+#: templates/dashboard/customers/previous_quotes.html:50
+msgid "Accordé"
+msgstr "Granted"
+
+#: templates/dashboard/customers/previous_quotes.html:85
+msgid "Details de la demande"
+msgstr "Request details"
+
+#: templates/dashboard/customers/previous_quotes.html:94
+msgid "Nom complet du client"
+msgstr "Client full name"
+
+#: templates/dashboard/customers/previous_quotes.html:100
+#: templates/dashboard/customers/previous_quotes.html:180
+msgid "Numéro de Téléphone"
+msgstr "Phone Number"
+
+#: templates/dashboard/customers/previous_quotes.html:108
+#: templates/dashboard/customers/previous_quotes.html:184
+msgid "Pays"
+msgstr "Country"
+
+#: templates/dashboard/customers/previous_quotes.html:122
+msgid "Nom complet du transitaire"
+msgstr "Forwarder full name"
+
+#: templates/dashboard/customers/previous_quotes.html:128
+msgid "Shipping Company"
+msgstr "Shipping Company"
+
+#: templates/dashboard/customers/previous_quotes.html:142
+msgid "Signature"
+msgstr "Signature"
+
+#: templates/dashboard/customers/previous_quotes.html:196
+msgid "Nom du transitaire"
+msgstr "Forwarder Name"
+
+#: templates/dashboard/customers/previous_quotes.html:204
+msgid "Signature du client"
+msgstr "Client's signature"
+
+#: templates/dashboard/customers/previous_quotes.html:208
+msgid "Carte d'identité du client"
+msgstr "Customer ID card"
+
+#: templates/dashboard/customers/saved_jobs_listing.html:6
+msgid "Postes Sauvegardés - Ressync"
+msgstr "Saved Posts - Afrilog"
+
+#: templates/dashboard/customers/tracked_goods_listing.html:6
+msgid "Liste des colis que vous suivez en temps réel - Ressync"
+msgstr "List of packages you track in real time - Afrilog"
+
+#: templates/dashboard/customers/view_contacts.html:4
+msgid "Contacts : Ressync"
+msgstr ""
+
+#: templates/dashboard/customers/view_contacts.html:23
+#: templates/dashboard/customers/view_contacts.html:31
+#: templates/dashboard/partials/sidebar.html:262
+msgid "Voir les contacts"
+msgstr "View details"
+
+#: templates/dashboard/customers/view_contacts.html:90
+msgid "Modifier le contact"
+msgstr "Edit invoice"
+
+#: templates/dashboard/customers/view_contacts.html:108
+msgid "Veuillez donner un email"
+msgstr "Please select a company"
+
+#: templates/dashboard/customers/view_contacts.html:118
+msgid "Veuillez écrire un message"
+msgstr "Please describe the position"
+
+#: templates/dashboard/customers/empty/no_application.html:6
+msgid "Aucune procuration octroyée - Afrilog"
+msgstr "No power of attorney granted - Afrilog\""
+
+#: templates/dashboard/customers/empty/no_contact.html:2
+msgid "Aucun contact"
+msgstr "No invoices"
+
+#: templates/dashboard/customers/empty/no_contact.html:3
+msgid "Aucun contact à afficher"
+msgstr "No note to display for now"
+
+#: templates/dashboard/customers/empty/no_contact.html:6
+msgid "Tous vos contacts vont s'afficher ici"
+msgstr "Your invoices will be displayed here"
+
+#: templates/dashboard/customers/empty/no_contact.html:12
+msgid "Créer un nouveau contact"
+msgstr "Create a new account"
+
+#: templates/dashboard/customers/empty/no_job.html:6
+msgid "Aucun poste trouvée - Afrilog"
+msgstr "No positions found - Afrilog"
+
+#: templates/dashboard/customers/empty/no_purchase.html:3
+msgid "Aucun achat effectué pour le moment"
+msgstr "No purchases made yet"
+
+#: templates/dashboard/customers/empty/no_purchase.html:6
+msgid "Les achats que vous effectuerez vont tous s'afficher ici"
+msgstr "The purchases you make will all be displayed here"
+
+#: templates/dashboard/customers/empty/no_purchase.html:12
+#: templates/dashboard/customers/empty/no_quote.html:12
+#: templates/includes/footer.html:46 templates/main/home.html:38
+#: templates/views/empty/user/no_message.html:14
+msgid "Commencer"
+msgstr "Get Started"
+
+#: templates/dashboard/customers/empty/no_tracked_good.html:6
+msgid "Aucun coli suivi - Afrilog"
+msgstr "No employee founded - Afrilog"
+
+#: templates/dashboard/empty/no_invoice.html:2
+#: templates/dashboard/empty/no_sent_messages.html:2
+msgid "Aucun email à afficher image"
+msgstr "No email to display"
+
+#: templates/dashboard/empty/no_invoice.html:3
+msgid "Aucune facture à afficher"
+msgstr "No invoice to display"
+
+#: templates/dashboard/empty/no_invoice.html:6
+msgid "Vos factures vont s'afficher ici"
+msgstr "Your invoices will be displayed here"
+
+#: templates/dashboard/empty/no_job.html:3
+msgid "Aucune offre disponible"
+msgstr "No offer available"
+
+#: templates/dashboard/empty/no_job.html:6
+msgid "Aucune offre d'emploi disponible pour le moment"
+msgstr "No job offer available"
+
+#: templates/dashboard/empty/no_sent_messages.html:3
+#: templates/views/empty/user/no_message.html:7
+msgid "Aucun message à afficher"
+msgstr "No message to display"
+
+#: templates/dashboard/empty/no_sent_messages.html:6
+msgid "Vos messages vont s'afficher ici"
+msgstr "Your messages will be displayed here"
+
+#: templates/dashboard/empty/no_task.html:2
+msgid "Aucune tâche à afficher image"
+msgstr "No task image"
+
+#: templates/dashboard/empty/no_task.html:3
+msgid "Aucune tâche à afficher"
+msgstr "No task to display"
+
+#: templates/dashboard/empty/no_task.html:6
+msgid "Les tâches que vous assignerez seront affichées ici"
+msgstr "The tasks you assign will be displayed here"
+
+#: templates/dashboard/partials/navigation.html:12
+msgid "Taper quelque chose..."
+msgstr "Type something..."
+
+#: templates/dashboard/partials/navigation.html:19
+msgid "English"
+msgstr "English"
+
+#: templates/dashboard/partials/navigation.html:20
+msgid "German"
+msgstr ""
+
+#: templates/dashboard/partials/navigation.html:21
+msgid "French"
+msgstr ""
+
+#: templates/dashboard/partials/navigation.html:22
+msgid "Chinese"
+msgstr "Chinese"
+
+#: templates/dashboard/partials/navigation.html:23
+msgid "Turkish"
+msgstr "Pricing"
+
+#: templates/dashboard/partials/navigation.html:24
+msgid "Russian"
+msgstr ""
+
+#: templates/dashboard/partials/navigation.html:57
+#: templates/dashboard/partials/sidebar.html:375
+msgid "Se déconnecter"
+msgstr "logout"
+
+#: templates/dashboard/partials/sidebar.html:54
+msgid "Nouvelle demandes"
+msgstr "New requests"
+
+#: templates/dashboard/partials/sidebar.html:84
+msgid "Mes Demandes"
+msgstr "My orders"
+
+#: templates/dashboard/partials/sidebar.html:93
+msgid "Créer une demande"
+msgstr "Create a request"
+
+#: templates/dashboard/partials/sidebar.html:113
+msgid "Mes achats"
+msgstr "My purchases"
+
+#: templates/dashboard/partials/sidebar.html:122
+msgid "Nouveau achat"
+msgstr "New purchase"
+
+#: templates/dashboard/partials/sidebar.html:130
+#: templates/views/purchases.html:6
+msgid "Achats récents"
+msgstr "Previous purchases"
+
+#: templates/dashboard/partials/sidebar.html:138
+msgid "Suivre mon produit"
+msgstr "Track my product"
+
+#: templates/dashboard/partials/sidebar.html:208
+msgid "Achats"
+msgstr "Purchases"
+
+#: templates/dashboard/partials/sidebar.html:226
+msgid "Ajouter une note"
+msgstr "Add a note"
+
+#: templates/dashboard/partials/sidebar.html:291
+msgid "Messages récents"
+msgstr "Sent Messages"
+
+#: templates/dashboard/partials/sidebar.html:299
+msgid "Messages programmés"
+msgstr "Sent Messages"
+
+#: templates/dashboard/partials/sidebar.html:328
+msgid "Offres récentes"
+msgstr "Previous Offers"
+
+#: templates/dashboard/partials/sidebar.html:333
+msgid "Applications récentes"
+msgstr "Previous applications"
+
+#: templates/dashboard/partials/sidebar.html:346
+msgid "Toutes les offres"
+msgstr "All offers"
+
+#: templates/dashboard/partials/sidebar.html:353
+msgid "Mes applications"
+msgstr "My purchases"
+
+#: templates/errors/403.html:6
+msgid "Accès non autorisé"
+msgstr "Unauthorized access"
+
+#: templates/errors/403.html:8
+msgid "Vous n'avez pas les droits pour accéder à cette page"
+msgstr "You do not have the rights to access this page"
+
+#: templates/errors/403.html:12 templates/errors/404.html:58
+#: templates/errors/500.html:12
+msgid "Retour"
+msgstr "Return"
+
+#: templates/errors/403.html:15 templates/errors/404.html:61
+#: templates/errors/500.html:15
+msgid "Demander de l'aide"
+msgstr "Ask for help"
+
+#: templates/errors/404.html:6 templates/main/home.html:7
+#: templates/main/job_opennings.html:2
+msgid "Afrilog, leader dans le domaine du transport et de la logistique"
+msgstr "Afrilog, leader in the field of transport and logistics"
+
+#: templates/errors/404.html:7
+msgid ""
+"Afrilog, Logistique, Transit, Transport, Afrique, Niger, Europe, Asie, \n"
+"    Amérique, Oceanie, Maritime, Aérien, Terrestre, Containeurs, "
+"Marchandises, Commerce, Santé, Défense, Technologie, \n"
+"    Équipement, MSC, Import, Export, Groupage"
+msgstr ""
+"Afrilog, Logistics, Transit, Transport, Africa, Niger, Europe, Asia, \n"
+" America, Oceania, Maritime, Air, Land, Containers, Goods, Trade, Health,"
+" Defense, Technology, \n"
+"Equipment, MSC"
+
+#: templates/errors/404.html:10 templates/main/home.html:11
+msgid "Afrilog SARL"
+msgstr "Afrilog SARL"
+
+#: templates/errors/404.html:12 templates/main/home.html:3
+msgid "Afrilog: Leader dans le transport et la logistique"
+msgstr "Afrilog: Leader in the field of Transport and Logistics"
+
+#: templates/errors/404.html:51
+msgid "404"
+msgstr ""
+
+#: templates/errors/404.html:54
+msgid "Désolé nous n'avons pas pu trouver cette page"
+msgstr "Sorry we couldn't find this page"
+
+#: templates/errors/404.html:67 templates/main/home.html:44
+msgid "Logistics woman"
+msgstr "Logistics company in Africa"
+
+#: templates/errors/500.html:6
+msgid "Problème interne du serveur"
+msgstr ""
+
+#: templates/errors/500.html:8
+msgid "Désolé il y'a un problème avec le serveur"
+msgstr ""
+
+#: templates/includes/basic_navigation.html:10
+#: templates/main/components/authenticated/auth_navigation.html:10
+msgid "Ouvrir le menu"
+msgstr ""
+
+#: templates/includes/basic_navigation.html:26
+msgid "Partenaires"
+msgstr "Partners"
+
+#: templates/includes/basic_navigation.html:31
+#: templates/includes/main/header/services.html:5
+msgid "Services"
+msgstr "Services"
+
+#: templates/includes/basic_navigation.html:41
+#: templates/includes/footer.html:16
+msgid "Tarifs"
+msgstr "Pricing"
+
+#: templates/includes/basic_navigation.html:46
+#: templates/includes/footer.html:40
+msgid "Ressources"
+msgstr "Resources"
+
+#: templates/includes/basic_navigation.html:60 templates/main/aerien.html:30
+#: templates/main/customs.html:31 templates/main/sea.html:29
+#: templates/main/terrestre.html:29 templates/main/transit.html:30
+msgid "Service commercial"
+msgstr "Sales department"
+
+#: templates/includes/basic_navigation.html:63
+msgid "Se connecter"
+msgstr "Log in"
+
+#: templates/includes/footer.html:13
+msgid "A propos"
+msgstr "About"
+
+#: templates/includes/footer.html:25
+msgid "MyAfrilog"
+msgstr "MyAfrilog"
+
+#: templates/includes/footer.html:28
+msgid "Fret Aérien"
+msgstr "Air freight"
+
+#: templates/includes/footer.html:31
+msgid "Fret Maritime"
+msgstr "Sea freight"
+
+#: templates/includes/footer.html:34 templates/main/terrestre.html:20
+msgid "Fret Terrestre"
+msgstr "Land Freight"
+
+#: templates/includes/footer.html:49
+msgid "Documentation"
+msgstr "Documentation"
+
+#: templates/includes/footer.html:52
+msgid "Guide Utilisateur"
+msgstr "User Guide"
+
+#: templates/includes/footer.html:58
+#: templates/includes/main/header/resources.html:59
+msgid "Aide"
+msgstr "Help"
+
+#: templates/includes/footer.html:61
+#: templates/includes/main/header/resources.html:107
+msgid "Service client"
+msgstr "Customer service"
+
+#: templates/includes/footer.html:64
+msgid "Cookies"
+msgstr "Cookies"
+
+#: templates/includes/footer.html:67
+msgid "License"
+msgstr "License"
+
+#: templates/includes/footer.html:70
+msgid "Termes et conditions"
+msgstr "Terms and conditions"
+
+#: templates/includes/footer.html:73 templates/main/cgu.html:17
+msgid "Politique de confidentialité"
+msgstr "Privacy policy"
+
+#: templates/includes/footer.html:82
+msgid "Afrilog logo"
+msgstr "Afrilog SARL"
+
+#: templates/includes/footer.html:84
+msgid "Tous droits réservés"
+msgstr "All rights reserved"
+
+#: templates/includes/language_selector.html:2
+msgid "Anglais"
+msgstr "English"
+
+#: templates/includes/language_selector.html:3
+msgid "Deutsch"
+msgstr "Desc"
+
+#: templates/includes/language_selector.html:4
+msgid "Français"
+msgstr ""
+
+#: templates/includes/language_selector.html:5
+msgid "Türkçe"
+msgstr ""
+
+#: templates/includes/language_selector.html:6
+msgid "中文"
+msgstr ""
+
+#: templates/includes/language_selector.html:7
+msgid "Русский"
+msgstr ""
+
+#: templates/includes/main/header/resources.html:15
+#: templates/main/calculate_air_freight.html:5
+msgid "Calculatrice fret aérien"
+msgstr "Air freight calculator"
+
+#: templates/includes/main/header/resources.html:18
+msgid "Comparer les tarifs de frets aérien"
+msgstr "Discover our air freight services"
+
+#: templates/includes/main/header/resources.html:30
+#: templates/main/calculate_sea_freight.html:5
+msgid "Calculatrice fret maritime"
+msgstr "Sea Freight Calculator"
+
+#: templates/includes/main/header/resources.html:32
+#: templates/includes/main/header/resources.html:72
+#: templates/includes/main/header/services.html:37
+msgid "Nouveau"
+msgstr "New"
+
+#: templates/includes/main/header/resources.html:36
+msgid "Obtenez de meilleurs insights pour votre fret maritime"
+msgstr "Our price list for sea freight"
+
+#: templates/includes/main/header/resources.html:48
+msgid "Calculatrice fret routier"
+msgstr "Road freight calculator"
+
+#: templates/includes/main/header/resources.html:51
+msgid "Nous vous aidons à choisir judicieusement votre fret routier"
+msgstr ""
+
+#: templates/includes/main/header/resources.html:70
+msgid "Central d'achat"
+msgstr "Marketplace"
+
+#: templates/includes/main/header/resources.html:76
+msgid "Découvrez de nombreux articles à travers notre boutique"
+msgstr "Discover many items through our store"
+
+#: templates/includes/main/header/resources.html:90
+msgid "Glossaire"
+msgstr "Glossary"
+
+#: templates/includes/main/header/resources.html:93
+msgid "Aviez-vous oublié certains concepts? Veuillez consulter cette page"
+msgstr "Did you forget some concepts? Please check this page"
+
+#: templates/includes/main/header/resources.html:110
+msgid "Aviez-vous besoin d'aide? Notre service client est là pour vous"
+msgstr "Did you need help? Our customer service is here for you"
+
+#: templates/includes/main/header/resources.html:119
+msgid "Publiés récemment"
+msgstr "Recently published"
+
+#: templates/includes/main/header/resources.html:129
+#: templates/main/services.html:9
+msgid "En savoir plus"
+msgstr "See more"
+
+#: templates/includes/main/header/resources.html:138
+msgid "Aucun article n'a encore été publié"
+msgstr "No articles have been published yet."
+
+#: templates/includes/main/header/services.html:17
+msgid "Transport, Transit et Manutention"
+msgstr "Transport, Transit and handling services"
+
+#: templates/includes/main/header/services.html:20
+msgid "Nous nous chargeons du transport de vos marchandises en toute sécurité"
+msgstr "We take care of the safe transport of your goods"
+
+#: templates/includes/main/header/services.html:35
+msgid "Douanes, Taxes et Impôts"
+msgstr "Customs, taxes, duties"
+
+#: templates/includes/main/header/services.html:41
+msgid "Vous pouvez nous confier la gestion de vos taxes"
+msgstr "You can entrust us with the management of your taxes"
+
+#: templates/includes/main/header/services.html:56
+msgid "Entreposage"
+msgstr "Warehousing"
+
+#: templates/includes/main/header/services.html:59
+msgid "Nous offrons également des services d'entreposage de marchandises"
+msgstr "We also offer merchandise warehousing services"
+
+#: templates/includes/main/header/services.html:70
+#: templates/main/aerien.html:20
+msgid "Fret aérien"
+msgstr "Air Freight"
+
+#: templates/includes/main/header/services.html:79
+msgid "Fret routier"
+msgstr "Road freight"
+
+#: templates/includes/main/shop/hero.html:6
+msgid "Expédiez et recevez vos colis où que vous soyez à travers le monde."
+msgstr "Ship and receive your packages wherever you are in the world."
+
+#: templates/includes/main/shop/hero.html:9
+msgid "Qu'est ce que nous pourrions faire pour vous?"
+msgstr "What could we do for you?"
+
+#: templates/includes/main/shop/hero.html:12
+msgid "Entrez votre numéro Whatsapp"
+msgstr "Enter your email"
+
+#: templates/includes/main/shop/hero.html:21
+msgid "Votre numéro est requis !"
+msgstr "Your phone number is required"
+
+#: templates/includes/main/shop/hero.html:49
+msgid "Dites nous un peu plus..."
+msgstr "Tell us a little more..."
+
+#: templates/includes/main/shop/hero.html:52
+msgid "Votre Prénom"
+msgstr "First Name"
+
+#: templates/includes/main/shop/hero.html:59
+msgid "Votre Nom"
+msgstr "Your content"
+
+#: templates/includes/main/shop/hero.html:66
+msgid "Votre Message"
+msgstr "Enter your message"
+
+#: templates/includes/main/shop/hero.html:67
+msgid "Je voudrais savoir..."
+msgstr "I would like to know.."
+
+#: templates/includes/main/shop/hero.html:70
+msgid "Veuillez remplir tous les champs obligatoires."
+msgstr ""
+
+#: templates/includes/main/shop/hero.html:98
+msgid "Message envoyé"
+msgstr "Sent Messages"
+
+#: templates/includes/main/shop/hero.html:103
+#: templates/includes/main/shop/hero.html:129
+msgid "Fermer la fenêtre modale"
+msgstr ""
+
+#: templates/includes/main/shop/hero.html:111
+msgid ""
+"Merci de nous avoir contacté, vous recevrez une reponse le plus tôt "
+"possible"
+msgstr ""
+
+#: templates/includes/main/shop/hero.html:115
+#: templates/includes/main/shop/hero.html:141
+msgid "OK"
+msgstr ""
+
+#: templates/includes/main/shop/hero.html:126
+msgid "Échec de l'envoi du message"
+msgstr ""
+
+#: templates/includes/main/shop/hero.html:137
+msgid "Désolé, une erreur s'est produite. Veuillez réessayer plus tard."
+msgstr ""
+
+#: templates/main/aerien.html:3
+msgid "Afrilog : Fret aérien"
+msgstr "Afrilog: Air freight"
+
+#: templates/main/aerien.html:5
+msgid "Découvrez nos services de fret aérien"
+msgstr "Discover our air freight services"
+
+#: templates/main/aerien.html:6 templates/main/transit.html:6
+msgid ""
+"Transport, Logistique, Fret, aérien, Equipement, Container, Europe, "
+"Afrique, Oceanie, Chine"
+msgstr ""
+"Transport, Logistics, Freight, air, Equipment, Container, Europe, Africa,"
+" Oceania, China"
+
+#: templates/main/aerien.html:23
+msgid ""
+"Le fret aérien est la solution idéale pour le transport rapide et "
+"sécurisé de vos marchandises à l'échelle mondiale. Offrant des temps de "
+"transit réduits et une flexibilité inégalée, il permet de répondre "
+"efficacement aux exigences de délais stricts et aux demandes urgentes. "
+"Nos services de fret aérien garantissent une gestion optimale de vos "
+"envois, de la prise en charge à la livraison, assurant la rapidité et la "
+"fiabilité de chaque expédition. Découvrez comment nous pouvons accélérer "
+"votre chaîne d'approvisionnement et renforcer votre avantage "
+"concurrentiel grâce à nos solutions de fret aérien de pointe."
+msgstr ""
+"Air freight is the ideal solution for fast and Secure your goods on a "
+"global scale. Offering uptime reduced transit and unrivaled flexibility, "
+"it allows you to respond efficiently meets strict deadline requirements "
+"and urgent requests. Our air freight services guarantee optimal "
+"management of your shipments, from pick-up to delivery, ensuring speed "
+"and reliability of every shipment. Find out how we can speed up your "
+"supply chain and strengthen your advantage competitive with our cutting-"
+"edge air cargo solutions."
+
+#: templates/main/aerien.html:36
+msgid "fret aérien"
+msgstr "Air freight"
+
+#: templates/main/aerien.html:48 templates/main/pricing.html:2
+msgid "Notre grille tarifaire pour le fret aérien"
+msgstr "Our price list for air freight"
+
+#: templates/main/aerien.html:49 templates/main/pricing.html:3
+#: templates/main/pricing.html:269 templates/main/sea.html:79
+msgid "A partir de la France"
+msgstr "From France"
+
+#: templates/main/aerien.html:58 templates/main/aerien.html:121
+#: templates/main/pricing.html:12 templates/main/pricing.html:75
+msgid "Aéroport de départ"
+msgstr "Departure airport"
+
+#: templates/main/aerien.html:59 templates/main/aerien.html:122
+#: templates/main/pricing.html:13 templates/main/pricing.html:76
+msgid "Aéroport d'arrivée"
+msgstr "Arrival airport"
+
+#: templates/main/aerien.html:60 templates/main/pricing.html:14
+msgid "Incoterm"
+msgstr "Incoterm"
+
+#: templates/main/aerien.html:61 templates/main/aerien.html:155
+#: templates/main/aerien.html:201 templates/main/aerien.html:247
+#: templates/main/pricing.html:15 templates/main/pricing.html:109
+#: templates/main/pricing.html:155 templates/main/pricing.html:201
+#: templates/main/pricing.html:248 templates/main/pricing.html:279
+#: templates/main/pricing.html:353 templates/main/sea.html:58
+#: templates/main/sea.html:89 templates/main/sea.html:163
+msgid "Devise"
+msgstr "Currency"
+
+#: templates/main/aerien.html:77 templates/main/aerien.html:78
+#: templates/main/aerien.html:79 templates/main/aerien.html:80
+#: templates/main/pricing.html:31 templates/main/pricing.html:32
+#: templates/main/pricing.html:33 templates/main/pricing.html:34
+msgid "8,70"
+msgstr "8.70"
+
+#: templates/main/aerien.html:89 templates/main/pricing.html:43
+msgid "9,15"
+msgstr "9.15"
+
+#: templates/main/aerien.html:90 templates/main/pricing.html:44
+msgid "7,75"
+msgstr "7.75"
+
+#: templates/main/aerien.html:91 templates/main/pricing.html:45
+msgid "7,25"
+msgstr "7.25"
+
+#: templates/main/aerien.html:92 templates/main/pricing.html:46
+msgid "7,10"
+msgstr "7.10"
+
+#: templates/main/aerien.html:100 templates/main/pricing.html:54
+msgid "18,34"
+msgstr "18.34"
+
+#: templates/main/aerien.html:101 templates/main/pricing.html:55
+msgid "14,23"
+msgstr "14.23"
+
+#: templates/main/aerien.html:102 templates/main/pricing.html:56
+msgid "13,59"
+msgstr "13.59"
+
+#: templates/main/aerien.html:103 templates/main/pricing.html:57
+msgid "13,23"
+msgstr "13.23"
+
+#: templates/main/aerien.html:104 templates/main/pricing.html:58
+msgid "12,86"
+msgstr "12.86"
+
+#: templates/main/aerien.html:113 templates/main/pricing.html:67
+#: templates/main/pricing.html:300 templates/main/sea.html:110
+msgid "A partir de la Chine"
+msgstr "From China"
+
+#: templates/main/aerien.html:133 templates/main/aerien.html:134
+#: templates/main/pricing.html:87 templates/main/pricing.html:88
+msgid "15,06"
+msgstr "15.06"
+
+#: templates/main/aerien.html:135 templates/main/aerien.html:136
+#: templates/main/pricing.html:89 templates/main/pricing.html:90
+msgid "14,91"
+msgstr "14.91"
+
+#: templates/main/aerien.html:145 templates/main/pricing.html:99
+msgid "A partir de Tel Aviv (Israel)"
+msgstr "From Tel Aviv (Israel)"
+
+#: templates/main/aerien.html:153 templates/main/aerien.html:199
+#: templates/main/aerien.html:245 templates/main/pricing.html:107
+#: templates/main/pricing.html:153 templates/main/pricing.html:199
+msgid "Poids Net"
+msgstr "Net Weight"
+
+#: templates/main/aerien.html:154 templates/main/aerien.html:200
+#: templates/main/aerien.html:246 templates/main/pricing.html:108
+#: templates/main/pricing.html:154 templates/main/pricing.html:200
+#: templates/main/pricing.html:247 templates/main/pricing.html:278
+#: templates/main/sea.html:57 templates/main/sea.html:88
+msgid "Prix par Kgs"
+msgstr "Pirce per Kgs"
+
+#: templates/main/aerien.html:161 templates/main/pricing.html:115
+msgid "16,45 USD/Kg"
+msgstr "16.45 USD/Kg"
+
+#: templates/main/aerien.html:166 templates/main/aerien.html:176
+#: templates/main/pricing.html:120 templates/main/pricing.html:130
+msgid "13,00 USD/Kg"
+msgstr "13.00 USD/Kg"
+
+#: templates/main/aerien.html:171 templates/main/pricing.html:125
+msgid "13,85 USD/Kg"
+msgstr "13.85 USD/Kg"
+
+#: templates/main/aerien.html:181 templates/main/pricing.html:135
+msgid "13,00 USD"
+msgstr "13.00 USD/Kg"
+
+#: templates/main/aerien.html:191 templates/main/pricing.html:145
+msgid "A partir du Canada"
+msgstr "From Canada"
+
+#: templates/main/aerien.html:207 templates/main/pricing.html:161
+msgid "15,55 USD/Kg"
+msgstr "15.55 USD/Kg"
+
+#: templates/main/aerien.html:212 templates/main/pricing.html:166
+msgid "13,45 USD/Kg"
+msgstr "13.45 USD/Kg"
+
+#: templates/main/aerien.html:217 templates/main/pricing.html:171
+msgid "12,95 USD/Kg"
+msgstr "12.95 USD/Kg"
+
+#: templates/main/aerien.html:222 templates/main/pricing.html:176
+msgid "12,25 USD/Kg"
+msgstr "12.25 USD/Kg"
+
+#: templates/main/aerien.html:227 templates/main/pricing.html:181
+msgid "12,00 USD"
+msgstr "12.00 USD/Kg"
+
+#: templates/main/aerien.html:237 templates/main/pricing.html:191
+msgid "A partir de l'Inde"
+msgstr "From India"
+
+#: templates/main/aerien.html:253 templates/main/pricing.html:207
+msgid "15,70 USD/Kg"
+msgstr "15.70 USD/Kg"
+
+#: templates/main/aerien.html:258 templates/main/pricing.html:212
+msgid "17,63 USD/Kg"
+msgstr "17.63 USD/Kg"
+
+#: templates/main/aerien.html:263 templates/main/pricing.html:217
+msgid "16,55 USD/Kg"
+msgstr "16.55 USD/Kg"
+
+#: templates/main/aerien.html:268 templates/main/pricing.html:222
+msgid "15,50 USD/Kg"
+msgstr "15.50 USD/Kg"
+
+#: templates/main/aerien.html:273 templates/main/pricing.html:227
+msgid "13,90 USD/Kg"
+msgstr "13.90 USD/Kg"
+
+#: templates/main/aerien.html:289 templates/main/pricing.html:381
+#: templates/main/sea.html:191
+msgid "Pour plus d'infos veuillez contacter notre "
+msgstr "For more information please contact our"
+
+#: templates/main/aerien.html:290 templates/main/pricing.html:382
+#: templates/main/sea.html:192
+msgid ""
+"Veuillez noter que les tarifs seront mis à jour dès l'obtention des "
+"informations réelles sur les marchandises, les formalités exports ainsi "
+"que le Pick up seotn déterminés au cas par cas en fonction de la "
+"localisation du fournisseur. La validité des tarifs est d'une (01) "
+"semaine pour le fret aérien et un (01) mois pour le fret maritime"
+msgstr ""
+"Please note that prices will be updated as soon as real information on "
+"the goods, export formalities as well that the Pick up seotn determined "
+"on a case by case basis depending on the location of the supplier. The "
+"validity of the rates is one (01) week for air freight and one (01) month"
+" for sea freight"
+
+#: templates/main/calculate_air_freight.html:3
+msgid "Afrilog : Calculatrice fret aérien"
+msgstr "Afrilog: Air freight calculator"
+
+#: templates/main/calculate_air_freight.html:6
+msgid ""
+"Transport, Logistique, Fret, aérien, Equipement, Container, Europe, "
+"Afrique, Oceanie, Chine, Taxes, Douanes, Calculatrice, Approximation"
+msgstr ""
+"Transport, Logistics, Freight, air, Equipment, Container, Europe, Africa,"
+" Oceania, China, Taxes, Customs"
+
+#: templates/main/calculate_air_freight.html:21
+msgid "Obtenez un devis rapide pour votre fret aérien."
+msgstr "Get a quick quote for your air freight."
+
+#: templates/main/calculate_sea_freight.html:3
+msgid "Afrilog : Calculatrice fret maritime"
+msgstr "Afrilog : sea freight calculator"
+
+#: templates/main/calculate_sea_freight.html:6
+msgid ""
+"Transport, Logistique, Fret, maritime, Equipement, Container, Europe, "
+"Afrique, Oceanie, Chine, Taxes, Douanes, Calculatrice, Approximation"
+msgstr ""
+"Transport, Logistics, Freight, air, Equipment, Container, Europe, Africa,"
+" Oceania, China, Taxes, Customs"
+
+#: templates/main/calculate_sea_freight.html:21
+msgid "Obtenez un devis rapide pour votre fret maritime."
+msgstr "Get a quick quote for your sea freight."
+
+#: templates/main/cgu.html:3
+msgid "Afrilog : Conditions générales d'utilisation"
+msgstr "Afrilog: General conditions of use"
+
+#: templates/main/cgu.html:14
+msgid "Conditions générales d'utilisation"
+msgstr "Terms of Service"
+
+#: templates/main/cgu.html:20
+msgid "Conduite du client"
+msgstr "Customer Conduct"
+
+#: templates/main/cgu.html:23
+msgid "Conditions générales"
+msgstr "General conditions"
+
+#: templates/main/cgu.html:26
+msgid "Services & Compte"
+msgstr "Services and accounts"
+
+#: templates/main/cgu.html:31
+msgid "Conditions d'utilisation"
+msgstr "Conditions of use"
+
+#: templates/main/cgu.html:36
+msgid "Dernière mise à jour : 31 Mai 2024"
+msgstr "Last update : May 31st 2024"
+
+#: templates/main/cgu.html:38
+msgid ""
+"Ces conditions générales (les « Conditions ») régissent la fourniture de "
+"produits par Afrilog, y compris les contenus numériques et les services. "
+"Veuillez lire attentivement ces Conditions avant d'accéder à nos contenus"
+" numériques ou d'utiliser nos services. Ces Conditions, ainsi que notre "
+"Politique de confidentialité et notre Politique relative aux cookies, "
+"détaillent comment nous vous fournirons des contenus numériques et/ou des"
+" services, comment vous et nous pouvons modifier ou mettre fin au "
+"contrat, que faire en cas de problème et d'autres informations "
+"importantes. <br>\n"
+"                        <br> Comment nous contacter - Vous pouvez nous "
+"contacter par téléphone au +227 20 73 51 00 ou par email à "
+"logistiqueafrica@gmail.com.\n"
+"                      "
+msgstr ""
+"These terms and conditions (the “Terms”) govern the supply of produced by"
+" Afrilog, including digital content and services.Please read these Terms "
+"carefully before accessing our contentdigital or use our services. These "
+"Terms, as well as our Privacy Policy and our Cookie Policy,detail how we "
+"will provide you with digital content and/orservices, how you and we can "
+"change or terminate thecontract, what to do in case of problems and other"
+" informationimportant. <br>\n"
+" <br> How to contact us - You can contact us contact by telephone at +227"
+" 20 73 51 00 or by email at logistiqueafrica@gmail.com.\n"
+
+#: templates/main/cgu.html:41
+msgid "Sommaire"
+msgstr "Summary\""
+
+#: templates/main/cgu.html:44 templates/main/cgu.html:133
+msgid ""
+"Votre accord à ces Conditions par votre accès au site ou votre "
+"utilisation du site."
+msgstr ""
+"Your agreement to these Terms by your access to the site or your use of "
+"the site."
+
+#: templates/main/cgu.html:47 templates/main/cgu.html:137
+msgid "Contenu et services"
+msgstr "Content and services"
+
+#: templates/main/cgu.html:50 templates/main/cgu.html:143
+msgid "Afrilog ne propose ni ne fournit de conseils juridiques"
+msgstr "Afrilog does not offer or provide legal advice"
+
+#: templates/main/cgu.html:53
+msgid "Afrilog n'est pas un cabinet d'avocats"
+msgstr "Afrilog is not a law firm"
+
+#: templates/main/cgu.html:56
+msgid "Afrilog n'est pas un service de référencement"
+msgstr "Afrilog is not an SEO service"
+
+#: templates/main/cgu.html:59
+msgid "Il n'y a pas de relation avocat-client entre vous et Afrilog"
+msgstr "There is no attorney-client relationship between you and Afrilog"
+
+#: templates/main/cgu.html:62
+msgid "Les utilisateurs avocats ne sont pas des employés d'Afrilog"
+msgstr "Lawyer users are not Afrilog employees"
+
+#: templates/main/cgu.html:65
+msgid ""
+"Tous les frais juridiques sont payés aux utilisateurs avocats, pas à "
+"Afrilog"
+msgstr "All legal fees are paid to attorney users, not to Afrilog"
+
+#: templates/main/cgu.html:68
+msgid "Il n'y a pas de frais pour Afrilog pour trouver des engagements"
+msgstr "There is no cost for Afrilog to find commitments"
+
+#: templates/main/cgu.html:71
+msgid "Non-contournement"
+msgstr "Non-circumvention\""
+
+#: templates/main/cgu.html:74
+msgid "Attentes"
+msgstr "Expectations"
+
+#: templates/main/cgu.html:77
+msgid "Vos responsabilités"
+msgstr "Your responsibilities"
+
+#: templates/main/cgu.html:80
+msgid "Votre utilisation et restrictions"
+msgstr "Your usage and restrictions"
+
+#: templates/main/cgu.html:83
+msgid "Confidentialité"
+msgstr "Privacy"
+
+#: templates/main/cgu.html:86
+msgid "Indemnisation"
+msgstr "Indemnisation"
+
+#: templates/main/cgu.html:89
+msgid "Communication et autres données"
+msgstr "Communication and other data"
+
+#: templates/main/cgu.html:92
+msgid "Notifications et accords électroniques"
+msgstr "Notifications and agreements"
+
+#: templates/main/cgu.html:95
+msgid "Services premium"
+msgstr "Premium services"
+
+#: templates/main/cgu.html:98
+msgid "Hyperliens"
+msgstr "Hyperlinks"
+
+#: templates/main/cgu.html:101
+msgid "Droits d'auteur et utilisation limitée"
+msgstr "Copyright and limited usage"
+
+#: templates/main/cgu.html:104
+msgid "Modifications"
+msgstr "Updates"
+
+#: templates/main/cgu.html:107
+msgid "Votre contenu"
+msgstr "Your content"
+
+#: templates/main/cgu.html:110
+msgid "Plaintes en matière de droits d'auteur"
+msgstr "Copyright Complaints"
+
+#: templates/main/cgu.html:113
+msgid "Décharge de responsabilité"
+msgstr "Discharge of responibility"
+
+#: templates/main/cgu.html:116
+msgid "Limitation de responsabilité"
+msgstr "Limitation of liability"
+
+#: templates/main/cgu.html:119
+msgid "Accord complet"
+msgstr "Complete agreement"
+
+#: templates/main/cgu.html:122
+msgid "Cession"
+msgstr "Session"
+
+#: templates/main/cgu.html:125
+msgid "Arbitrage"
+msgstr "Arbitration"
+
+#: templates/main/cgu.html:128
+msgid "Âge minimum pour utiliser"
+msgstr "Minimum age to use"
+
+#: templates/main/cgu.html:134
+msgid ""
+"Ces Conditions régissent votre utilisation du site, à la fois en tant que"
+" visiteur et en tant qu'utilisateur enregistré (chaque visiteur et chaque"
+" utilisateur enregistré étant désigné généralement aux fins de ces "
+"Conditions comme un « Utilisateur Client »). EN UTILISANT LE SITE ET/OU "
+"EN VOUS INSCRIVANT CHEZ NOUS, VOUS ACCEPTEZ CES CONDITIONS D'UTILISATION."
+" Vous consentez aux pratiques d'information divulguées dans notre "
+"Politique de confidentialité et notre Politique relative aux cookies qui "
+"sont incorporées aux présentes par référence, et vous consentez à "
+"résoudre dans l'État de New York conformément aux termes énoncés aux "
+"présentes tout litige que vous pourriez avoir avec nous ou avec le site. "
+"Veuillez noter que nous proposons le site EN L'ÉTAT et sans garanties. Si"
+" vous enregistrez un compte ou utilisez le site au nom d'un individu ou "
+"d'une entité autre que vous-même, vous déclarez que vous êtes autorisé "
+"par cet individu ou cette entité à accepter ces Conditions en son nom."
+msgstr ""
+"These Terms govern your use of the Site, both as visitor and as a "
+"registered user (each visitor and eachregistered user being designated "
+"generally for the purposes of theseConditions as a “Customer User”). BY "
+"USING THE SITE AND/OR BY REGISTERING WITH US, YOU AGREE TO THESE TERMS OF"
+" USE.You consent to the information practices disclosed in ourPrivacy "
+"Policy and our Cookie Policy whichare incorporated herein by reference, "
+"and you agree to resolve in the State of New York in accordance with the "
+"terms set forth in present any dispute you may have with us or with the "
+"Site.Please note that we offer the site AS IS and without warranties. "
+"Ifyou are registering an account or using the Site on behalf of an "
+"individual orfrom an entity other than yourself, you represent that you "
+"are authorizedby such individual or entity to accept these Terms on its "
+"behalf."
+
+#: templates/main/cgu.html:138
+msgid ""
+"Tout ce que nous offrons sur et à travers le site est désigné dans ces "
+"Conditions collectivement comme les « Services ». <br>\n"
+"                            <br> Une partie du contenu du site est "
+"visible sans s'inscrire chez nous, mais pour participer activement ou "
+"stocker vos informations, vous devez vous inscrire en tant que membre et "
+"autoriser l'utilisation et la divulgation de vos informations "
+"personnelles et légales conformément aux termes de notre Politique de "
+"confidentialité aux fins de nous permettre de fournir les Services et tel"
+" que divulgué par ailleurs dans notre Politique de confidentialité "
+"disponible. Afrilog est une plateforme en ligne qui connecte les "
+"professionnels du droit (« Utilisateurs Avocats ») avec des Utilisateurs "
+"Clients potentiels recherchant des services juridiques. Afrilog ne "
+"fournit pas de conseils juridiques et ne fournit en aucun cas des "
+"services juridiques de quelque nature que ce soit. Afrilog ne garantit "
+"pas que les Utilisateurs Clients trouveront une représentation juridique "
+"via son système. Afrilog ne donne pas d'opinion ni ne prend position sur "
+"le moment où une relation avocat-client a été formée entre ses "
+"Utilisateurs Clients et ses Utilisateurs Avocats. Afrilog n'est pas "
+"partie aux accords entre les Utilisateurs Clients et les Utilisateurs "
+"Avocats régissant la relation avocat-client et Afrilog n'est pas impliqué"
+" dans la représentation effective des clients. Par conséquent, Afrilog ne"
+" peut garantir l'exécution des accords entre l'Utilisateur Client et "
+"l'Utilisateur Avocat, l'exactitude ou l'exhaustivité du travail de "
+"l'Utilisateur Avocat ou l'intégrité de l'une ou l'autre des parties. "
+"L'Utilisateur Client est responsable de l'évaluation de l'intégrité et "
+"des capacités de tous les Utilisateurs Avocats avec lesquels il "
+"communique en utilisant le site. Vous reconnaissez que bien qu'une partie"
+" du contenu, texte, données, graphiques, images, informations, "
+"suggestions, conseils et autres matériels (collectivement, « Informations"
+" ») qui vous est fourni sur le site (y compris les Informations fournies "
+"en réponse directe à vos questions ou publications) puisse être fournie "
+"par des individus de la profession juridique, la fourniture de telles "
+"Informations ne crée pas une relation avocat-client et ne constitue pas "
+"une opinion ou un conseil juridique, mais est fournie pour vous aider à "
+"localiser un professionnel du droit approprié. Toute utilisation du site "
+"par des clients potentiels ou des Utilisateurs Avocats abonnés n'est pas "
+"destinée à et ne créera pas une relation avocat-client entre ou parmi "
+"toute personne, entité et Afrilog. Toute communication électronique "
+"envoyée à quiconque chez Afrilog autre qu'un Utilisateur Avocat ne créera"
+" pas une relation avocat-client entre l'Utilisateur Client et Afrilog.\n"
+"                          "
+msgstr ""
+"Everything we offer on and through the Site is designated in these Terms "
+"collectively as the “Services”. <br>\n"
+" <br> Part of the content of the site is visible without registering with"
+" us, but to actively participate or store your information, you must "
+"register as a member and authorize the use and disclosure of your "
+"informationpersonal and legal in accordance with the terms of our Privacy"
+" Policyconfidentiality for the purposes of enabling us to provide the "
+"Services and suchas otherwise disclosed in our Privacy Policyavailable. "
+"Afrilog is an online platform that connects legal professionals (“Lawyer "
+"Users”) with UsersPotential clients looking for legal services. Afrilog "
+"does not does not provide legal advice and does not provide legal "
+"services of any nature whatsoever. Afrilog does not guarantee not that "
+"Client Users will find legal representationvia its system. Afrilog does "
+"not give an opinion or take a position on the time when an attorney-"
+"client relationship was formed between his or herClient Users and its "
+"Lawyer Users. Afrilog is notparty to the agreements between Client Users "
+"and UsersLawyers govern the lawyer-client relationship and Afrilog is not"
+" involvedin the effective representation of clients. Consequently, "
+"Afrilog does notcan guarantee the execution of agreements between the "
+"Client User andthe Lawyer User, the accuracy or completeness of the work "
+"of User Lawyer or the integrity of either party.The Client User is "
+"responsible for assessing the integrity and of the capabilities of all "
+"the Lawyer Users with whom itcommunicates using the Site. You acknowledge"
+" that although a partycontent, text, data, graphics, images, "
+"information,suggestions, advice and other materials (collectively, "
+"Information)provided to you on the Site (including the Information "
+"providedin direct response to your questions or publications) can be "
+"providedby individuals in the legal profession, the provision of "
+"suchInformation does not create an attorney-client relationship and does "
+"not constitute a legal opinion or advice, but is provided to assist "
+"youlocate an appropriate legal professional. Any use of the site by "
+"potential clients or subscribed Lawyer Users is not intended to and will "
+"not create an attorney-client relationship between or amongany person, "
+"entity and Afrilog. Any electronic communicationsent to anyone at Afrilog"
+" other than a Lawyer User will createnot a lawyer-client relationship "
+"between the Client User and Afrilog.\n"
+
+#: templates/main/cgu.html:144
+msgid ""
+"Les informations que vous recevez de la part d'Afrilog et de ses affiliés"
+" sont uniquement à des fins d'information et de programmation. Afrilog "
+"n'est pas une société de conception ni ne vous offre de conseils, "
+"recommandations, consultations ou toute forme de conseil en design. "
+"Afrilog met ses concepteurs à votre disposition et toute information que "
+"vous recevez d'Afrilog (autre que par un concepteur que vous engagez pour"
+" travailler avec vous) est (i) fournie par des professionnels et "
+"organisations de conception indépendants représentant les intérêts "
+"d'Afrilog, (ii) à des fins d'information uniquement, et (iii) n'établit "
+"aucune relation de concepteur-client entre vous et Afrilog."
+msgstr ""
+"Information you receive from Afrilog and its affiliates are for "
+"informational and programming purposes only. Afrilog is not a design "
+"company nor does it offer advice to you,recommendations, consultations or"
+" any form of design advice.Afrilog puts its designers at your disposal "
+"and all the information thatyou receive from Afrilog (other than from a "
+"designer you engage to work with you) is (i) provided by professionals "
+"and independent design organizations representing interestsof Afrilog, "
+"(ii) for information purposes only, and (iii) does not establish no "
+"designer-client relationship between you and Afrilog."
+
+#: templates/main/contact.html:7
+msgid "Contactez notre service commercial"
+msgstr "Contact our sales department"
+
+#: templates/main/contact.html:10
+msgid ""
+"Découvrez comment notre expertise en logistique pourrait propulser votre "
+"entreprise."
+msgstr "Find out how our logistics expertise could propel your business."
+
+#: templates/main/contact.html:33
+msgid "Entreprise"
+msgstr "Company"
+
+#: templates/main/contact.html:60
+msgid "Entrez votre message..."
+msgstr "Enter your message"
+
+#: templates/main/contact.html:68
+msgid "En sélectionnant cette option, vous acceptez notre"
+msgstr "By selecting this option, you agree to our"
+
+#: templates/main/contact.html:82
+msgid "Message bien reçu, vous recevrez notre réponse le plus tôt possible!"
+msgstr ""
+
+#: templates/main/contact.html:86
+msgid "Erreur lors de l'envoi du message."
+msgstr ""
+
+#: templates/main/contact.html:89
+msgid "Erreur réseau lors de l'envoi du message."
+msgstr ""
+
+#: templates/main/customs.html:4
+msgid "Découvrez nos services d'aide au processus de dédouanement"
+msgstr "Discover our services to help with the customs clearance process"
+
+#: templates/main/customs.html:5
+msgid ""
+"Transport, Logistique, Fret, aérien, Equipement, Container, Europe, "
+"Afrique, Oceanie, Chine, Taxes, Douanes"
+msgstr ""
+"Transport, Logistics, Freight, air, Equipment, Container, Europe, Africa,"
+" Oceania, China, Taxes, Customs"
+
+#: templates/main/customs.html:7
+msgid "Afrilog : Aide dans le processus de dédouanement"
+msgstr "Afrilog: Help in the customs clearance process"
+
+#: templates/main/customs.html:21
+msgid "Dédouanement"
+msgstr "Clearance"
+
+#: templates/main/customs.html:24
+msgid ""
+"En tant qu'entreprise logistique leader, Afrilog reconnaît l'importance "
+"du dédouanement dans le processus d'expédition. Nous comprenons le "
+"potentiel de retards coûteux et de complications qui peuvent survenir "
+"lorsque nous essayons de nous conformer aux réglementations douanières et"
+" aux formalités administratives. Pour aider nos clients à surmonter ces "
+"défis, nous fournissons des services de dédouanement complets qui "
+"garantissent un processus d’importation ou d’exportation fluide. Chez "
+"Afrilog, nous sommes fiers de notre souci du détail et de notre "
+"engagement à garantir que vos marchandises arrivent à leur destination "
+"finale à temps et dans les meilleures conditions possibles. Lorsque vous "
+"faites appel à nous pour des services de dédouanement, vous pouvez être "
+"assuré que vos envois sont entre les mains d'experts qui comprennent les "
+"complexités du processus d'expédition et se consacrent à fournir un "
+"service exceptionnel."
+msgstr ""
+"As a leading logistics company, Afrilog recognizes the importanccustoms "
+"clearance in the shipping process. We understand the potential for costly"
+" delays and complications that may arisewhen we try to comply with "
+"customs regulations and to help our customers overcome these "
+"administrative formalitieschallenges, we provide comprehensive customs "
+"clearance services that guarantee a smooth import or export process. At "
+"Afrilog, we pride ourselves on our attention to detail and our commitment"
+" to ensuring your goods arrive at their destinationfinal on time and in "
+"the best possible conditions. When you call us for customs clearance "
+"services, you can be assured that your shipments are in the hands of "
+"experts who understand the complexities of the shipping process and are "
+"dedicated to providing a exceptional service."
+
+#: templates/main/customs.html:37
+msgid "douanes, taxes, impôts"
+msgstr "customs, taxes, duties"
+
+#: templates/main/globle.html:3
+msgid "Ouvrez-vous au monde"
+msgstr "Open yourself to the world"
+
+#: templates/main/globle.html:4
+msgid "Connectez-vous à un monde plein de possibiltés."
+msgstr "Connect to a world full of possibilities."
+
+#: templates/main/home.html:8
+msgid ""
+"Afrilog, Logistique, Transit, Transport, Afrique, Niger, Europe, Asie, \n"
+"        Amérique, Oceanie, Maritime, Aérien, Terrestre, Containeurs, "
+"Marchandises, Commerce, Santé, Défense, Technologie, \n"
+"        Équipement, MSC, Import, Export, Groupage"
+msgstr ""
+"Afrilog, Logistics, Transit, Transport, Africa, Niger, Europe, Asia, \n"
+" America, Oceania, Maritime, Air, Land, Containers, Goods, Trade, Health,"
+" Defense, Technology, \n"
+"Equipment, MSC"
+
+#: templates/main/home.html:27
+msgid "Logistics company in Africa"
+msgstr "Logistics company in Africa"
+
+#: templates/main/home.html:30
+msgid "Leader dans la"
+msgstr "Leader in the"
+
+#: templates/main/home.html:30
+msgid "logistique"
+msgstr "logistics"
+
+#: templates/main/home.html:30
+msgid "et le"
+msgstr "and"
+
+#: templates/main/home.html:31
+msgid "transport"
+msgstr "transport"
+
+#: templates/main/home.html:34
+msgid ""
+"Nous fournissons des solutions logistiques innovantes et fiables pour "
+"répondre à tous vos besoins de transport et de transit. Faites confiance "
+"à notre expertise pour optimiser votre chaîne d'approvisionnement."
+msgstr ""
+"We provide innovative and reliable logistics solutions formeet all your "
+"transport and transit needs. Trustto our expertise to optimize your "
+"supply chain."
+
+#: templates/main/home.html:59
+msgid "Nous ont fait confiance"
+msgstr "Trusted us"
+
+#: templates/main/home.html:261
+msgid "Une vision nouvelle pour la logistique et le transport"
+msgstr "A new vision for logistics and transport"
+
+#: templates/main/home.html:263 templates/main/home.html:341
+msgid ""
+"Nous apportons une approche novatrice à la chaîne logistique, au transit "
+"et à l'import-export. Nos services sont conçus pour répondre aux besoins "
+"spécifiques de nos clients et aux défis de la globalisation des échanges."
+msgstr ""
+"We bring an innovative approach to the supply chain and transitand "
+"import-export. Our services are designed to meet the needsspecific to our"
+" customers and to the challenges of the globalization of trade."
+
+#: templates/main/home.html:284
+msgid "Nos valeurs fondamentales"
+msgstr "Our core values"
+
+#: templates/main/home.html:287
+msgid "Ce qui nous guide"
+msgstr "What drives us"
+
+#: templates/main/home.html:290
+msgid ""
+"Les valeurs fondamentales de notre entreprise définissent notre "
+"engagement envers nos clients et partenaires, en assurant un service de "
+"qualité exceptionnelle."
+msgstr ""
+"Our company's core values ​​define ourcommitment to our customers and "
+"partners, ensuring a quality serviceexceptional quality."
+
+#: templates/main/home.html:296
+msgid "Innovation continue."
+msgstr "Continuous innovation."
+
+#: templates/main/home.html:298
+msgid ""
+"Nous investissons constamment dans de nouvelles technologies pour "
+"améliorer nos services et répondre aux besoins évolutifs de nos clients."
+msgstr ""
+"We are constantly investing in new technologies to improve our services "
+"and meet the evolving needs of our customers."
+
+#: templates/main/home.html:303
+msgid "Sécurité et fiabilité."
+msgstr "Safety and reliability."
+
+#: templates/main/home.html:306
+msgid ""
+"Nous assurons la sécurité de vos marchandises à chaque étape de la chaîne"
+" logistique grâce à des systèmes robustes et fiables."
+msgstr ""
+"We ensure the safety of your goods at every stage of the chainlogistics "
+"thanks to robust and reliable systems."
+
+#: templates/main/home.html:312
+msgid "Excellence opérationnelle."
+msgstr "Operational effectiveness."
+
+#: templates/main/home.html:315
+msgid ""
+"Nous nous efforçons d’atteindre l’excellence dans toutes nos opérations "
+"pour garantir la satisfaction de nos clients et partenaires."
+msgstr ""
+"We strive for excellence in all our operationsto guarantee the "
+"satisfaction of our customers and partners."
+
+#: templates/main/home.html:321
+msgid "femme souriante"
+msgstr "smilling woman"
+
+#: templates/main/home.html:338
+msgid "Travaillez avec nous"
+msgstr "Work with us"
+
+#: templates/main/home.html:347
+msgid "Postes vacants"
+msgstr "Open roles"
+
+#: templates/main/home.html:368
+msgid "Depuis le blog"
+msgstr "From our Blog"
+
+#: templates/main/home.html:369
+msgid ""
+"Apprenez à optimiser votre logistique et à améliorer l'efficacité grâce à"
+" nos conseils d'experts."
+msgstr ""
+"Learn how to optimize your logistics and improve efficiency with our "
+"expert advice."
+
+#: templates/main/home.html:374
+msgid "10 mai 2023"
+msgstr "May 10th 2023"
+
+#: templates/main/home.html:381
+msgid "Améliorer l'efficacité de la chaîne d'approvisionnement"
+msgstr "Improving supply chain efficiency"
+
+#: templates/main/home.html:385
+msgid ""
+"Découvrez des stratégies pour rationaliser votre chaîne "
+"d'approvisionnement et réduire les coûts. Nos experts partagent des "
+"informations sur les dernières technologies et les meilleures pratiques "
+"en gestion logistique."
+msgstr ""
+"Discover strategies to streamline your supply chain and reduce costs. Our"
+" experts share insights into the latest technologies and best practices "
+"in logistics management."
+
+#: templates/main/home.html:394
+msgid "Alex Johnson"
+msgstr ""
+
+#: templates/main/home.html:398
+msgid "Expert en logistique"
+msgstr "Logistics expert"
+
+#: templates/main/home.html:406
+msgid "18 avr. 2023"
+msgstr "April 18th 2023"
+
+#: templates/main/home.html:408
+msgid "Chaîne d'approvisionnement"
+msgstr "Supply chain"
+
+#: templates/main/home.html:414
+msgid "Technologie logistique de pointe"
+msgstr "Cutting-edge logistics technology"
+
+#: templates/main/home.html:417
+msgid ""
+"Explorez les dernières avancées en technologie logistique et comment "
+"elles peuvent améliorer les opérations de votre entreprise. De l'IA à la "
+"blockchain, restez à la pointe avec nos insights d'experts."
+msgstr ""
+"Explore the latest advancements in logistics technology and how they can "
+"improve your business operations. From AI to blockchain, stay ahead of "
+"the curve with our expert insights."
+
+#: templates/main/home.html:425
+msgid "Jamie Lee"
+msgstr "Jamie Lee"
+
+#: templates/main/home.html:428
+msgid "Innovateur technologique"
+msgstr "Technological innovator"
+
+#: templates/main/home.html:434
+msgid "22 mar. 2023"
+msgstr "March, 22nd 2023"
+
+#: templates/main/home.html:441
+msgid "Solutions de transport durable"
+msgstr "Sustainable transportation solutions"
+
+#: templates/main/home.html:445
+msgid ""
+"Découvrez des options de transport durable et comment elles peuvent "
+"bénéficier à votre entreprise et à l'environnement. Notre guide couvre "
+"tout, des véhicules électriques aux pratiques logistiques écologiques."
+msgstr ""
+"Learn about sustainable transportation options and how they canbenefit "
+"your business and the environment. Our guide coverseverything from "
+"electric vehicles to eco-friendly logistics practices."
+
+#: templates/main/home.html:454
+msgid "Morgan Smith"
+msgstr ""
+
+#: templates/main/home.html:457
+msgid "Consultant en durabilité"
+msgstr "Sustainability consultant"
+
+#: templates/main/home.html:475
+msgid "Abonnez-vous à notre newsletter"
+msgstr "Subscribe to our newsletter"
+
+#: templates/main/home.html:476
+msgid ""
+"Recevez les dernières nouvelles et mises à jour sur nos services "
+"logistiques directement dans votre boîte de réception."
+msgstr ""
+"Receive the latest news and updates about our serviceslogistics straight "
+"to your inbox."
+
+#: templates/main/home.html:478
+msgid "Adresse email"
+msgstr "E-mail Address"
+
+#: templates/main/home.html:479
+msgid "Entrez votre email"
+msgstr "Enter your email"
+
+#: templates/main/home.html:487
+msgid "S'abonner"
+msgstr "Subscribe"
+
+#: templates/main/home.html:491
+msgid "Votre Adresse email est requise pour continuer"
+msgstr "Your email address is required"
+
+#: templates/main/home.html:494
+msgid "Veuillez entrez une Adresse email valide"
+msgstr "Please enter a valid address"
+
+#: templates/main/home.html:504
+msgid "Articles hebdomadaires"
+msgstr "Weekly aricles"
+
+#: templates/main/home.html:505
+msgid ""
+"Des conseils et des informations exclusives sur la logistique pour "
+"optimiser vos opérations."
+msgstr ""
+"Exclusive advice and information on logistics for optimize your "
+"operations."
+
+#: templates/main/home.html:513
+msgid "Pas de spam"
+msgstr "No spams"
+
+#: templates/main/home.html:514
+msgid ""
+"Nous respectons votre vie privée. Recevez uniquement des informations "
+"pertinentes et utiles."
+msgstr "We respect your privacy. Only receive informationrelevant and useful."
+
+#: templates/main/home.html:537
+msgid "Souscription réussie"
+msgstr ""
+
+#: templates/main/home.html:541
+msgid "Votre souscription à notre Newsletter a été effectuée avec succès"
+msgstr ""
+
+#: templates/main/home.html:569
+msgid "Echec lors de l'opération"
+msgstr ""
+
+#: templates/main/home.html:573
+msgid "Une erreur s'est produite, veuillez réessayer"
+msgstr ""
+
+#: templates/main/home.html:584
+msgid "Réessayer"
+msgstr "Message"
+
+#: templates/main/job_opennings.html:3
+msgid ""
+"Afrilog, Logistique, Transit, Transport, Afrique, Niger, Europe, Asie, \n"
+"    Amérique, Oceanie, Maritime, Aérien, Terrestre, Containeurs, "
+"Marchandises, Commerce, Santé, Défense, Technologie, \n"
+"    Équipement, MSC, Import, Export, Groupage, Emploi, Opportunités"
+msgstr ""
+"Afrilog, Logistics, Transit, Transport, Africa, Niger, Europe, Asia, \n"
+" America, Oceania, Maritime, Air, Land, Containers, Goods, Trade, Health,"
+" Defense, Technology, \n"
+"Equipment, MSC"
+
+#: templates/main/job_opennings.html:6
+msgid "Afrilog: Offre d'emplois"
+msgstr "New Job Offers"
+
+#: templates/main/job_opennings.html:15
+msgid "Carrières à Afrilog"
+msgstr "Calendar: Afrilog"
+
+#: templates/main/job_opennings.html:18
+msgid "Explorez de nouvelles opportunités"
+msgstr ""
+
+#: templates/main/job_opennings.html:29
+msgid "Postuler"
+msgstr "apply"
+
+#: templates/main/job_opennings.html:35
+msgid "Aucune offre d'emploi pour le moment."
+msgstr "No job offer available"
+
+#: templates/main/layout.html:4
+msgid "Afrilog : Leader dans le domaine du Transport et de la Logistique"
+msgstr "Afrilog: Leader in the field of Transport and Logistics"
+
+#: templates/main/pricing.html:237 templates/main/sea.html:47
+msgid "Notre grille tarifaire pour le fret maritime"
+msgstr "Our price list for sea freight"
+
+#: templates/main/pricing.html:238 templates/main/sea.html:48
+msgid "A partir de Valencia (Espagne)"
+msgstr "From Valencia (Spain)"
+
+#: templates/main/pricing.html:246 templates/main/pricing.html:277
+#: templates/main/sea.html:56 templates/main/sea.html:87
+msgid "Type de Conteneur"
+msgstr "Type of Container"
+
+#: templates/main/pricing.html:309 templates/main/sea.html:119
+msgid "Port de débarquement"
+msgstr "Port of disembarkation"
+
+#: templates/main/pricing.html:310 templates/main/sea.html:120
+msgid "O/F(USD)"
+msgstr "O/F(USD)"
+
+#: templates/main/pricing.html:311 templates/main/sea.html:121
+msgid "FT"
+msgstr "FT"
+
+#: templates/main/pricing.html:312 templates/main/sea.html:122
+msgid "T/T"
+msgstr "T/T"
+
+#: templates/main/pricing.html:342 templates/main/sea.html:152
+msgid "A partir de l' Inde"
+msgstr "From India"
+
+#: templates/main/pricing.html:350 templates/main/sea.html:160
+msgid "Type de conteneur"
+msgstr "Type of Container"
+
+#: templates/main/pricing.html:351 templates/main/sea.html:161
+msgid "Temps de transit"
+msgstr "Transit duration"
+
+#: templates/main/pricing.html:352 templates/main/sea.html:162
+msgid "Prix"
+msgstr "rices\""
+
+#: templates/main/pricing.html:359 templates/main/pricing.html:365
+#: templates/main/sea.html:169 templates/main/sea.html:175
+msgid "26 jours"
+msgstr "26 days"
+
+#: templates/main/pricing.html:366 templates/main/sea.html:176
+msgid "5300"
+msgstr "5300"
+
+#: templates/main/sea.html:3
+msgid "Afrilog : Fret maritime"
+msgstr "Afrilog : sea freight"
+
+#: templates/main/sea.html:5
+msgid "Découvrez nos services de fret maritime"
+msgstr "Discover our sea freight services"
+
+#: templates/main/sea.html:6
+msgid ""
+"Transport, Logistique, Fret, maritime, Equipement, Container, Europe, "
+"Afrique, Oceanie, Chine"
+msgstr ""
+"Transport, Logistics, Freight, maritime, Equipment, Container, Europe, "
+"Africa, Oceania, China"
+
+#: templates/main/sea.html:20
+msgid "Fret maritime"
+msgstr "Sea Freight"
+
+#: templates/main/sea.html:23
+msgid ""
+"Le fret maritime est essentiel pour les échanges commerciaux "
+"internationaux, offrant des solutions efficaces pour le transport de "
+"grandes quantités de marchandises sur de longues distances. Grâce à une "
+"capacité de chargement importante et à des coûts de transport réduits, le"
+" fret maritime est une option privilégiée pour les entreprises cherchant "
+"à optimiser leurs chaînes d'approvisionnement. Découvrez comment nos "
+"services de fret maritime peuvent répondre à vos besoins de transport, en"
+" assurant la sécurité et la ponctualité de vos livraisons, même sur les "
+"routes les plus fréquentées."
+msgstr ""
+"Sea freight is essential for tradeinternational, offering efficient "
+"solutions for the transport of Large quantities of goods over long "
+"distances. Thanks to a large loading capacity and reduced transport "
+"costs, theOcean freight is a preferred option for businesses "
+"seekingoptimize their supply chains. Find out how our Ocean freight "
+"services can meet your transportation needs, inensuring the safety and "
+"punctuality of your deliveries, even on busiest roads."
+
+#: templates/main/sea.html:35
+msgid "fret maritime"
+msgstr "sea freight"
+
+#: templates/main/services.html:5
+msgid "Optimisez vos opérations logistiques avec nos solutions"
+msgstr "Optimize your logistics operations with our solutions"
+
+#: templates/main/services.html:8
+msgid ""
+"Nous offrons des fonctionnalités complètes pour rationaliser la gestion "
+"de votre chaîne d'approvisionnement et de vos expéditions."
+msgstr ""
+"We offer comprehensive features to streamline your supply chain and "
+"shipping management."
+
+#: templates/main/services.html:22
+msgid "Livraison fiable"
+msgstr "Reliable delivery"
+
+#: templates/main/services.html:24
+msgid ""
+"Nos services garantissent une livraison ponctuelle et fiable de vos "
+"marchandises à divers endroits."
+msgstr ""
+"Our services guarantee punctual and reliable delivery of your goods in "
+"various locations"
+
+#: templates/main/services.html:33
+msgid "Manipulation sécurisée"
+msgstr "Secure handling"
+
+#: templates/main/services.html:35
+msgid ""
+"Nous mettons en place des mesures de sécurité strictes pour une "
+"manipulation sûre."
+msgstr "We put in place strict security measures for a "
+"safe handling."
+
+#: templates/main/services.html:44
+msgid "Support 24/7"
+msgstr "Support 24/7"
+
+#: templates/main/services.html:46
+msgid ""
+"Notre équipe de service client est disponible en permanence pour vous "
+"assister avec tous vos problèmes."
+msgstr "Our customer service team is always available for you assist with all your problems."
+
+#: templates/main/services.html:55
+msgid "Processus efficaces"
+msgstr "Efficient processes"
+
+#: templates/main/services.html:57
+msgid ""
+"Nous optimisons nos processus pour assurer le transport et la livraison "
+"des marchandises les plus rapides."
+msgstr "We optimize our processes to ensure transport and delivery of the fastest goods."
+
+#: templates/main/shop.html:3
+msgid "Afrilog : Central d'achat"
+msgstr "Afrilog : Marketplace"
+
+#: templates/main/shop.html:5
+msgid "Découvrez notre central d'achat"
+msgstr "Marketplace"
+
+#: templates/main/shop.html:6
+msgid ""
+"central d'achat, achats, produits, services, ecommerce, marketplace, "
+"ventes en ligne, commerce électronique"
+msgstr ""
+
+#: templates/main/stats.html:7
+msgid "2.5 millions de tonnes de marchandises traitées chaque année"
+msgstr "2.5 million tonnes of goods processed each year"
+
+#: templates/main/stats.html:10
+msgid "2.5 M"
+msgstr "2.5 M"
+
+#: templates/main/stats.html:15
+msgid "Clients satisfaits"
+msgstr "Satisfied customers"
+
+#: templates/main/stats.html:21
+msgid "Réductions des coûts logistiques"
+msgstr "Logistics cost reductions"
+
+#: templates/main/terrestre.html:3
+msgid "Afrilog : Fret terrestre"
+msgstr "Afrilog : ground freight"
+
+#: templates/main/terrestre.html:5
+msgid "Découvrez nos services de fret terrestre"
+msgstr "Discover our ground freight services"
+
+#: templates/main/terrestre.html:6
+msgid ""
+"Transport, Logistique, Fret, Terrestre, Equipement, Container, Europe, "
+"Afrique, Oceanie, Chine"
+msgstr ""
+"Transport, Logistics, Freight, Land, Equipment, Container, Europe,Africa,"
+" Oceania, China"
+
+#: templates/main/terrestre.html:23
+msgid ""
+"Le fret terrestre joue un rôle crucial dans la chaîne logistique, offrant"
+" des solutions flexibles et économiques pour le transport de "
+"marchandises. Avec des réseaux routiers bien développés et une "
+"infrastructure solide, le fret terrestre permet des livraisons rapides et"
+" ponctuelles, réduisant les temps d'attente et les coûts. En optant pour "
+"le fret terrestre, votre entreprise bénéficie d'une prestation de "
+"services fiable et efficace, adaptée à vos besoins spécifiques. Découvrez"
+" comment nos solutions de fret terrestre peuvent optimiser vos opérations"
+" logistiques."
+msgstr ""
+"Land freight plays a crucial role in the supply chain, providingflexible "
+"and economical solutions for the transport ofgoods. With well-developed "
+"road networks and a solid infrastructure, ground freight allows for fast "
+"deliveries and punctual, reducing waiting times and costs. By opting for "
+"land freight, your company benefits from a service of reliable and "
+"efficient services, tailored to your specific needs. Discoverhow our "
+"ground freight solutions can optimize your operationslogistics."
+
+#: templates/main/terrestre.html:35
+msgid "fret terrestre"
+msgstr "ground freight"
+
+#: templates/main/testimonial.html:10
+msgid ""
+"Grâce à leur expertise et leur maîtrise des opérations logistiques, nous "
+"avons pu améliorer considérablement notre efficacité. Leur équipe est "
+"dédiée et toujours à l'écoute, ce qui nous a permis de nous concentrer "
+"pleinement sur notre cœur de métier. Afrilog est un partenaire de "
+"confiance qui nous a fait gagner un temps précieux et optimisé nos coûts."
+" Nous ne pourrions pas être plus satisfaits de leur service exceptionnel."
+msgstr ""
+"Thanks to their expertise and mastery of logistics operations, we have "
+"been able to significantly improve our efficiency. Their team is "
+"dedicated and always attentive, which has allowed us to focus fully on "
+"our core business. Afrilog is a trusted partner that has saved us "
+"valuable time and optimized our costs.We could not be happier with their "
+"exceptional service."
+
+#: templates/main/testimonial.html:21
+msgid "CEO of Workcation"
+msgstr "CEO of Workcation"
+
+#: templates/main/top_product.html:26
+msgid "Aucun produit disponible pour le moment."
+msgstr "No product available at this moment"
+
+#: templates/main/transit.html:3
+msgid "Afrilog : Services de transit et manutention"
+msgstr "Afrilog: Transit and handling services"
+
+#: templates/main/transit.html:5
+msgid "Découvrez nos services transit, manutention et transport"
+msgstr "Discover our transit, handling, and transportation services"
+
+#: templates/main/transit.html:20
+msgid "Transit, manutention et transport"
+msgstr "Transit, Handling and Transport"
+
+#: templates/main/transit.html:23
+msgid ""
+"Les services de transit, de manutention et de transport sont des services"
+" qui assurent la manutention, le stockage et/ou le transport de "
+"marchandises dans une certaine zone. Les services de transit, de "
+"manutention et de transport impliquent généralement l'emballage, "
+"l'étiquetage, la planification et la livraison des marchandises, ainsi "
+"que la gestion des formalités administratives associées au transport des "
+"marchandises. L’objectif principal des services de transit, de "
+"manutention et de transport est de garantir que les marchandises sont "
+"livrées à destination en toute sécurité et à temps."
+msgstr ""
+"Transit, handling, and transportation services are services that ensure "
+"the handling, storage, and/or transport of goods within a certain area. "
+"Transit, handling, and transportation services generally involve "
+"packaging,labeling, planning, and delivery of goods, as well as managing "
+"the administrative formalities associated with transporting goods. The "
+"main objective of transit, handling, and transportation services is to "
+"ensure that goods are delivered safely and on time."
+
+#: templates/main/transit.html:36
+msgid "transit&manutention"
+msgstr "Transit, Handling and Transport"
+
+#: templates/main/components/air/rate-estimation-inputs.html:4
+#: templates/main/components/air/rate-estimation-inputs.html:15
+#: templates/main/components/sea/rate-estimation-inputs.html:3
+msgid "Cargo"
+msgstr ""
+
+#: templates/main/components/air/rate-estimation-inputs.html:20
+msgid "UDL"
+msgstr ""
+
+#: templates/main/components/air/rate-estimation-inputs.html:37
+#: templates/main/components/sea/rate-estimation-inputs.html:36
+msgid "Volume(m3)"
+msgstr "Volume(m3)"
+
+#: templates/main/components/air/rate-estimation-inputs.html:47
+#: templates/main/components/sea/rate-estimation-inputs.html:46
+msgid "Longueur(m)"
+msgstr "Length (m)"
+
+#: templates/main/components/air/rate-estimation-inputs.html:54
+#: templates/main/components/sea/rate-estimation-inputs.html:53
+msgid "Largeur(m)"
+msgstr "Width (m)"
+
+#: templates/main/components/air/rate-estimation-inputs.html:61
+#: templates/main/components/sea/rate-estimation-inputs.html:60
+msgid "Hauteur(m)"
+msgstr "Height (m)"
+
+#: templates/main/components/authenticated/auth_navigation.html:20
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: templates/main/components/sea/rate-estimation-inputs.html:14
+msgid "General Cargo"
+msgstr ""
+
+#: templates/main/components/sea/rate-estimation-inputs.html:19
+msgid "UDL container"
+msgstr "Continue"
+
+#: templates/views/basic_charts.html:13 templates/views/expenses_list.html:108
+msgid "Vues sur le site web"
+msgstr "Website views"
+
+#: templates/views/basic_charts.html:16 templates/views/expenses_list.html:111
+msgid "Performances de la dernière campagne"
+msgstr "Performance of the last campaign"
+
+#: templates/views/basic_charts.html:36 templates/views/expenses_list.html:131
+msgid "Ventes quotidiennes"
+msgstr "Daily sales"
+
+#: templates/views/basic_charts.html:37 templates/views/expenses_list.html:132
+msgid "d'augmentation dans les ventes d'aujourd'hui"
+msgstr "increase in today's sales"
+
+#: templates/views/basic_charts.html:57 templates/views/expenses_list.html:152
+msgid "Tâches complètes"
+msgstr "Tasks completed"
+
+#: templates/views/basic_charts.html:60 templates/views/expenses_list.html:155
+msgid "Performances de la campagne récente"
+msgstr "Performance of the recent campaign"
+
+#: templates/views/expenses_list.html:10
+#: templates/views/weekly_gain_report.html:9
+msgid "Recettes de cette semaine"
+msgstr "Income for this week"
+
+#: templates/views/expenses_list.html:21
+#: templates/views/weekly_gain_report.html:20
+msgid "par rapport à la semaine passée"
+msgstr "compared to last week"
+
+#: templates/views/expenses_list.html:34
+#: templates/views/monthly_user_report.html:9
+msgid "Utilisateurs de ce mois"
+msgstr "Users this month"
+
+#: templates/views/expenses_list.html:45
+#: templates/views/monthly_user_report.html:20
+msgid "par rapport au mois passé"
+msgstr "compared to last month"
+
+#: templates/views/expenses_list.html:58
+#: templates/views/monthly_customers_report.html:9
+msgid "Nouveaux clients"
+msgstr "New customers"
+
+#: templates/views/expenses_list.html:69 templates/views/expenses_list.html:90
+#: templates/views/monthly_customers_report.html:20
+msgid "par rapport à hier"
+msgstr "compared to last month"
+
+#: templates/views/expenses_list.html:82
+msgid "Ventes"
+msgstr "Sales"
+
+#: templates/views/feeds.html:6
+msgid "Feeds"
+msgstr "Meets"
+
+#: templates/views/feeds.html:14 templates/views/purchases.html:14
+msgid "Partager"
+msgstr "Share"
+
+#: templates/views/feeds.html:15 templates/views/purchases.html:15
+msgid "Exporter"
+msgstr "Export"
+
+#: templates/views/feeds.html:16 templates/views/purchases.html:16
+msgid "Télécharger"
+msgstr "Download"
+
+#: templates/views/feeds.html:40 templates/views/feeds.html:67
+msgid "Acheter"
+msgstr "Accept"
+
+#: templates/views/invoices.html:19
+msgid "Trier"
+msgstr "Title"
+
+#: templates/views/invoices.html:25
+msgid "Tout Sélectionner"
+msgstr "Select a Position"
+
+#: templates/views/empty/@support_team/no_feed.html:4
+#: templates/views/empty/user/no_feed.html:4
+msgid "Aucne nouveauté"
+msgstr "New"
+
+#: templates/views/empty/@support_team/no_feed.html:7
+#: templates/views/empty/user/no_feed.html:7
+msgid "Aucune nouveauté dans votre feed"
+msgstr ""
+
+#: templates/views/empty/@support_team/no_feed.html:10
+#: templates/views/empty/user/no_feed.html:10
+msgid "Le meilleur reste à venir"
+msgstr ""
+
+#: templates/views/empty/user/no_invoice.html:2
+msgid "Aucune facture"
+msgstr "No invoices"
+
+#: templates/views/empty/user/no_invoice.html:3
+msgid "Aucune facture à afficher."
+msgstr "No invoice to display"
+
+#: templates/views/empty/user/no_invoice.html:6
+msgid "Toutes les factures de vos récentes transactions vont s'afficher ici"
+msgstr "All invoices from your recent transactions will appear here"
+
+#: templates/views/empty/user/no_message.html:4
+msgid "Aucun message"
+msgstr "New Message"
+
+#: templates/views/empty/user/no_message.html:10
+msgid "Tous vos messages vont s'afficher ici"
+msgstr "Your messages will be displayed here"
+
+#: templates/views/empty/user/no_purchase.html:4
+msgid "Aucun achat"
+msgstr "No purchase found"
+
+#: templates/views/empty/user/no_purchase.html:10
+msgid "Acheter et faites-vous livrer vos <br>produits en toute sécurité."
+msgstr ""
+
+#~ msgid "Votre requête a bien été envoyé"
+#~ msgstr "Your request has been sent"
+
+#~ msgid "Envoyé avec succès"
+#~ msgstr "Sent successfully"
+
+#~ msgid "Votre requête a été bien envoyé"
+#~ msgstr "Your request has been sent"
+
+#~ msgid "Votre campagne a été bien mise à jour"
+#~ msgstr "our campaign has been successfully update"
+
+#~ msgid "Campagne supprimée"
+#~ msgstr "Campaign deleted"
+
+#~ msgid "Votre demande a bien été mise à jour"
+#~ msgstr "Your request has been updated successfully"
+
+#~ msgid "Votre demande a été bien supprimé"
+#~ msgstr "Your request has been successfully deleted"
+
+#~ msgid "La facture est introuvable."
+#~ msgstr "The invoice cannot be found."
+
+#~ msgid "Le titre et le montant sont requis."
+#~ msgstr "Title and amount are required."
+
+#~ msgid "Montant invalide."
+#~ msgstr "Invalid number for amount"
+
+#~ msgid "La facture a été mise à jour avec succès."
+#~ msgstr "Invoice has been updated successfully"
+
+#~ msgid "La facture a été supprimée avec succès."
+#~ msgstr "Invoice has been deleted successfully"
+
+#~ msgid "Une erreur est survenue lors de la suppression de la facture."
+#~ msgstr "An error occured while deleting this invoice"
+
+#~ msgid "Demande Introuvable"
+#~ msgstr "Request not found"
+
+#~ msgid "Votre compte a été créé avec succès. Veuillez vous connecter."
+#~ msgstr "Your account has been created successfully"
+
+#~ msgid "Veuillez vous connecter à votre compte!"
+#~ msgstr "Please log in to your account"
+
+#~ msgid ""
+#~ "Votre nouvelle campagne a été ajoutée,"
+#~ " vous pouvez maintenant tirer le "
+#~ "meilleur de votre audience"
+#~ msgstr ""
+#~ "Your new ads campaign has been "
+#~ "created, you can now get the max"
+#~ " from your activity"
+
+#~ msgid "Afrilog"
+#~ msgstr "Afrilog"
+
+#~ msgid "Upload CV"
+#~ msgstr "Upload CV"
+
+#~ msgid ""
+#~ "Afrilog, leader dans le domaine du "
+#~ "transport et de la logistique, Page "
+#~ "de connexion"
+#~ msgstr "Afrilog, leader in the field of transport and logistics, Login Page"
+
+#~ msgid ""
+#~ "Afrilog, Logistique, Transit, Transport, "
+#~ "Afrique, Niger, Europe, Asie, \n"
+#~ "    Amérique, Oceanie, Maritime, Aérien, "
+#~ "Terrestre, Containeurs, Marchandises, Commerce, "
+#~ "Santé, Défencse, Technologie, \n"
+#~ "    Equipement, MSC, Connexion, Utilisateur, Portail"
+#~ msgstr ""
+#~ "Afrilog, Logistics, Transit, Transport, Africa, Niger, Europe, Asia, \n"
+#~ "    America, Oceania, Maritime, Air, "
+#~ "Land, Containers, Goods, Trade, Health, "
+#~ "Defense, Technology, \n"
+#~ "    Equipment, MSC, Login, User, Portal"
+
+#~ msgid "Postes récents - Afrilog"
+#~ msgstr "Recent Positions - Afrilog"
+
+#~ msgid " - Afrilog"
+#~ msgstr " - Afrilog"
+
+#~ msgid "Procurations récentes - Afrilog"
+#~ msgstr "Recent Authorizations - Afrilog"
+
+#~ msgid "Réunions : Afrilog"
+#~ msgstr "Meetings: Afrilog"
+
+#~ msgid "- Afrilog"
+#~ msgstr "- Afrilog"
+
+#~ msgid "Spanish"
+#~ msgstr ""
+
+#~ msgid "Text"
+#~ msgstr "Text"
+
+#~ msgid "Xlsx"
+#~ msgstr "Xlsx"
+
+#~ msgid "Russe"
+#~ msgstr ""
+
+#~ msgid "Turc"
+#~ msgstr "Return"
+
+#~ msgid "Accepter les politiques"
+#~ msgstr "Accept our policies"
+
+#~ msgid "Entrer votre identifiant ou N° de suivi..."
+#~ msgstr "Enter your ID or tracking number..."
+
+#~ msgid "Nos valeurs"
+#~ msgstr "Our values"
+
+#~ msgid "Découvrez nos services d'entrepôt de stockage"
+#~ msgstr "Discover our services to help with the customs clearance process"
+
+#~ msgid ""
+#~ "Transport, Logistique, Fret, aérien, "
+#~ "Equipement, Container, Europe, Afrique, "
+#~ "Oceanie, Chine, Entrepôt, Stockage, Chaîne"
+#~ msgstr ""
+#~ "Transport, Logistics, Freight, air, Equipment,"
+#~ " Container, Europe, Africa, Oceania, China,"
+#~ " Taxes, Customs"
+
+#~ msgid "Afrilog : Entrepôt de stockage"
+#~ msgstr "Storage warehouse"
+
+#~ msgid ""
+#~ "Afrilog propose des services spécialisés "
+#~ "d'entreposage sous douane et de "
+#~ "transport en libre-entreposage qui "
+#~ "permettent aux entreprises de stocker "
+#~ "leurs marchandises en toute sécurité "
+#~ "jusqu'à ce qu'elles soient prêtes à "
+#~ "déménager ou à expédier. Nos services"
+#~ " se concentrent sur le stockage et"
+#~ " le transport des marchandises, mais "
+#~ "nous proposons également des services "
+#~ "supplémentaires tels que l'emballage et "
+#~ "la gestion du stockage pour garantir "
+#~ "que vos marchandises soient stockées "
+#~ "dans les meilleures conditions possibles."
+#~ msgstr ""
+#~ "Afrilog offers specialized services in "
+#~ "bonded warehousing and free storage "
+#~ "transportation that allow businesses to "
+#~ "store their goods safely until they "
+#~ "are ready to move or ship. Our "
+#~ "services focus on the storage and "
+#~ "transportation of goods, but we also "
+#~ "offer additional services such as "
+#~ "packaging and storage management to "
+#~ "ensure that your goods are stored "
+#~ "under the best possible conditions."
+
+#~ msgid "entrepôt et stockage"
+#~ msgstr "Storage warehouse"
+
+#~ msgid "Inbox"
+#~ msgstr "Inbox"
+
+#~ msgid "Actualités"
+#~ msgstr "News"
+
+#~ msgid "Aucune facture pour le moment."
+#~ msgstr "No invoices at the moment."
+
+#~ msgid ""
+#~ "Nous mettons en place des mesures "
+#~ "de sécurité strictes pour garantir une"
+#~ " manipulation sûre de vos colis."
+#~ msgstr ""
+

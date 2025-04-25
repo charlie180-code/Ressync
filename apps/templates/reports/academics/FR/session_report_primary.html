@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Rapport d'Étudiant - {{ data.student.user.first_name }} {{ data.student.user.last_name }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .header, .footer {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            color: #003366; /* Dark Blue */
+            margin: 0;
+        }
+        .header h2 {
+            color: #0056b3; /* Lighter Blue */
+            margin: 5px 0;
+        }
+        .grades {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .grades th, .grades td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        .grades th {
+            background-color: #e9ecef; /* Light Grey */
+        }
+        .signature {
+            text-align: left;
+            font-size: 0.9em;
+            padding: 10px;
+        }
+        .footer {
+            font-size: 0.9em;
+        }
+        .signature-box {
+            border: 1px solid #0056b3;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+            background-color: #f0f8ff; /* Light Blue */
+        }
+        .yearly-gpa {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .yearly-gpa h2 {
+            font-size: 12px;
+            color: #4a90e2;
+            margin-bottom: 10px;
+        }
+
+        .yearly-gpa table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 9px;
+        }
+
+        .yearly-gpa th,
+        .yearly-gpa td {
+            border: 1px solid #ddd;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .yearly-gpa th {
+            background-color: #4a90e2;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="{{ data.school_logo_url }}" alt="School Logo" style="width: 100px;">
+        <h1>{{ data.school_name }}</h1>
+        <p>{{ data.school_address }} | Tel: {{ data.school_phone }} | Email: {{ data.school_email }}</p>
+        <h2>Rapport de {{ data.student.user.first_name }} {{ data.student.user.last_name }}</h2>
+        <p>Session: {{ data.session.name }}</p>
+    </div>
+
+    <table class="grades">
+        <thead>
+            <tr>
+                <th>{{ _('Matière') }}</th>
+                <th>{{ _('Note de Composition') }}</th>
+                <th>{{ _('Signature de l\'enseignant') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for grade in data.grades_data %}
+            <tr>
+                <td>{{ grade.subject }}</td>
+                <td>{{ grade.value }}</td>
+                <td class="signature">{{ grade.teacher_signature }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <p><strong>Moyenne Générale:</strong> {{ data.composition_avg }}</p>
+        <p><strong>Rang:</strong> {{ data.rank_label }}</p>
+        <p><strong>Appréciation:</strong> {{ data.appreciation }}</p>
+        <p><img src="{{ data.qr_code_url }}" alt="QR Code" style="width: 100px;"></p>
+        <p>Rapport URL: <a href="{{ data.report_url }}">Voir le Rapport</a></p>
+    </div>
+    {% if data.yearly_gpa|length > 0 %}
+        <div class="yearly-gpa">
+            <h2>{{ _('Résultats Annuels') }}</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>{{ _('Année Scolaire') }}</th>
+                        <th>{{ _('Moyenne Annuelle') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for year in data.yearly_gpa %}
+                        <tr>
+                            <td>{{ year.academic_year }}</td>
+                            <td>{{ year.yearly_gpa }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+    <div class="signature-box">
+        Signature du Directeur: _______________________
+    </div>
+</body>
+</html>

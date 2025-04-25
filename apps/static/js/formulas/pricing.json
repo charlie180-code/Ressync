@@ -1,0 +1,282 @@
+{
+    "CARGO_CONVENTIONNEL": {
+      "CHARGES_FIXES": [
+        {
+          "unite": "Par Poids",
+          "facturation_fcfa": "***",
+          "description": "Remise documentaire*"
+        },
+        {
+          "unite": "dossier",
+          "facturation_fcfa": "7 425",
+          "description": "Ouverture de dossier et frais administratifs"
+        },
+        {
+          "unite": "Kg/jour",
+          "facturation_fcfa": "30 FCFA",
+          "description": "Magasinage sous douane apres periode franche"
+        },
+        {
+          "unite": "Kg/jour",
+          "facturation_fcfa": "35 FCFA",
+          "description": "Magasinage libre"
+        },
+        {
+          "unite": "Kg/jour",
+          "facturation_fcfa": "2 425 FCFA",
+          "description": "Magasinage frigorifique"
+        },
+        {
+          "unite": "dossier",
+          "facturation_fcfa": "2%",
+          "description": "Interêt sur debours"
+        }
+      ],
+      "MANUTENTION_TRANSPORT_LIVRAISON_SUR_SITE_NIAMEY_CARGO_NORMAL": [
+        {
+          "poids_brut": "De 0 à 500 Kg",
+          "taux_cout_kg": "600 FCFA",
+          "description": "Enlevement des locaux convenus"
+        },
+        {
+          "poids_brut": "De 500 à 1000Kg",
+          "taux_cout_kg": "450 FCFA",
+          "description": "Transport livraison dans les locaux convenus"
+        },
+        {
+          "poids_brut": "De 1001 à 5000Kg",
+          "taux_cout_kg": "350 FCFA",
+          "description": "Transport livraison dans les locaux convenus"
+        },
+        {
+          "poids_brut": "De 5001 à 10 000Kg",
+          "taux_cout_kg": "250 FCFA",
+          "description": "Transport livraison dans les locaux convenus"
+        },
+        {
+          "poids_brut": "De 10 001 à 15 000Kg",
+          "taux_cout_kg": "250 FCFA",
+          "description": "Transport livraison dans les locaux convenus"
+        },
+        {
+          "poids_brut": "De 15 001 à 20 000Kg",
+          "taux_cout_kg": "250 FCFA",
+          "description": "Transport livraison dans les locaux convenus"
+        },
+        {
+          "poids_brut": "De 20 001 à 30 000Kg",
+          "taux_cout_kg": "250 FCFA",
+          "description": "Transport livraison dans les locaux convenus"
+        },
+        {
+          "poids_brut": "De 30 001 à 40 000Kg",
+          "taux_cout_kg": "250 FCFA",
+          "description": "Transport livraison dans les locaux convenus"
+        },
+        {
+          "poids_brut": "De 40 001 à 50 000Kg",
+          "taux_cout_kg": "250 FCFA",
+          "description": "Transport livraison dans les locaux convenus"
+        },
+        {
+          "poids_brut": "De 50 001 à plus",
+          "taux_cout_kg": "250 FCFA",
+          "description": "Transport livraison dans les locaux convenus"
+        }
+      ],
+      "MANUTENTION_TRANSPORT_LIVRAISON_DE_CITE_NIAMEY_AU_DIFFERENTES_REGIONS": [
+        {
+          "escorte_ou_passavant": "25 000 FCFA",
+          "transport": "50 000 FCFA",
+          "description": "Enlevement de site locaux Niamey"
+        },
+        {
+          "escorte_ou_passavant": "20 000 / 20 000 FCFA",
+          "transport": "200 000 FCFA",
+          "description": "Transport livraison de Niamey a Dosso"
+        },
+        {
+          "escorte_ou_passavant": "30 000 / 20 000 FCFA",
+          "transport": "150 000 FCFA",
+          "description": "Transport livraison de Niamey a Tillabery"
+        },
+        {
+          "escorte_ou_passavant": "40 000 / 20 000 FCFA",
+          "transport": "350 000 FCFA",
+          "description": "Transport livraison de Niamey a Doutchi"
+        },
+        {
+          "escorte_ou_passavant": "60 000 / 20 000 FCFA",
+          "transport": "400 000 FCFA",
+          "description": "Transport livraison de Niamey a konni"
+        },
+        {
+          "escorte_ou_passavant": "80 000 / 20 000 FCFA",
+          "transport": "800 000 FCFA",
+          "description": "Transport livraison de Niamey a Tahoua"
+        },
+        {
+          "escorte_ou_passavant": "138 000 / 20 000 FCFA",
+          "transport": "1 150 000 FCFA",
+          "description": "Transport livraison de Niamey a Agadez"
+        },
+        {
+          "escorte_ou_passavant": "100 000 / 20 000 FCFA",
+          "transport": "900 000 FCFA",
+          "description": "Transport livraison de Niamey a Maradi"
+        },
+        {
+          "escorte_ou_passavant": "140 000 / 20 000 FCFA",
+          "transport": "1 050 000 FCFA",
+          "description": "Transport livraison de Niamey a zinder"
+        },
+        {
+          "escorte_ou_passavant": "192 000 / 20 000 FCFA",
+          "transport": "1 600 000 FCFA",
+          "description": "Transport livraison de Niamey a Diffa"
+        }
+      ]
+    },
+    "CONTENEURS": {
+      "DEDOUANEMENT_MANUTENTION_TRANSPORT_LIVRAISON_SUR_SITE_NIAMEY_CARGO_CONTENEURISE": [
+        {
+          "description": "Conteneur 88 x 125 x 63\". Conteneur IATA AAP / AA2",
+          "tare": "230 Kg",
+          "taux_cout_conteneur": "150 000"
+        },
+        {
+          "description": "Conteneur 96 x 125 x 63\". Conteneur IATA AMP",
+          "tare": "285 Kg",
+          "taux_cout_conteneur": "200 000"
+        },
+        {
+          "description": "Conteneur 96 x 125 x 96\". Conteneur IATA AMA / AQ6",
+          "tare": "270 Kg",
+          "taux_cout_conteneur": "200 000"
+        },
+        {
+          "description": "Conteneur IATA AKH",
+          "tare": "85 Kg",
+          "taux_cout_conteneur": "100 000"
+        },
+        {
+          "description": "Conteneur IATA AKE",
+          "tare": "75 Kg",
+          "taux_cout_conteneur": "75 000"
+        },
+        {
+          "description": "Conteneur IATA AKN",
+          "tare": "120 Kg",
+          "taux_cout_conteneur": "150 000"
+        },
+        {
+          "description": "Conteneur de sécurité 96\" x 125 x 63\" Code IATA AMP",
+          "tare": "340 Kg",
+          "taux_cout_conteneur": "150 000"
+        },
+        {
+          "description": "Conteneur de sécurité Code IATA AaP",
+          "tare": "311 Kg",
+          "taux_cout_conteneur": "150 000"
+        },
+        {
+          "description": "Conteneur à température réglable Conteneur IATA RAP",
+          "tare": "438 Kg",
+          "taux_cout_conteneur": "150 000"
+        },
+        {
+          "description": "Conteneur à température réglable Conteneur IATA RKN",
+          "tare": "267 Kg",
+          "taux_cout_conteneur": "150 000"
+        },
+        {
+          "description": "Conteneur à température réglable 96\" x 125 x 64\" Conteneur IATA RMP",
+          "tare": "600 Kg",
+          "taux_cout_conteneur": "250 000"
+        },
+        {
+          "description": "Conteneur à température réglable 87\" x 61.5 x 63\" Conteneur IATA JPP",
+          "tare": "438 Kg",
+          "taux_cout_conteneur": "250 000"
+        },
+        {
+          "description": "Palettes 95\" x 196\". Conteneur IATA PGF/P7",
+          "tare": "330 Kg",
+          "taux_cout_conteneur": "100 000"
+        }
+      ]
+    },
+    "VEHICULES": {
+      "DEDOUANEMENT_MANUTENTION_TRANSPORT_LIVRAISON_SUR_SITE_NIAMEY": [
+        {
+          "poids_brut": "Véhicule jusqu'à 5000Kg",
+          "taux_cout_vehicule": "315 000",
+          "description": "Enlevement de site Niamey"
+        },
+        {
+          "poids_brut": "Véhicule plus de 5000Kg",
+          "taux_cout_vehicule": "315 000",
+          "description": "Transport livraison dans les locaux"
+        },
+        {
+          "poids_brut": "5 à 6 CV",
+          "taux_cout_vehicule": "280 000",
+          "description": "Immatriculation des Vehicules"
+        },
+        {
+          "poids_brut": "7 à 12 CV",
+          "taux_cout_vehicule": "280 000",
+          "description": "Immatriculation des Vehicules"
+        },
+        {
+          "poids_brut": "+ de 13 CV",
+          "taux_cout_vehicule": "280 000",
+          "description": "Immatriculation des Vehicules"
+        }
+      ]
+    },
+    "MOTOS": {
+      "DEDOUANEMENT_MANUTENTION_TRANSPORT_LIVRAISON_SUR_SITE_NIAMEY": [
+        {
+          "poids_brut": "par Moto",
+          "taux_cout_vehicule": "175 000",
+          "description": "Enlevement de site Niamey"
+        },
+        {
+          "poids_brut": "par Moto",
+          "taux_cout_vehicule": "175 000",
+          "description": "Immatriculation des Vehicules"
+        }
+      ]
+    },
+    "ENGIN_DE_MANUTENTION": {
+      "designation_activites": [
+        {
+          "caracteristiques": "-1500Kg",
+          "tarif_heure": "30 000",
+          "description": "Chariot élévateur (fourchette)"
+        },
+        {
+          "caracteristiques": "+1500Kg et -3000Kg",
+          "tarif_heure": "50 000",
+          "description": "Chariot élévateur (fourchette)"
+        },
+        {
+          "caracteristiques": "+3000Kg",
+          "tarif_heure": "75 000",
+          "description": "Chariot élévateur"
+        },
+        {
+          "caracteristiques": "+5000 Kg",
+          "tarif_heure": "100 000",
+          "description": "Grue de levage"
+        },
+        {
+          "caracteristiques": "jusqu'à 1500 Kg",
+          "tarif_heure": "30 000",
+          "description": "Transpalette jusqu'à 1500 Kg"
+        }
+      ]
+    }
+}
+  

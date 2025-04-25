@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ _('Archives de l\'utilisateur') }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: #1a1a1a;
+        }
+
+        h2 {
+            color: #1a3a7d;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #e3f2fd;
+            color: #1a3a7d;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #f6f9fc;
+        }
+
+        tr:nth-child(even) {
+            background-color: #ffffff;
+        }
+
+        tr:hover {
+            background-color: #dbe9f9;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            font-size: 12px;
+            color: #cccccc;
+        }
+
+        .footer i {
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <h2>Liste des Archives</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>N°</th>
+                <th>{{ _('Nom du Dossier') }}</th>
+                <th>{{ _('Nom du Client') }}</th>
+                <th>{{ _('Créé le') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for folder in folders %}
+            <tr>
+                <td>{{ folder.id }}</td>
+                <td>{{ folder.name }}</td>
+                <td>{{ folder.client }}</td>
+                <td>{{ folder.created_at }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <div>Powered by</div>
+        <div>Ressync <i>CloudSquish</i></div>
+    </div>
+</body>
+</html>

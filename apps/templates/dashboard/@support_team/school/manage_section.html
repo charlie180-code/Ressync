@@ -1,0 +1,129 @@
+{% extends 'dashboard/dashboard.html' %}
+{% block title %}<title>{{ _('Gestion des sections: Ressync') }}</title>{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="my-5 d-flex align-items-center justify-content-between">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                <li class="breadcrumb-item">
+                    <a class="link-body-emphasis" href="{{ url_for('user.user_home', company_id=company.id) }}">
+                        <i class="bi bi-house-door-fill"></i>
+                        <span class="visually-hidden">{{ _('Accueil') }}</span>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">{{ _('Sections') }}</li>
+            </ol>
+        </nav>
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#createNewSectionModal" title="{{ _('Créer une nouvelle section') }}">
+                <i class="bi bi-plus-circle"></i>
+            </button>
+            <!--
+                <button type="button" class="btn btn-outline-secondary" id="EditButton" title="{{ _('Modifer les sessions') }}">
+                <i class="bi bi-pencil"></i>
+                </button>
+                <button type="button" class="btn btn-outline-secondary dropdown-toggle" id="SortAdsButton" data-bs-toggle="dropdown" aria-expanded="false" title="{{ _('Ranger les sessions') }}">
+                    <i class="bi bi-sort-up"></i>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">{{ _('Organiser par nom') }}</a></li>
+                    <li><a class="dropdown-item" href="#">{{ _('Organiser par date') }}</a></li>
+                </ul>
+            -->
+        </div>
+    </div>
+
+    <h2>{{ _('Sections') }}</h2>
+
+    <form method="PUT" action="{{ url_for('section.manage_sections', company_id=company.id) }}" id="sectionEditForm">
+        {% if sections %}
+            <div class="table-responsive">
+                <table class="table align-items-center mb-0 border-bottom">
+                    <thead>
+                        <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">#</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ _('Nom') }}</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ _('Date de création') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for section in sections %}
+                            <tr data-section-id="{{ section.id }}">
+                                <td>{{ section.id }}</td>
+                                <td contenteditable="true" class="editable-cell">{{ section.name }}</td>
+                                <td contenteditable="true" class="editable-cell">{{ section.created_at.strftime('%Y-%m-%d') }}</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-link p-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-three-dots-vertical text-secondary"></i>
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item btn-sm delete-btn" data-section-id="{{ section.id }}" title="{{ _('Supprimer') }}" href="#">
+                                                {{ _('Supprimer') }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td> 
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table> 
+            </div>
+            <div class="d-flex justify-content-end my-5 gap-2">
+                <button type="button" class="btn btn-secondary" id="discardButton" style="display: none;">
+                    {{ _('Annuler') }}
+                </button>
+                <button type="button" class="btn btn-info" id="saveButton" style="display: none;">
+                    <span id="Spinner" class="spinner-border-sm spinner-border d-none"></span>
+                    <span id="ButtonText">{{ _('Enregistrer') }}</span>
+                    <span id="LoadingText" class="d-none">{{ _('En cours...') }}</span>
+                </button>
+            </div>
+        {% else %}
+            {% include 'dashboard/@support_team/empty/no_section.html' %}
+        {% endif %}
+    </form>
+    
+</div>
+
+<!-- Modal for Creating New section -->
+<div class="modal fade" id="createNewSectionModal" tabindex="-1" aria-labelledby="createNewSectionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createNewSectionModalLabel">{{ _('Créer une nouvelle section') }}</h5>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="{{ url_for('section.manage_sections', company_id=company.id) }}">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="sectionName" class="form-label">{{ _('Nom de la section') }} <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="sectionName" name="name" placeholder="{{ _('Mathématiques et Science des décisions') }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="startDate" class="form-label">{{ _('Date de création') }} <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="CreatedAtDate" name="created_at_date" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Annuler') }}</button>
+                    <button type="submit" class="btn btn-info">
+                        <span id="Spinner" class="spinner-border-sm spinner-border d-none"></span>
+                        <span id="ButtonText">
+                            <i class="bi bi-plus-circle-dotted"></i>
+                            {{ _('Créer') }}
+                        </span>
+                    </button>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+</div>
+
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Section/DeleteSection.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Section/CreateSection.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Section/UpdateSection.js') }}"></script>
+{% endblock %}

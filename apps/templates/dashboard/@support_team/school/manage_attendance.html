@@ -1,0 +1,134 @@
+{% extends 'dashboard/dashboard.html' %}
+
+{% block title %}
+<title>{{ _('Gérer les Présences: Ressync') }}</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="my-5">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                <li class="breadcrumb-item">
+                    <a class="link-body-emphasis" href="{{ url_for('user.user_home', company_id=company.id) }}">
+                        <i class="bi bi-house-door-fill"></i>
+                        <span class="visually-hidden">{{ _('Accueil') }}</span>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">{{ _('Présence') }}</li>
+            </ol>
+        </nav>
+    </div>
+
+    <h2>{{ _('Gérer les Présences') }}</h2>
+
+    <form method="GET">
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label for="class-select">{{ _('Sélectionnez la Classe') }}</label>
+                <select id="class-select" class="form-select" name="class_id" onchange="this.form.submit()">
+                    <option value="">{{ _('Toutes') }}</option>
+                    {% for cls in classes %}
+                        <option value="{{ cls.id }}" {% if cls.id|string == request.args.get('class_id') %}selected{% endif %}>
+                            {{ cls.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="session-select">{{ _('Sélectionnez la Session') }}</label>
+                <select id="session-select" class="form-select" name="session_id" onchange="this.form.submit()">
+                    <option value="">{{ _('Toutes') }}</option>
+                    {% for session in sessions %}
+                        <option value="{{ session.id }}" {% if session.id|string == request.args.get('session_id') %}selected{% endif %}>
+                            {{ session.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="date-select">{{ _('Sélectionnez la Date') }}</label>
+                <input type="date" id="date-select" class="form-control" name="date" value="{{ request.args.get('date') }}" onchange="this.form.submit()">
+            </div>
+        </div>
+    </form>
+
+    {% if students and date_filter and session_id %}
+        <form id="UpdateAttendanceForm" method="PUT">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>{{ _('Prénom') }}</th>
+                        <th>{{ _('Nom') }}</th>
+                        <th>{{ _('Type') }}</th>
+                        <th>{{ _('Nombre') }}</th>
+                    </tr>
+                </thead>
+                <tbody id="attendanceTableBody">
+                    {% for student in students %}
+                        <tr data-student-id="{{ student.id }}">
+                            <td>{{ student.user.first_name }}</td>
+                            <td>{{ student.user.last_name }}</td>
+                            <td>
+                                <select class="form-select attendance-type" data-student-id="{{ student.id }}">
+                                    <option disabled>{{ _('Sélectionnez le Type') }}</option>
+                                    <option value="0" {% if student.attendance_type == 'Présent(e)' %}selected{% endif %} selected>{{ _('Présent(e)') }}</option>
+                                    <option value="Absence(s)_non_justifiée(s)" {% if student.attendance_type == 'Absence(s)_non_justifiée(s)' %}selected{% endif %}>{{ _('Absence non justifiée') }}</option>
+                                    <option value="Absence(s)_justifiée(s)" {% if student.attendance_type == 'Absence(s)_justifiée(s)' %}selected{% endif %}>{{ _('Absence justifiée') }}</option>
+                                    <option value="Retard(s)_motivés" {% if student.attendance_type == 'Retard(s)_motivés' %}selected{% endif %}>{{ _('Retard motivé') }}</option>
+                                    <option value="Retard(s)_non_motivés" {% if student.attendance_type == 'Retard(s)_non_motivés' %}selected{% endif %}>{{ _('Retard non motivé') }}</option>
+                                    <option value="Mis(e) à la porte" {% if student.attendance_type == 'Mis(e) à la porte' %}selected{% endif %}>{{ _('Mis(e) à la porte') }}</option>
+                                    <option value="Conduite" {% if student.attendance_type == 'Conduite' %}selected{% endif %}>{{ _('Conduite') }}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="number" class="form-control attendance-number" data-student-id="{{ student.id }}" value="{{ student.attendance_number }}" min="1">
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Pagination Controls -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    {% if students_pagination.has_prev %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('classroom.manage_attendance', company_id=company.id, class_id=class_id, session_id=session_id, date=date_filter, page=students_pagination.prev_num) }}">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% for page in students_pagination.iter_pages() %}
+                        {% if page %}
+                            <li class="page-item {% if page == students_pagination.page %}active{% endif %}">
+                                <a class="page-link" href="{{ url_for('classroom.manage_attendance', company_id=company.id, class_id=class_id, session_id=session_id, date=date_filter, page=page) }}">{{ page }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if students_pagination.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('classroom.manage_attendance', company_id=company.id, class_id=class_id, session_id=session_id, date=date_filter, page=students_pagination.next_num) }}">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            <div class="d-flex gap-1 justify-content-end">
+                <button id="saveChangesButton" class="btn btn-info" style="display: none;">
+                    <span id="ButtonText">{{ _('Enregistrer') }}</span>
+                    <span id="LoadingText" class="d-none">{{ _('Enregistrement...') }}</span>
+                    <span id="Spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                </button>
+                <button type="button" id="revertChangesButton" class="btn btn-secondary" style="display: none;">
+                    {{ _('Annuler') }}
+                </button>
+            </div>
+        </form>
+    {% endif %}
+</div>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Attendance/UpdateStudentAttendance.js') }}"></script>
+{% endblock %}

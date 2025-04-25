@@ -1,0 +1,97 @@
+body {
+    font-family: Arial, sans-serif;
+    color: #333;
+    margin: 20px;
+}
+
+h1 {
+    color: darkblue;
+    text-align: center;
+}
+
+aside {
+    margin-bottom: 20px;
+}
+
+address {
+    font-style: normal;
+}
+
+#from {
+    float: left;
+    width: 45%;
+}
+
+#to {
+    float: right;
+    width: 45%;
+    text-align: right;
+}
+
+dl#informations {
+    clear: both;
+    margin-top: 20px;
+    border-top: 2px solid darkblue;
+    padding-top: 10px;
+}
+
+dt {
+    font-weight: bold;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid darkblue;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: darkblue;
+    color: white;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+footer {
+    margin-top: 20px;
+}
+
+#total {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#total th, #total td {
+    padding: 8px;
+    text-align: left;
+}
+
+#total th {
+    background-color: darkblue;
+    color: white;
+}
+
+#total td {
+    background-color: pink;
+}
+
+#qrcode {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#qrcode img {
+    width: 100px;
+    height: 100px;
+}

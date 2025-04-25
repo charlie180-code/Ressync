@@ -1,0 +1,146 @@
+<form class="mt-8 grid grid-cols-1 gap-6" id="personalForm">
+    <div class="mb-4">
+        <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2">{{ _('Nom') }}</label>
+        <input 
+            type="text" 
+            id="firstName" 
+            name="firstName" 
+            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500" 
+            required
+            placeholder="{{ _('John') }}"
+        />
+    </div>
+
+    <div class="mb-4">
+        <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">{{ _('Prénom') }}</label>
+        <input 
+            type="text" 
+            id="lastName" 
+            name="lastName" 
+            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500" 
+            required
+            placeholder="{{ _('Doe') }}"
+        />
+
+    </div>
+
+    <div class="mb-4">
+        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">{{ _('Email') }}</label>
+        <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500" 
+            required
+            placeholder="{{ _('example@example.com') }}"
+        />
+        <p class="text-red-500 mt-2 error-message hidden text-left" id="emailError">
+            {{ _('Cette adresse e-mail existe déjà') }}
+        </p>
+        <p class="text-red-500 mt-2 error-message hidden text-left" id="invalidEmailErrorMessage">
+            {{ _('Veuillez entrer une adresse e-mail valide') }}
+        </p>
+    </div>
+
+    <div class="mb-4">
+        <label for="password" class="block text-sm font-medium text-gray-700 mb-2">{{ _('Mot de Passe') }}</label>
+        <div class="relative">
+            <input 
+                type="password" 
+                id="password" 
+                name="password" 
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500" 
+                required
+                placeholder="{{ _('********') }}"
+            />
+            <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 flex items-center pr-3">
+                <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12c1.74 5 6 9 9 9s7.26-4 9-9-4-9-9-9-7.26 4-9 9z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12c0 1.38-1.64 3-3 3s-3-1.62-3-3 1.64-3 3-3 3 1.62 3 3z" />
+                </svg>
+            </button>
+        </div>
+        <p class="text-red-500 mt-2 error-message hidden text-left" id="passwordError">
+            {{ _('Un mot de passe doit contenir au moins (08) caractères, une lettre majuscule et un caractère spécial') }}
+        </p>
+    </div>
+
+    <div class="mb-4">
+        <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">{{ _('Confirmer le mot de passe') }}</label>
+        <div class="relative">
+            <input 
+                type="password" 
+                id="confirmPassword" 
+                name="confirmPassword" 
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500" 
+                required
+                placeholder="{{ _('********') }}"
+            />
+            <button type="button" id="toggleConfirmPassword" class="absolute inset-y-0 right-0 flex items-center pr-3">
+                <svg id="eyeIconConfirm" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12c1.74 5 6 9 9 9s7.26-4 9-9-4-9-9-9-7.26 4-9 9z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12c0 1.38-1.64 3-3 3s-3-1.62-3-3 1.64-3 3-3 3 1.62 3 3z" />
+                </svg>
+            </button>
+        </div>
+        <p class="text-red-500 mt-2 error-message hidden text-left" id="confirmPasswordError">
+            {{ _('Les (02) mots de passe ne correspondent pas') }}
+        </p>
+    </div>
+
+    <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 mb-2">{{ _('Veuillez sélectionner les outils que vous utiliserez') }}</label>
+        <div class="flex flex-col">
+            <label class="inline-flex items-center mb-2">
+                <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600" value="Ads Tool">
+                <span class="ml-2 text-gray-700">{{ _('Campagnes publicitaires') }}</span>
+            </label>
+            <label class="inline-flex items-center mb-2">
+                <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600" value="Employee Management Tool">
+                <span class="ml-2 text-gray-700">{{ _('Gestion de personnel') }}</span>
+            </label>
+            <label class="inline-flex items-center mb-2">
+                <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600" value="Cloud">
+                <span class="ml-2 text-gray-700">{{ _('Espace de stockage cloud') }}</span>
+            </label>
+            <label class="inline-flex items-center mb-2">
+                <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600" value="Project Management">
+                <span class="ml-2 text-gray-700">{{ _('Gestion de projets') }}</span>
+            </label>
+        </div>
+        <p id="toolsError" class="text-red-500 mt-2 error-message hidden text-left">
+            {{ _('Veuillez sélectionner au moins un outil') }}
+        </p>
+    </div>
+
+    <div class="mb-4">
+        <label for="field" class="block text-sm font-medium text-gray-700 mb-2">{{ _('Domaine d\'expertise') }}</label>
+        <input 
+            type="text" 
+            id="field" 
+            name="field" 
+            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500" 
+            required
+            placeholder="{{ _('Génie Civil') }}"
+        />
+    </div>
+
+    <div class="mt-5">
+        <button
+          id="submitButton"
+          type="button"
+          class="inline-flex rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
+        >
+          <div role="status" id="Spinner" class="flex-shrink-0 mr-3 hidden">
+            <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+              <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 14.4311 79.9478 10.4566 73.0635 9.02276C70.0983 8.56229 66.8187 10.0246 66.3698 13.0253C65.9208 16.026 68.2085 18.1564 71.1971 17.6917C75.2429 17.0617 78.7501 18.5415 81.6406 21.3138C84.4509 24.0527 86.4516 27.5866 87.8178 31.3699C88.2357 33.1585 90.2996 34.3678 92.1331 33.8797C93.9667 33.3916 94.5307 31.0161 93.9676 39.0409Z" fill="currentFill"/>
+            </svg>
+            <span class="sr-only">{{ _('En cours...') }}</span>
+          </div>
+          <span id="button-text">{{ _('Continuer') }}</span>
+        </button>
+    </div>
+</form>
+<script type="module" src="{{ url_for('static', filename='js/async/auth/SignUp.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/auth/CompRegTogglers.js') }}"></script>
