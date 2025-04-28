@@ -593,3 +593,40 @@ email signatures styling
 ****************
 end email signatires styling
 /****************
+
+
+/**
+***********************************************
+non-collaborative employee management table css
+*/
+
+.employee-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.status-badge {
+  font-size: 0.75rem;
+  padding: 0.35em 0.65em;
+}
+.badge-active {
+  background-color: #198754;
+}
+.badge-on_leave {
+  background-color: #fd7e14;
+}
+.badge-terminated {
+  background-color: #dc3545;
+}
+#employeeTable tbody tr {
+  cursor: pointer;
+}
+#employeeTable tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+/**************************************************
+end non collaborative employee management table css
+***************************************************
+*/

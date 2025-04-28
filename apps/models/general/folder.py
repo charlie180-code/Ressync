@@ -13,8 +13,14 @@ class Folder(db.Model):
     client = db.Column(db.String)
     deadline = db.Column(db.DateTime, default=datetime.utcnow)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    budget = db.Column(db.Float, default=0.0)
+    currency = db.Column(db.String, default='USD')
+
     company_id = db.Column(db.Integer, db.ForeignKey('companies.id'), nullable=False)
     files = db.relationship('File', backref='folder', lazy=True)
+
+
+    
 
     # Logistics-specific fields
     transport = db.Column(db.String)
@@ -25,7 +31,6 @@ class Folder(db.Model):
     project_location = db.Column(db.String)
     project_manager = db.Column(db.String)
     project_phase = db.Column(db.String)  # Ex: "Design", "Construction", "Finalization"
-    budget = db.Column(db.String)
     contractor = db.Column(db.String)
     materials_used = db.Column(db.Text)
     permits_approved = db.Column(db.Boolean, default=False)

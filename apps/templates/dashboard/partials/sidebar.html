@@ -4,4 +4,6 @@
     {% include 'dashboard/partials/sidebars/engineering_sidebar.html' %}
 {% elif company.category == 'Shipping' %}
     {% include 'dashboard/partials/sidebars/shipping_sidebar.html' %}
+{% elif company.category == 'Other' %}
+    {% include 'dashboard/partials/sidebars/default_sidebar.html' %}
 {% endif %}

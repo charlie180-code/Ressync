@@ -47,9 +47,8 @@ def folders(company_id):
         data = request.json
         new_folder = Folder(
             name=data['folder_name'],
-            description=data.get('folder_description', ''),
-            type=data.get('folder_type', ''),
-            client=data.get('client', ''),
+            budget=float(data.get('budget', 0.0)),
+            currency=data.get('currency', ''),
             deadline=datetime.fromisoformat(data['deadline']),
             company_id=company.id
         )
@@ -90,13 +89,14 @@ def folders(company_id):
         db.session.commit()
 
 
-        notify_for_new_folder(
-            company_name=company.title,
-            folder_name=new_folder.name,
-            deadline=new_folder.deadline,
-            company_id=company.id
-        )
-        
+        if company.category != 'Other':
+            notify_for_new_folder(
+                company_name=company.title,
+                folder_name=new_folder.name,
+                deadline=new_folder.deadline,
+                company_id=company.id
+            )
+            
 
         return jsonify({
             'title': _('Nouveau dossier ajouté'),

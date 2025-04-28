@@ -35,7 +35,8 @@ def manage_invoices(company_id):
             current_user.is_agent(),
             current_user.is_sales(),
             current_user.is_company_it_administrator(),
-            current_user.is_consultant()
+            current_user.is_consultant(),
+            current_user.is_administrator()
         ]):
             abort(403)
 

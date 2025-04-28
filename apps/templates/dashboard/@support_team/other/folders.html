@@ -1,0 +1,306 @@
+{% extends 'dashboard/dashboard.html' %}
+{% block title %}<title>{{ _('Projets : Ressync') }}</title>{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="d-flex align-items-center justify-content-between">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                <li class="breadcrumb-item">
+                    <a class="link-body-emphasis" href="{{ url_for('user.user_home', company_id=company.id) }}">
+                        <i class="bi bi-house-door-fill"></i>
+                        <span class="visually-hidden">{{ _('Accueil') }}</span>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">{{ _('Projets') }}</li>
+            </ol>
+        </nav>
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#createFolderModal" id="CreateFolderButton" title="{{ _('Créer un nouveau projet') }}">
+                <i class="bi bi-plus-circle"></i>
+            </button>
+            <button type="button" class="btn btn-outline-secondary add-file-button" title="{{ _('Ajouter des fichiers') }}" data-bs-toggle="modal" data-bs-target="#addFileModal">
+                <i class="bi bi-paperclip"></i>
+            </button>
+            <!--
+            for sorting purposes
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-secondary dropdown-toggle" id="SortFoldersButton" data-bs-toggle="dropdown" aria-expanded="false" title="{{ _('Trier les dossiers') }}">
+                        <i class="bi bi-sort-up"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="SortFoldersButton">
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                {{ _('Par dossiers non traités') }}
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                {{ _('Par dossiers traités') }}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            -->
+        </div>
+    </div>
+
+    <h2>{{ _('Projets') }}</h2>
+    
+    <div class="d-flex justify-content-between align-items-center me-2 mb-3">
+        <form id="folderSearchForm" action="{{ url_for('archive.search_folders_files', company_id=company.id) }}" method="get">
+            <div class="input-group w-auto">
+                <input type="text" id="folderSearchInput" class="form-control" placeholder="{{ _('Rechercher un fichier') }}" aria-label="Search" aria-describedby="search-button" style="width: 200px; height: 38px;">
+                <button class="btn btn-md btn-outline-secondary" type="button" id="search-button" style="height: 38px;">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>  
+        </form>
+    </div>
+    
+    <!-- Search Results Dropdown -->
+    <div id="searchResultsDropdown" class="w-100 d-none"></div>
+    
+    
+
+    {% if folders %}
+        <div class="table-responsive" id="folderTable">
+            <table class="table align-items-center mb-0 border-bottom">
+                <thead>
+                    <tr>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">#</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _("Nom") }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _("Budget") }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _("Ouvert le") }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _("Date limite") }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _("Options") }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for folder in folders %}
+                        <tr>
+                            <td>{{ folder.id }}</td>
+                            <td>{{ folder.name }}</td>
+                            <td>{{ folder.budget }} {{ folder.currency }}</td>
+                            <td>{{ folder.created_at.strftime('%Y-%m-%d') }}</td>
+                            <td>{{ folder.deadline.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td>
+                                <button class="btn shadow-lg" type="button" data-bs-toggle="modal" data-bs-target="#viewFolderModal{{ folder.id }}" title="{{ _('Voir les détails') }}">
+                                    {{ _('...') }}
+                                </button>
+                            </td>                                                                                                                                         
+                            <!-- Modal for viewing folder details -->
+                            <div class="modal fade" id="viewFolderModal{{ folder.id }}" tabindex="-1" aria-labelledby="viewFolderModal{{ folder.id }}Label" aria-hidden="true">
+                                <div class="modal-dialog modal-lg modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="viewFolderModal{{ folder.id }}Label">{{ _('Détails du projet') }}</h5>
+                                            <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="folderName" class="form-label">{{ _('Nom') }}</label>
+                                                <input type="text" class="form-control" id="folderName" value="{{ folder.name }}" readonly>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="folderOpenAt" class="form-label">{{ _('Date d\'ouverture') }}</label>
+                                                <input type="text" class="form-control" id="folderOpenAt" value="{{ folder.created_at | strftime('%Y-%m-%d %H:%M') }}" readonly>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="folderDeadline" class="form-label">{{ _('Date limite') }}</label>
+                                                <input type="text" class="form-control" id="folderDeadline" value="{{ folder.deadline | strftime('%Y-%m-%d %H:%M') }}" readonly>
+                                            </div>
+                                            <div class="mb-3">
+                                                <h5>{{ _('Fichiers associés') }}</h5>
+                                                {% if folder.files %}
+                                                    <div class="list-group">
+                                                        {% for file in folder.files %}
+                                                            <a href="{{ file.filepath }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center mb-2">
+                                                                <div class="me-3">
+                                                                    {% set ext = file.filepath.split('.')[-1].lower() %}
+                                                                    {% if ext in ['pdf'] %}
+                                                                        <img src="{{ url_for('static', filename='img/placeholders/pdf.png') }}" alt="{{ file.label }}" class="img-thumbnail" style="width: 100px; height: auto;">
+                                                                    {% elif ext in ['jpg', 'jpeg', 'png'] %}
+                                                                        <img src="{{ url_for('static', filename='img/placeholders/image.png') }}" alt="{{ file.label }}" class="img-thumbnail" style="width: 100px; height: auto;">
+                                                                    {% else %}
+                                                                        <i class="bi bi-file-earmark"></i>
+                                                                    {% endif %}
+                                                                </div>
+                                                                <div>
+                                                                    <!-- File Details -->
+                                                                    <h6 class="mb-1">{{ file.label }}</h6>
+                                                                    <small>{{ folder.uploaded_at | strftime('%Y-%m-%d %H:%M') }}</small>
+                                                                    <small>{{ ext }}</small>
+                                                                </div>
+                                                            </a>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% else %}
+                                                    <p>{{ _('Aucun fichier associé') }}</p>
+                                                {% endif %}
+                                            </div>                                                                                       
+                                        </div>
+                                        
+                                        <div class="modal-footer">
+                                            <button class="btn btn-danger delete-button" href="#" data-folder-id="{{ folder.id }}" title="{{ _('Supprimer') }}">
+                                                <i class="bi bi-trash"></i> 
+                                                {{ _('Supprimer') }}
+                                            </button>
+                                            <button type="button" class="btn shadow-lg" data-bs-dismiss="modal">{{ _('Fermer') }}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div id="folderModal" class="modal hidden">
+                                <div class="modal-content">
+                                    <span class="close-button">&times;</span>
+                                    <div id="modalBody">
+                                        <!-- Folder details will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                            
+
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        {% include 'dashboard/@support_team/empty/no_folder.html' %}
+    {% endif %}
+</div>
+
+
+<!-- Add File Modal -->
+<div class="modal fade" id="addFileModal" tabindex="-1" aria-labelledby="addFileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addFileModalLabel">
+                    <i class="bi bi-paperclip"></i>
+                    {{ _('Ajouter des fichiers') }}
+                </h5>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addFileForm" enctype="multipart/form-data" method="post">
+                    <input type="hidden" id="companyId" value="{{ company.id }}">
+                    <div class="d-flex justify-content-end btn-group" role="group" aria-label="Button group with icons">
+                        <button type="button" class="btn btn-white shadow-sm" title="{{ _('Ajouter un autre fichier') }}" id="addRowBtn">
+                            <i class="bi bi-plus"></i>
+                        </button>
+                        <button type="button" class="btn btn-white shadow-sm" title="{{ _('Sélectionner pour supprimer des fichiers') }}" id="selectDeleteBtn">
+                            <i class="bi bi-check2-square"></i>
+                        </button>
+                    </div>
+                    <div class="file-input-rows">
+                        <!-- Default Row (Non-Removable) -->
+                        <div class="row mb-3 align-items-end file-input-row default-row">
+                            <div class="col">
+                                <label class="form-label">{{ _('Label') }}<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="labels[]" placeholder="{{ _('Entrez le titre du fichier...') }}" required>
+                            </div>
+                            <div class="col">
+                                <label class="form-label">{{ _('Fichier') }}<span class="text-danger">*</span></label>
+                                <input type="file" class="form-control" name="files[]" required>
+                            </div>
+                            <div class="col-auto">
+                                <!-- No remove icon for the default row -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="DestinationFolderSelect">
+                            {{ _('Veuillez sélectionner le répertoire de destination') }}
+                            <span class="text-danger">*</span>
+                        </label>
+                        <select name="destination_folder" class="form-select" id="DestinationFolderSelect" required>
+                            <option value="" disabled selected>{{ _('Sélectionnez un projet') }}</option>
+                            {% for folder in folders %}
+                                <option value="{{ folder.id }}">{{ folder.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Fermer') }}</button>
+                        <button type="submit" id="submitButton" class="btn btn-info">
+                            <span id="buttonText">
+                                <i class="bi bi-plus-circle-dotted"></i>
+                                {{ _('Enregistrer') }}
+                            </span>
+                            <span id="AddfilesloadingText" style="display: none;">
+                                {{ _('En cours ...') }}
+                            </span>
+                        </button>
+                    </div>
+                </form>                                                         
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal for creating new folder -->
+<div class="modal fade" id="createFolderModal" tabindex="-1" aria-labelledby="createFolderModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createFolderModalLabel">
+                    <i class="bi bi-folder"></i>
+                    {{ _('Créer un nouveau projet') }}
+                </h5>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="createFolderForm" action="{{ url_for('archive.folders', company_id=company.id) }}" method="POST">
+                    <div class="mb-3">
+                        <label for="createFolderName" class="form-label">{{ _('Nom') }} <span class="text-danger">*</span> </label>
+                        <input type="text" class="form-control" id="createFolderName" name="name" placeholder="{{ _('Da Vinci 4.0') }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="createFolderBudget" class="form-label">{{ _('Budget') }}</label>
+                        <input type="number" class="form-control" id="createFolderBudget" name="budget" placeholder="154">
+                    </div>
+                    <div class="mb-3">
+                        <label for="createFolderCurrency" class="form-label">{{ _('Devise') }}</label>
+                        <select class="form-select" name="createFolderCurrency" id="createFolderCurrency">
+                            <option disabled selected>{{ _('Sélectionner une devise') }}</option>
+                            <option value="USD">{{ _('USD') }}</option>
+                            <option value="XOF">{{ _('XOF') }}</option>
+                            <option value="EUR">{{ _('EUR') }}</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="createFolderDeadline" class="form-label">{{ _('Date limite') }}<span class="text-danger">*</span></label>
+                        <input type="datetime-local" class="form-control" id="createFolderDeadline" name="deadline" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Fermer') }}</button>
+                        <button type="submit" class="btn btn-info" id="CreateFolderSubmitButton">
+                            <span id="CreateFolderLoadingText" style="display: none;">{{ _('En cours...') }}</span>
+                            <span id="CreateFolderButtonText">{{ _('Enregistrer') }}</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Folders/Other/SearchFolder.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Folders/Other/AddFiles.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Folders/Other/CreateFolder.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Folders/Other/DeleteFolder.js') }}"></script>
+
+{% endblock %}

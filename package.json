@@ -16,6 +16,7 @@
     "i18next-electron-fs-backend": "^3.0.2",
     "lodash": "^4.17.21",
     "open": "^8.4.2",
+    "socket.io": "^4.8.1",
     "xml2js": "^0.5.0",
     "yaml": "^2.5.0"
   },

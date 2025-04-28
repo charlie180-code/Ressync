@@ -14,8 +14,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const formData = new FormData(createFolderForm);
         const data = {
             folder_name: formData.get('name'),
-            budget: formData.get('budget'),
-            currency: formData.get('currency'),
+            folder_description: formData.get('description'),
+            client: formData.get('client'),
+            folder_type: formData.get('type'),
+            transport: formData.get('transport'),
+            weight: formData.get('weight'),
+            bills_of_ladding: formData.get('bills_of_ladding'),
             deadline: formData.get('deadline')
         };
 

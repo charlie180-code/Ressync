@@ -4,4 +4,6 @@
   {% include 'views/shipping/user_home.html' %}
 {% elif company.category == 'Engineering' %}
   {% include 'views/engineering/user_home.html' %}
+{% elif company.category == 'Other' %}
+  {% include 'views/default/user_home.html' %}
 {% endif %}

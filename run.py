@@ -1,6 +1,7 @@
 import os
 import sys
 from apps import create_app
+from apps.extensions import socketio
 from dotenv import load_dotenv
 
 if getattr(sys, 'frozen', False):
@@ -8,7 +9,6 @@ if getattr(sys, 'frozen', False):
     template_folder = os.path.join(base_path, 'templates')
     static_folder = os.path.join(base_path, 'static')
     env_file_path = os.path.join(base_path, '.env')
-
 else:
     template_folder = os.path.abspath('apps/templates')
     static_folder = os.path.abspath('apps/static')
@@ -23,7 +23,9 @@ app = create_app(
 )
 
 if __name__ == '__main__':
-    app.run(
+    socketio.run(
+        app,
         host='0.0.0.0',
-        port=5000
+        port=5000,
+        allow_unsafe_werkzeug=True
     )

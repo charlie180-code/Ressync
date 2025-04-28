@@ -1,9 +1,9 @@
 {% extends 'dashboard/dashboard.html' %}
-{% block title %}<title>{{ _('Table des employés : Ressync') }}</title>{% endblock %}
+{% block title %}<title>{{ _('Ressources Humaines : Ressync') }}</title>{% endblock %}
 {% block content %}
 
 <div class="container">
-    <div class="my-5">
+    <div>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
                 <li class="breadcrumb-item">
@@ -13,67 +13,16 @@
                     </a>
                 </li>
                 <li class="breadcrumb-item">{{ _('Careers') }}</li>
-                <li class="breadcrumb-item active">{{ _('Table des employés') }}</li>
+                <li class="breadcrumb-item active">{{ _('Ressources Humaines') }}</li>
             </ol>
         </nav>
     </div>
 
-    <h2>{{ _('Table des employés') }}</h2>
-
-    <!-- Search Bar & filters -->
-    <div class="row my-3">
-        <div class="col-4">
-            <input type="text" id="searchInput" class="form-control" placeholder="{{ _('Rechercher un nom, prénom, email...') }}" oninput="filterTable()">
-        </div>
-        <div class="col-4">
-            <select id="pipeline-select" class="form-select" onchange="window.location.href='?pipeline_id=' + this.value">
-                <option value="" disabled selected>{{ _('Sélectionner un service') }}</option>
-                {% for pipeline in pipelines %}
-                    <option value="{{ pipeline.id }}" {% if pipeline.id == selected_pipeline %}selected{% endif %}>
-                        {{ pipeline.pipeline_name }}
-                    </option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="col-4 d-flex justify-content-end">
-            <div class="btn-group" role="group" aria-label="Task Actions">
-                <a class="btn btn-outline-secondary" href="{{ url_for('auth.manage_company_admins', company_id=company.id) }}#NewStationModal">
-                    <i class="bi bi-plus-circle"></i>
-                </a>
-                <button type="button" class="btn btn-outline-secondary">
-                    <i class="bi bi-sort-up"></i>
-                </button>
-                <button id="btnGroupDrop1" type="button" class="btn btn-outline-secondary" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-printer"></i>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                    <li>
-                        <button class="dropdown-item export-report-pdf" type="button">
-                            <span>
-                                <i class="bi bi-file-earmark-pdf"></i>
-                            </span>
-                            <span>{{ _('Exporter en PDF') }}</span>
-                        </button>
-                    </li>
-                    <li>
-                        <button class="dropdown-item export-report-excel" type="button">
-                            <span>
-                                <i class="bi bi-file-earmark-spreadsheet"></i>
-                            </span>
-                            <span>{{ _('Exporter en Excel') }}</span>
-                        </button>
-                    </li>
-                    <li>
-                        <button class="dropdown-item export-report-docx" type="button">
-                            <span>
-                                <i class="bi bi-file-earmark-word"></i>
-                            </span>
-                            <span>{{ _('Exporter en DOCX') }}</span>
-                        </button>
-                    </li>
-                </ul>                
-            </div>
-        </div>
+    <div class="d-flex justify-content-between mb-4">
+        <h2>{{ _('Ressources Humaines') }}</h2>
+        <button class="btn" data-bs-toggle="modal" data-bs-target="#createEmployeeModal">
+            <i class="bi bi-plus-circle"></i> {{ _('Ajouter') }}
+        </button>
     </div>
 
     {% if employees %}
@@ -85,11 +34,9 @@
                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ _("Nom & Prénom") }}</th>
                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _("Fonction") }}</th>
                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _("Matricule/Identifiant") }}</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _("Sécurité sociale") }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _("Salaire") }}</th>
                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _("Date de naissance") }}</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _("Lieu de naissance") }}</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _("Station") }}</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _("Adresse") }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _("Services") }}</th>
                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _("Depuis") }}</th>
                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _("Options") }}</th>
                     </tr>
@@ -99,55 +46,31 @@
                         <tr>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <img src="{{ employee.profile_picture_url or url_for('static', filename='img/feedbacks/no_admins.png') }}" class="avatar avatar-sm me-3" alt="{{ employee.first_name or '' }} image">
+                                    <img src="{{ employee.picture_url or url_for('static', filename='img/feedbacks/no_admins.png') }}" 
+                                         class="avatar avatar-sm me-3" 
+                                         alt="{{ employee.first_name or '' }} image">
                                     <div class="d-flex flex-column">
                                         <h6 class="mb-0 textto-xs" contenteditable="true" data-employee-id="{{ employee.id }}" data-field="name">
-                                            {% if employee.first_name or employee.last_name %}
-                                                {{ employee.first_name or '' }} {{ employee.last_name or '' }}
-                                            {% else %}
-                                                {{ employee.registration_number or '0015223' }}
-                                            {% endif %}
+                                            {{ employee.first_name or '' }} {{ employee.last_name or '' }}
                                         </h6>
-                                        <p class="text-xs text-secondary mb-0">{{ employee.email }}</p>
-                                        <p class="text-xs text-secondary mb-0">
-                                            {% if employee.station.pipeline_name %}
-                                                {% if not employee.current_location or not employee.address %}
-                                                    <span class="badge bg-warning" data-bs-toggle="tooltip" data-bs-placement="top" 
-                                                        title="{{ _('L\'utilisateur n\'a pas fourni son adresse personnelle ou nous ne pouvons pas récupérer sa position actuelle.') }}">
-                                                        {{ _('Non disponible') }}
-                                                    </span>
-                                                {% elif employee.current_location == employee.station.pipeline_location %}
-                                                    <span class="badge bg-success">{{ _('En mission') }}</span>
-                                                {% elif employee.current_location == employee.address %}
-                                                    <span class="badge bg-primary">{{ _('Au repos') }}</span>
-                                                {% endif %}
-                                            {% endif %}
-                                        </p>
+                                        <p class="text-xs text-secondary mb-0">{{ employee.email_address }}</p>
                                     </div>
                                 </div>
                             </td>
-                            <td data-employee-id="{{ employee.id }}" data-field="role">{{ roles_translations.get(employee.role.name, employee.role.name) }}</td>
-                            <td data-employee-id="{{ employee.id }}" data-field="employee_id">
-                                {% if employee.registration_number %}
-                                    {{ employee.registration_number }}
-                                {% else %}
-                                    {{ employee.id }}
-                                {% endif %}
+                            <td data-employee-id="{{ employee.id }}" data-field="job_title">
+                                {{ employee.job_title }}
                             </td>
-                            <td data-employee-id="{{ employee.id }}" data-field="ssn">
-                                {{ employee.social_security_number or 'N/A' }}
+                            <td data-employee-id="{{ employee.id }}" data-field="identifier">
+                                {{ employee.identifier }}
+                            </td>
+                            <td data-employee-id="{{ employee.id }}" data-field="wage">
+                                {{ employee.wage }} {{ company.currency or 'USD' }}
                             </td>
                             <td data-employee-id="{{ employee.id }}" data-field="date_of_birth">
                                 {{ employee.date_of_birth.strftime('%Y-%m-%d') if employee.date_of_birth else 'N/A' }}
                             </td>
-                            <td data-employee-id="{{ employee.id }}" data-field="place_of_birth">
-                                {{ employee.place_of_birth or 'N/A' }}
-                            </td>
-                            <td data-employee-id="{{ employee.id }}" data-field="service_name">
-                                {{ employee.station.pipeline_name or 'N/A' }}
-                            </td>
-                            <td data-employee-id="{{ employee.id }}" data-field="address">
-                                {{ employee.address or 'N/A' }}
+                            <td data-employee-id="{{ employee.id }}" data-field="services">
+                                {{ employee.services or 'N/A' }}
                             </td>
                             <td data-employee-id="{{ employee.id }}" data-field="member_since">
                                 {{ employee.member_since.strftime('%Y-%m-%d') }}
@@ -177,7 +100,8 @@
                                     </ul>
                                 </div>
                             </td>
-                            <!--Edit Employee Modal-->
+                            
+                            <!-- Edit Employee Modal -->
                             <div class="modal fade" id="editEmployeeModal{{ employee.id }}" tabindex="-1" aria-labelledby="editEmployeeModalLabel{{ employee.id }}" aria-hidden="true">
                                 <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-left">
                                     <div class="modal-content">
@@ -189,8 +113,8 @@
                                         </div>
                                         <div class="d-flex justify-content-center position-relative my-2">
                                             <div class="position-relative">
-                                                {% if employee.profile_picture_url %}
-                                                    <img id="employeeProfileImage{{ employee.id }}" src="{{ employee.profile_picture_url }}" data-employee-id="{{ employee.id }}" class="profile-image rounded-circle" alt="{{ employee.first_name }}">
+                                                {% if employee.picture_url %}
+                                                    <img id="employeeProfileImage{{ employee.id }}" src="{{ employee.picture_url }}" data-employee-id="{{ employee.id }}" class="profile-image rounded-circle" alt="{{ employee.first_name }}">
                                                 {% else %}
                                                     <div id="placeholder{{ employee.id }}" class="profile-placeholder rounded-circle border d-flex justify-content-center align-items-center">
                                                         <i class="bi bi-person-fill" style="font-size: 50px;"></i>
@@ -207,7 +131,7 @@
                                             </div>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="{{ url_for('career.employee_table', company_id=company.id) }}" method="PUT" enctype="multipart/form-data" class="edit-employee-form" data-employee-id="{{ employee.id }}">
+                                            <form action="{{ url_for('career.employees', company_id=company.id) }}" method="PUT" enctype="multipart/form-data" class="edit-employee-form" data-employee-id="{{ employee.id }}">
                                                 <div class="mb-3">
                                                     <label for="firstName{{ employee.id }}" class="form-label">{{ _('Prénom') }}</label>
                                                     <input type="text" class="form-control" id="firstName{{ employee.id }}" name="firstName" value="{{ employee.first_name }}" required>
@@ -217,126 +141,31 @@
                                                     <input type="text" class="form-control" id="lastName{{ employee.id }}" name="lastName" value="{{ employee.last_name or '' }}" required>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="role{{ employee.id }}" class="form-label">{{ _('Fonction') }}</label>
-                                                    <input type="text" class="form-control" id="role{{ employee.id }}" name="role" value="{{ employee.role.name }}" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="registrationNumber{{ employee.id }}" class="form-label">{{ _('Matricule') }}</label>
-                                                    <input type="text" class="form-control" id="registrationNumber{{ employee.id }}" name="registration_number" value="{{ employee.registration_number or '' }}">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="socialSecurity{{ employee.id }}" class="form-label">{{ _('Sécurité sociale') }}</label>
-                                                    <input type="text" class="form-control" id="socialSecurity{{ employee.id }}" name="social_security" value="{{ employee.social_security_number or '' }}">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="serviceName{{ employee.id }}" class="form-label">{{ _('Nom du service') }}</label>
-                                                    <input type="text" class="form-control" id="serviceName{{ employee.id }}" name="service_name" value="{{ employee.service_name or '' }}">
-                                                </div>                        
-                                                <div class="mb-3">
-                                                    <label for="emergencyContact{{ employee.id }}" class="form-label">{{ _('Contact d\'urgence') }}</label>
-                                                    <input type="text" class="form-control" id="emergencyContact{{ employee.id }}" name="emergency_contact" value="{{ employee.emergency_contact or '' }}">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="certifications{{ employee.id }}" class="form-label">{{ _('Certifications') }}</label>
-                                                    <textarea class="form-control" id="certifications{{ employee.id }}" name="certifications">{{ employee.certifications or '' }}</textarea>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="bankName{{ employee.id }}" class="form-label">{{ _('Nom de la banque') }}</label>
-                                                    <input type="text" class="form-control" id="bankName{{ employee.id }}" name="bank_name" value="{{ employee.bank_name or '' }}">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="bankAccountNumber{{ employee.id }}" class="form-label">{{ _('Numéro de compte bancaire') }}</label>
-                                                    <input type="text" class="form-control" id="bankAccountNumber{{ employee.id }}" name="bank_account_number" value="{{ employee.bank_account_number or '' }}">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="contractStartDate{{ employee.id }}" class="form-label">{{ _('Date de début de contrat') }}</label>
-                                                    <input type="date" class="form-control" id="contractStartDate{{ employee.id }}" name="contract_start_date" 
-                                                    value="{{ employee.contract_start_date.strftime('%Y-%m-%d') if employee.contract_start_date else '' }}">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="contractEndDate{{ employee.id }}" class="form-label">{{ _('Date de fin de contrat') }}</label>
-                                                    <input type="date" class="form-control" id="contractEndDate{{ employee.id }}" name="contract_end_date" 
-                                                    value="{{ employee.contract_end_date.strftime('%Y-%m-%d') if employee.contract_end_date else '' }}">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="employmentTerms{{ employee.id }}" class="form-label">{{ _('Conditions d\'emploi') }}</label>
-                                                    <textarea class="form-control" id="employmentTerms{{ employee.id }}" name="employment_terms">{{ employee.employment_terms or '' }}</textarea>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="address{{ employee.id }}" class="form-label">{{ _('Adresse') }}</label>
-                                                    <input type="text" class="form-control" id="address{{ employee.id }}" name="address" value="{{ employee.address or '' }}">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="gender{{ employee.id }}" class="form-label">{{ _('Genre') }}</label>
-                                                    <select class="form-control" id="gender{{ employee.id }}" name="gender">
-                                                        <option value="male" {% if employee.gender == 'male' %}selected{% endif %}>{{ _('Homme') }}</option>
-                                                        <option value="female" {% if employee.gender == 'female' %}selected{% endif %}>{{ _('Femme') }}</option>
-                                                        <option value="other" {% if employee.gender == 'other' %}selected{% endif %}>{{ _('Autre') }}</option>
-                                                    </select>
-                                                </div>
-                                                <div class="mb-3">
                                                     <label for="email{{ employee.id }}" class="form-label">{{ _('Email') }}</label>
-                                                    <input type="email" class="form-control" id="email{{ employee.id }}" name="email" value="{{ employee.email }}" required>
+                                                    <input type="email" class="form-control" id="email{{ employee.id }}" name="email" value="{{ employee.email_address }}" required>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="placeOfBirth{{ employee.id }}" class="form-label">{{ _('Lieu de naissance') }}</label>
-                                                    <input type="text" class="form-control" id="placeOfBirth{{ employee.id }}" name="place_of_birth" value="{{ employee.place_of_birth or '' }}">
+                                                    <label for="jobTitle{{ employee.id }}" class="form-label">{{ _('Fonction') }}</label>
+                                                    <input type="text" class="form-control" id="jobTitle{{ employee.id }}" name="job_title" value="{{ employee.job_title }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="identifier{{ employee.id }}" class="form-label">{{ _('Matricule') }}</label>
+                                                    <input type="text" class="form-control" id="identifier{{ employee.id }}" name="identifier" value="{{ employee.identifier }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="wage{{ employee.id }}" class="form-label">{{ _('Salaire') }}</label>
+                                                    <input type="number" step="0.01" class="form-control" id="wage{{ employee.id }}" name="wage" value="{{ employee.wage or 0 }}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="services{{ employee.id }}" class="form-label">{{ _('Services') }}</label>
+                                                    <input type="text" class="form-control" id="services{{ employee.id }}" name="services" value="{{ employee.services or '' }}">
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="dateOfBirth{{ employee.id }}" class="form-label">{{ _('Date de naissance') }}</label>
                                                     <input type="date" class="form-control" id="dateOfBirth{{ employee.id }}" name="date_of_birth" 
                                                     value="{{ employee.date_of_birth.strftime('%Y-%m-%d') if employee.date_of_birth else '' }}">
                                                 </div>
-                                                <div class="mb-3">
-                                                    <label for="dateOfBirth{{ employee.id }}" class="form-label">{{ _('Date de naissance') }}</label>
-                                                    <input 
-                                                        type="date" 
-                                                        class="form-control" 
-                                                        id="dateOfBirth{{ employee.id }}" 
-                                                        name="date_of_birth" 
-                                                        value="{{ employee.date_of_birth.strftime('%Y-%m-%d') if employee.date_of_birth else '' }}"
-                                                    >
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="current_location{{ employee.id }}" class="form-label">{{ _('Localisation actuelle') }}</label>
-                                                    <input type="text" class="form-control" id="current_location{{ employee.id }}" name="current_location" value="{{ employee.current_location or '' }}">
-                                                </div>
                                                 
-                                                {% if company.category in ['Engineering', 'Shipping', 'Education'] %}
-                                                    <div class="mb-3">
-                                                        <label for="arrivalDate{{ employee.id }}" class="form-label">{{ _('Date d\'arrivée sur station') }}</label>
-                                                        <input 
-                                                            type="date" 
-                                                            class="form-control" 
-                                                            id="arrivalDate{{ employee.id }}" 
-                                                            name="arrival_date" 
-                                                            value="{{ employee.arrival_date.strftime('%Y-%m-%d') if employee.arrival_date else '' }}"
-                                                        >
-                                                    </div>
-                                                
-                                                    <div class="mb-3">
-                                                        <label for="leavingDate{{ employee.id }}" class="form-label">{{ _('Date de retour de station') }}</label>
-                                                        <input 
-                                                            type="date" 
-                                                            class="form-control" 
-                                                            id="leavingDate{{ employee.id }}" 
-                                                            name="leaving_date" 
-                                                            value="{{ employee.leaving_date.strftime('%Y-%m-%d') if employee.leaving_date else '' }}"
-                                                        >
-                                                    </div>
-                                                
-                                                    <div class="mb-3">
-                                                        <label for="transportCompany{{ employee.id }}" class="form-label">{{ _('Compagnie de transport') }}</label>
-                                                        <input 
-                                                            type="text" 
-                                                            class="form-control" 
-                                                            id="transportCompany{{ employee.id }}" 
-                                                            name="transport_company" 
-                                                            value="{{ employee.transport_company if employee.transport_company else '' }}" 
-                                                            placeholder="{{ _('Nom de la compagnie de transport') }}"
-                                                        >
-                                                    </div>
-                                                {% endif %}                                    
                                                 <div class="upload-files-container">
                                                     <div class="drag-file-area" id="dragArea">
                                                         <span class="material-icons-outlined upload-icon">cloud_upload</span>
@@ -373,12 +202,6 @@
                                                     </button>
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Annuler') }}</button>
                                                 </div>
-                                                <div class="loading-spinner" style="display: none;">
-                                                    <div class="spinner-border" role="status">
-                                                        <span class="sr-only">{{ _('En cours...') }}</span>
-                                                    </div>
-                                                    <span>{{ _('En cours...') }}</span>
-                                                </div>                                        
                                             </form>
                                         </div>
                                     </div>
@@ -397,172 +220,58 @@
                                         </div>
                                         <div class="modal-body">
                                             <div class="d-flex align-items-center">
-                                                <img src="{{ employee.profile_picture_url or url_for('static', filename='img/feedbacks/no_admins.png') }}" class="avatar avatar-lg me-3" alt="{{ employee.first_name or '' }} image">
+                                                <img src="{{ employee.picture_url or url_for('static', filename='img/feedbacks/no_admins.png') }}" 
+                                                     class="avatar avatar-lg me-3" 
+                                                     alt="{{ employee.first_name or '' }} image">
                                                 <div class="d-flex flex-column">
                                                     <h6 class="mb-0">{{ employee.first_name or '' }} {{ employee.last_name or '' }}</h6>
-                                                    <p class="text-secondary">{{ employee.email }}</p>
+                                                    <p class="text-secondary">{{ employee.email_address }}</p>
                                                 </div>
                                             </div>
                                             <div class="mt-4">
                                                 <div class="mb-3">
-                                                    <label for="firstName{{ employee.id }}" class="form-label">{{ _('Prénom') }}</label>
-                                                    <input type="text" class="form-control" id="firstName{{ employee.id }}" name="firstName" value="{{ employee.first_name }}" required readonly>
+                                                    <label class="form-label">{{ _('Prénom') }}</label>
+                                                    <input type="text" class="form-control" value="{{ employee.first_name }}" readonly>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="lastName{{ employee.id }}" class="form-label">{{ _('Nom de famille') }}</label>
-                                                    <input type="text" class="form-control" id="lastName{{ employee.id }}" name="lastName" value="{{ employee.last_name or '' }}" required readonly>
+                                                    <label class="form-label">{{ _('Nom de famille') }}</label>
+                                                    <input type="text" class="form-control" value="{{ employee.last_name or '' }}" readonly>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="role{{ employee.id }}" class="form-label">{{ _('Fonction') }}</label>
-                                                    <input type="text" class="form-control" id="role{{ employee.id }}" name="role" value="{{ employee.role.name }}" required readonly>
+                                                    <label class="form-label">{{ _('Email') }}</label>
+                                                    <input type="email" class="form-control" value="{{ employee.email_address }}" readonly>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="registrationNumber{{ employee.id }}" class="form-label">{{ _('Matricule') }}</label>
-                                                    <input type="text" class="form-control" id="registrationNumber{{ employee.id }}" name="registration_number" value="{{ employee.registration_number or '' }}" readonly>
+                                                    <label class="form-label">{{ _('Fonction') }}</label>
+                                                    <input type="text" class="form-control" value="{{ employee.job_title }}" readonly>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="socialSecurity{{ employee.id }}" class="form-label">{{ _('Sécurité sociale') }}</label>
-                                                    <input type="text" class="form-control" id="socialSecurity{{ employee.id }}" name="social_security" value="{{ employee.social_security or '' }}" readonly>
+                                                    <label class="form-label">{{ _('Matricule') }}</label>
+                                                    <input type="text" class="form-control" value="{{ employee.identifier }}" readonly>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="serviceName{{ employee.id }}" class="form-label">{{ _('Nom du service') }}</label>
-                                                    <input type="text" class="form-control" id="serviceName{{ employee.id }}" name="service_name" value="{{ employee.service_name or '' }}" readonly>
-                                                </div>                        
-                                                <div class="mb-3">
-                                                    <label for="emergencyContact{{ employee.id }}" class="form-label">{{ _('Contact d\'urgence') }}</label>
-                                                    <input type="text" class="form-control" id="emergencyContact{{ employee.id }}" name="emergency_contact" value="{{ employee.emergency_contact or '' }}" readonly>
+                                                    <label class="form-label">{{ _('Salaire') }}</label>
+                                                    <input type="text" class="form-control" value="{{ employee.wage }} {{ company.currency or 'USD' }}" readonly>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="certifications{{ employee.id }}" class="form-label">{{ _('Certifications') }}</label>
-                                                    <textarea class="form-control" id="certifications{{ employee.id }}" name="certifications" readonly>{{ employee.certifications or '' }}</textarea>
+                                                    <label class="form-label">{{ _('Services') }}</label>
+                                                    <input type="text" class="form-control" value="{{ employee.services or 'N/A' }}" readonly>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="bankName{{ employee.id }}" class="form-label">{{ _('Nom de la banque') }}</label>
-                                                    <input type="text" class="form-control" id="bankName{{ employee.id }}" name="bank_name" value="{{ employee.bank_name or '' }}" readonly>
+                                                    <label class="form-label">{{ _('Date de naissance') }}</label>
+                                                    <input type="text" class="form-control" 
+                                                           value="{{ employee.date_of_birth.strftime('%Y-%m-%d') if employee.date_of_birth else 'N/A' }}" 
+                                                           readonly>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="bankAccountNumber{{ employee.id }}" class="form-label">{{ _('Numéro de compte bancaire') }}</label>
-                                                    <input type="text" class="form-control" id="bankAccountNumber{{ employee.id }}" name="bank_account_number" value="{{ employee.bank_account_number or '' }}" readonly>
+                                                    <label class="form-label">{{ _('Membre depuis') }}</label>
+                                                    <input type="text" class="form-control" value="{{ employee.member_since.strftime('%Y-%m-%d') }}" readonly>
                                                 </div>
-                                                <div class="mb-3">
-                                                    <label for="contractStartDate{{ employee.id }}" class="form-label">{{ _('Date de début de contrat') }}</label>
-                                                    <input type="date" class="form-control" id="contractStartDate{{ employee.id }}" name="contract_start_date" 
-                                                    value="{{ employee.contract_start_date.strftime('%Y-%m-%d') if employee.contract_start_date else '' }}" readonly>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="contractEndDate{{ employee.id }}" class="form-label">{{ _('Date de fin de contrat') }}</label>
-                                                    <input type="date" class="form-control" id="contractEndDate{{ employee.id }}" name="contract_end_date" 
-                                                           value="{{ employee.contract_end_date.strftime('%Y-%m-%d') if employee.contract_end_date else '' }}" readonly>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="employmentTerms{{ employee.id }}" class="form-label">{{ _('Conditions d\'emploi') }}</label>
-                                                    <textarea class="form-control" id="employmentTerms{{ employee.id }}" name="employment_terms" readonly>{{ employee.employment_terms or '' }}</textarea>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="address{{ employee.id }}" class="form-label">{{ _('Adresse') }}</label>
-                                                    <input type="text" class="form-control" id="address{{ employee.id }}" name="address" value="{{ employee.address or '' }}" readonly>
-                                                </div>
-                                                <div class="mb-3">
-                                                    {% if company.category in ['Engineering', 'Shipping', 'Education'] %}
-                                                        <label for="arrivalDate{{ employee.id }}" class="form-label">{{ _('Date d\'arrivée sur le site') }}</label>
-                                                        <input 
-                                                            type="text" 
-                                                            class="form-control" 
-                                                            id="arrivalDate{{ employee.id }}" 
-                                                            name="arrival_date" 
-                                                            value="{{ employee.arrival_date.strftime('%Y-%m-%d') if employee.arrival_date else _('Non défini') }}" 
-                                                            readonly>
-                                                        
-                                                        <label for="leavingDate{{ employee.id }}" class="form-label mt-3">{{ _('Date de retour du site') }}</label>
-                                                        <input 
-                                                            type="text" 
-                                                            class="form-control" 
-                                                            id="leavingDate{{ employee.id }}" 
-                                                            name="leaving_date" 
-                                                            value="{{ employee.leaving_date.strftime('%Y-%m-%d') if employee.leaving_date else _('Non défini') }}" 
-                                                            readonly>
-                                                        
-                                                        <label for="transportCompany{{ employee.id }}" class="form-label mt-3">{{ _('Compagnie de transport') }}</label>
-                                                        <input 
-                                                            type="text" 
-                                                            class="form-control" 
-                                                            id="transportCompany{{ employee.id }}" 
-                                                            name="transport_company" 
-                                                            value="{{ employee.transport_company or _('Non défini') }}" 
-                                                            readonly>
-                                                    {% endif %}
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="gender{{ employee.id }}" class="form-label">{{ _('Genre') }}</label>
-                                                    <select class="form-control" id="gender{{ employee.id }}" name="gender" readonly>
-                                                        <option value="male" {% if employee.gender == 'male' %}selected{% endif %}>{{ _('Homme') }}</option>
-                                                        <option value="female" {% if employee.gender == 'female' %}selected{% endif %}>{{ _('Femme') }}</option>
-                                                        <option value="other" {% if employee.gender == 'other' %}selected{% endif %}>{{ _('Autre') }}</option>
-                                                    </select>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="email{{ employee.id }}" class="form-label">{{ _('Email') }}</label>
-                                                    <input type="email" class="form-control" id="email{{ employee.id }}" name="email" value="{{ employee.email }}" required readonly>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="current_location{{ employee.id }}" class="form-label">{{ _('Localisation actuelle') }}</label>
-                                                    <input type="text" class="form-control" id="current_location{{ employee.id }}" name="current_location" value="{{ employee.current_location }}" required readonly>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="placeOfBirth{{ employee.id }}" class="form-label">{{ _('Lieu de naissance') }}</label>
-                                                    <input type="text" class="form-control" id="placeOfBirth{{ employee.id }}" name="place_of_birth" value="{{ employee.place_of_birth }}" readonly>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="dateOfBirth{{ employee.id }}" class="form-label">{{ _('Date de naissance') }}</label>
-                                                    <input type="date" class="form-control" id="dateOfBirth{{ employee.id }}" name="date_of_birth" 
-                                                    value="{{ employee.date_of_birth.strftime('%Y-%m-%d') if employee.date_of_birth else '' }}" readonly>
-                                                </div>                        
-                                                <div class="mb-3">
-                                                    <label for="memberSince{{ employee.id }}" class="form-label">{{ _('Membre depuis') }}</label>
-                                                    <input type="text" class="form-control" id="memberSince{{ employee.id }}" value="{{ employee.member_since.strftime('%Y-%m-%d') }}" readonly>
-                                                </div>
-                                            </div>
-                                            <!-- Employee Files Section -->
-                                            <div class="file-section mt-4">
-                                                {% set employee_files = get_company_files(company.id, employee.id) %}  {# this function retrieves employee's files #}
-                                                {% set has_files = employee_files|length > 0 %}
-                                                {% if has_files %}
-                                                    <h3 class="mb-3">{{ _('Fichiers') }}</h3>
-                                                    <div class="row row-cols-1 row-cols-md-3 g-4">
-                                                        {% for file in employee_files %}
-                                                            <div class="col">
-                                                                <div class="card h-100 text-center shadow-sm">
-                                                                    <div class="card-body">
-                                                                        <a href="{{ file.filepath }}" target="_blank" class="text-decoration-none">
-                                                                            {% set ext = file.filepath.split('.')[-1].lower() %}
-                                                                            {% if ext in ['pdf'] %}
-                                                                                <img src="{{ url_for('static', filename='img/placeholders/pdf.png') }}" class="img-fluid mb-3" alt="{{ file.label }}" style="width: 100px; height: auto;">
-                                                                            {% elif ext in ['jpg', 'jpeg', 'png'] %}
-                                                                                <img src="{{ url_for('static', filename='img/placeholders/image.png') }}" class="img-fluid mb-3" alt="{{ file.label }}" style="width: 100px; height: auto;">
-                                                                            {% elif ext in ['docx'] %}
-                                                                                <img src="{{ url_for('static', filename='img/placeholders/doc.png') }}" class="img-fluid mb-3" alt="{{ file.label }}">
-                                                                            {% else %}
-                                                                                <img src="{{ url_for('static', filename='img/placeholders/file.png') }}" class="img-fluid mb-3" alt="{{ file.label }}">
-                                                                            {% endif %}
-                                                                            <h5 class="card-title">{{ file.label }}</h5>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        {% endfor %}
-                                                    </div>
-                                                {% else %}
-                                                    <p class="text-muted">{{ _('Aucun fichier trouvé pour cet employé.') }}</p>
-                                                {% endif %}
                                             </div>
                                         </div>
                                         <div class="modal-footer">
                                             <div id="employee-info" data-employee-id="{{ employee.id }}"></div>
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Fermer') }}</button>
-                                            <button type="button" class="btn btn-info" id="generate-badge-btn">
-                                                <i class="bi bi-printer"></i>
-                                                {{ _('Imprimer carte') }}
-                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -571,19 +280,117 @@
                     {% endfor %}
                 </tbody>
             </table>
-            
         </div>
     {% else %}
         {% include 'dashboard/@support_team/empty/no_employee.html' %}
     {% endif %}
 </div>
+
+<!-- Create Employee Modal -->
+<div class="modal fade" id="createEmployeeModal" tabindex="-1" aria-labelledby="createEmployeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createEmployeeModalLabel">{{ _('Ajouter un nouvel employé') }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createEmployeeForm" enctype="multipart/form-data">
+                    <div class="d-flex justify-content-center position-relative my-2">
+                        <div class="position-relative">
+                            <div id="createEmployeePlaceholder" class="profile-placeholder rounded-circle border d-flex justify-content-center align-items-center">
+                                <i class="bi bi-person-fill" style="font-size: 50px;"></i>
+                            </div>
+                            <input type="file" id="createEmployeeProfilePic" class="d-none" accept="image/*">
+                            <div class="position-absolute top-50 start-50 translate-middle">
+                                <button class="btn btn-light btn-sm rounded-circle" type="button" onclick="document.getElementById('createEmployeeProfilePic').click()">
+                                    <i class="bi bi-pencil-fill"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="createFirstName" class="form-label">{{ _('Prénom') }}<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="createFirstName" name="first_name" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="createLastName" class="form-label">{{ _('Nom de famille') }}<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="createLastName" name="last_name" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="createEmail" class="form-label">{{ _('Email') }}</label>
+                        <input type="email" class="form-control" id="createEmail" name="email_address">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="createJobTitle" class="form-label">{{ _('Fonction') }} <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="createJobTitle" name="job_title"  required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="createIdentifier" class="form-label">{{ _('Matricule') }}</label>
+                        <input type="text" class="form-control" id="createIdentifier" name="identifier">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="createWage" class="form-label">{{ _('Salaire') }}</label>
+                        <input type="number" step="0.01" class="form-control" id="createWage" name="wage" value="0">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="createServices" class="form-label">{{ _('Services') }}</label>
+                        <input type="text" class="form-control" id="createServices" name="services">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="createDateOfBirth" class="form-label">{{ _('Date de naissance') }}</label>
+                        <input type="date" class="form-control" id="createDateOfBirth" name="date_of_birth">
+                    </div>
+                    
+                    <div class="upload-files-container mb-3">
+                        <div class="drag-file-area" id="createEmployeeDragArea">
+                            <span class="material-icons-outlined upload-icon">cloud_upload</span>
+                            <h3 class="dynamic-message">{{ _('Glissez-déposez des fichiers ici (contrat, CV, etc.)') }}</h3>
+                            <label class="label">
+                                {{ _('ou') }} 
+                                <span class="browse-files">
+                                    <input type="file" class="default-file-input" id="createEmployeeFiles" name="uploaded_files" multiple />
+                                    <span class="browse-files-text">{{ _('parcourir les fichiers') }}</span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="file-block" id="createEmployeeUploadedFiles" style="display: none;">
+                            <div class="file-info"> 
+                                <span class="material-icons-outlined file-icon">description</span> 
+                                <span id="createEmployeeFileName"></span> | 
+                                <span id="createEmployeeFileSize"></span> 
+                            </div>
+                            <span class="material-icons remove-file-icon">delete</span>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Annuler') }}</button>
+                        <button type="submit" class="btn btn-info" id="createEmployeeSubmit">
+                            <span id="createEmployeeSpinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none;"></span>
+                            {{ _('Ajouter') }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Pagination Controls -->
 <nav aria-label="Pagination" class="mt-3">
     <ul class="pagination justify-content-center">
-        <!-- Previous Page Link -->
         {% if pagination.has_prev %}
         <li class="page-item">
-            <a class="page-link" href="{{ url_for('career.employee_table', company_id=company.id, page=pagination.prev_num, pipeline_id=request.args.get('pipeline_id')) }}">
+            <a class="page-link" href="{{ url_for('career.employees', company_id=company.id, page=pagination.prev_num) }}">
                 <i class="bi bi-chevron-double-left"></i>
             </a>
         </li>
@@ -595,7 +402,6 @@
         </li>
         {% endif %}
 
-        <!-- Page Number Links -->
         {% for page_num in pagination.iter_pages(left_edge=2, right_edge=2, left_current=2, right_current=2) %}
             {% if page_num %}
                 {% if page_num == pagination.page %}
@@ -604,7 +410,7 @@
                     </li>
                 {% else %}
                     <li class="page-item">
-                        <a class="page-link" href="{{ url_for('career.employee_table', company_id=company.id, page=page_num, pipeline_id=request.args.get('pipeline_id')) }}">
+                        <a class="page-link" href="{{ url_for('career.employees', company_id=company.id, page=page_num) }}">
                             {{ page_num }}
                         </a>
                     </li>
@@ -616,10 +422,9 @@
             {% endif %}
         {% endfor %}
 
-        <!-- Next Page Link -->
         {% if pagination.has_next %}
         <li class="page-item">
-            <a class="page-link" href="{{ url_for('career.employee_table', company_id=company.id, page=pagination.next_num, pipeline_id=request.args.get('pipeline_id')) }}">
+            <a class="page-link" href="{{ url_for('career.employees', company_id=company.id, page=pagination.next_num) }}">
                 <i class="bi bi-chevron-double-right"></i>
             </a>
         </li>
@@ -634,34 +439,6 @@
 </nav>
 
 <div class="py-5"></div>
-
-<script>
-    function filterTable() {
-        const input = document.getElementById('searchInput');
-        const filter = input.value.trim().toLowerCase();
-        const table = document.getElementById('employeeTable');
-        const rows = table.querySelectorAll('tbody tr');
-
-        rows.forEach(row => {
-            const cells = Array.from(row.getElementsByTagName('td'));
-            const match = cells.some(cell =>
-                cell.textContent.toLowerCase().includes(filter)
-            );
-            row.style.display = match ? "" : "none";
-        });
-    }
-    function debounce(func, delay) {
-        let timeout;
-        return function(...args) {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => func.apply(this, args), delay);
-        };
-    }
-
-
-    const searchInput = document.getElementById('searchInput');
-    searchInput.addEventListener('input', debounce(filterTable, 300));
-</script>
 
 <script>
     function previewImage(event, employeeId) {
@@ -686,8 +463,8 @@
         }
     }
 </script>
-<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Employees/PrintEmployeeBadge.js') }}"></script>
-<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Employees/PrintEmployees.js') }}"></script>
+
+<script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Employees/AddEmployee.js') }}"></script>
 <script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Employees/RemoveEmployee.js') }}"></script>
 <script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Employees/EditEmployee.js') }}"></script>
 {% endblock %}

@@ -85,6 +85,40 @@
               {{ _('Veuillez fournir une adresse email pour continuer') }}
             </p>
           </div>
+          
+          <!-- Password Fields -->
+          <div class="col-span-6">
+            <label for="Password" class="block text-sm font-medium text-gray-700">
+              {{ _('Mot de passe') }}<span class="text-red-500">*</span>
+            </label>
+            <input
+              type="password"
+              id="Password"
+              name="password"
+              class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+              required
+              minlength="8"
+            />
+            <p class="text-red-500 hidden" id="PasswordError">
+              {{ _('Le mot de passe doit contenir au moins 8 caractères') }}
+            </p>
+          </div>
+          
+          <div class="col-span-6">
+            <label for="ConfirmPassword" class="block text-sm font-medium text-gray-700">
+              {{ _('Confirmer le mot de passe') }}<span class="text-red-500">*</span>
+            </label>
+            <input
+              type="password"
+              id="ConfirmPassword"
+              name="confirm_password"
+              class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+              required
+            />
+            <p class="text-red-500 hidden" id="PasswordMatchError">
+              {{ _('Les mots de passe ne correspondent pas') }}
+            </p>
+          </div>
                 
 
           <!-- Logo File Upload -->

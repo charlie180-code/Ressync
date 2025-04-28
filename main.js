@@ -10,7 +10,7 @@ let serverProcess;
 const LOCAL_SERVER_URL = ' http://127.0.0.1:5000';
 
 function startLocalServer() {
-    const serverPath = path.join(__dirname, 'server', 'sails.exe');
+    const serverPath = path.join(__dirname, 'server', 'ressync.exe');
     serverProcess = spawn(serverPath, [], { detached: true, stdio: 'ignore' });
     serverProcess.unref();
     console.log('Local server started.');

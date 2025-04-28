@@ -1,4 +1,4 @@
-from flask import render_template, request, jsonify, flash, redirect, url_for, flash, session, current_app, send_file
+from flask import render_template, request, jsonify, flash, redirect, url_for, flash, session, current_app, send_file, abort, send_from_directory
 from flask_login import login_user, login_required, current_user
 from werkzeug.security import check_password_hash
 from . import auth
@@ -21,12 +21,12 @@ from ..models.general.file import File
 from ..models.engineering.pipeline import Pipeline
 from sqlalchemy.sql import insert
 from ..models.school.class_subject import class_subject
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask_babel import _
 from flask_login import login_user, logout_user
 import os
 from dotenv import load_dotenv
-from .utils import generate_invoice, confirm_reset_token, generate_reset_token, check_internet_connection, save_file_locally, get_company_files
+from .utils import generate_invoice, confirm_reset_token, generate_reset_token, check_internet_connection, save_file_locally, get_company_files, get_resource_path
 from .. import oauth, db
 from ..utils import save_files
 from .emails.company.welcome import welcome_company
@@ -56,12 +56,14 @@ google = oauth.remote_app(
     authorize_url='https://accounts.google.com/o/oauth2/auth',
 )
 
+
 @auth.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         login_data = request.get_json(force=True)
         email = login_data.get('email')
         password = login_data.get('password')
+        remember_me = login_data.get('remember_me', False)
 
         user = User.query.filter_by(email=email).first()
 
@@ -73,21 +75,46 @@ def login():
 
         company_id = user.company_id
 
-        if company_id:
-            login_user(user)
-            session['company_id'] = company_id
-            next_page = request.args.get('next')
-            if next_page:
-                return redirect(next_page)
-            return jsonify({'success': True, 'company_id': company_id})
-
-        login_user(user)
-        next_page = request.args.get('next')
-        if next_page:
-            return redirect(next_page)
-        return jsonify({'success': True})
+        login_user(user, remember=remember_me)
+        
+        if remember_me:
+            token = user.get_remember_token()
+            user.remember_token = token
+            user.remember_token_expiry = datetime.utcnow() + timedelta(days=30)
+            db.session.commit()
+            
+            response = jsonify({
+                'success': True, 
+                'company_id': company_id,
+                'remember_token': token
+            })
+            response.set_cookie(
+                'remember_token',
+                value=token,
+                max_age=30*24*60*60,  # 30 days
+                httponly=True,
+                secure=True,
+                samesite='Lax'
+            )
+            return response
+        else:
+            if company_id:
+                return jsonify({'success': True, 'company_id': company_id})
+            return jsonify({'success': True})
 
     return render_template('auth/login.html')
+
+
+@auth.before_app_request
+def load_user_from_remember_token():
+    if current_user.is_authenticated:
+        return
+    
+    remember_token = request.cookies.get('remember_token')
+    if remember_token:
+        user = User.verify_remember_token(remember_token)
+        if user and user.remember_token_expiry > datetime.utcnow():
+            login_user(user)
 
 
 
@@ -280,130 +307,111 @@ def logout():
     logout_user()
     return redirect(url_for('auth.login'))
 
-
 @auth.route("/company/register", methods=['GET', 'POST'])
 def register_company():
     if request.method == 'POST':
-        try:
-            required_fields = ['title', 'location', 'category', 'nature', 'email']
-            data = {field: request.form.get(field) for field in required_fields}
-            
-            for field, value in data.items():
-                if not value:
-                    return jsonify({"error": f"{field.replace('_', ' ').title()} is required"}), 400
-            
-            if not validate_email(data['email']):
-                return jsonify({"error": "Invalid email format"}), 400
-            
-            optional_fields = [
-                'description', 'phone_number', 'website_url', 'linkedin_url',
-                'twitter_url', 'facebook_url', 'number_of_employees',
-                'year_established', 'annual_revenue', 'currency',
-                'activity_sector', 'tools_used'
-            ]
-            for field in optional_fields:
-                data[field] = request.form.get(field)
-            
-            # Password handling
-            password = request.form.get('password')
-            confirm_password = request.form.get('confirm_password')
-            
-            if not password or not confirm_password:
-                return jsonify({"error": "Password and confirmation are required"}), 400
-            
-            if password != confirm_password:
-                return jsonify({"error": "Passwords do not match"}), 400
-            
-            if len(password) < 8:
-                return jsonify({"error": "Password must be at least 8 characters"}), 400
-            
-            # Logo handling
-            logo_file = request.files.get('logo')
-            logo_url = None
-            
-            if logo_file and allowed_file(logo_file.filename):
-                try:
-                    if check_internet_connection():
-                        logo_url = save_files([logo_file], "company_logos")[0]
-                    else:
-                        saved_logo_filename = save_file_locally(logo_file, folder_name="static/company_logos")
-                        logo_url = url_for('static', filename=f"company_logos/{saved_logo_filename}", _external=True)
-                except Exception as e:
-                    current_app.logger.error(f"Error saving logo: {str(e)}")
-                    return jsonify({"error": "Failed to process logo"}), 500
-            
-            company = Company(
-                title=data['title'],
-                description=data['description'],
-                logo_url=logo_url,
-                location=data['location'],
-                category=data['category'],
-                nature=data['nature'],
-                email=data['email'],
-                phone_number=data['phone_number'],
-                website_url=data['website_url'],
-                linkedin_url=data['linkedin_url'],
-                twitter_url=data['twitter_url'],
-                facebook_url=data['facebook_url'],
-                number_of_employees=data['number_of_employees'],
-                year_established=data['year_established'],
-                annual_revenue=data['annual_revenue'],
-                currency=data['currency'],
-                activity_sector=data['activity_sector'],
-                tools_used=data['tools_used']
-            )
-            
-            db.session.add(company)
-            db.session.flush()
-            
-            hashed_password = generate_password_hash(password)
-            admin_role_name = 'School IT Administrator' if company.category == 'Education' else 'IT Administrator'
-            admin_role = Role.query.filter_by(name=admin_role_name).first()
-            
-            if not admin_role:
-                return jsonify({"error": f"Role {admin_role_name} not found"}), 500
-            
-            admin_user = User(
-                email=data['email'],
-                password_hash=hashed_password,
-                company_id=company.id,
-                role=admin_role,
-                is_admin=True,
-                is_active=True
-            )
-            
-            db.session.add(admin_user)
-            db.session.commit()
-            
-            if check_internet_connection():
-                try:
-                    welcome_company(data['email'], password)
-                except Exception as e:
-                    current_app.logger.error(f"Error sending welcome email: {str(e)}")
-            
-            return jsonify({
-                "message": "Company registered successfully!",
-                "company_id": company.id,
-                "user_email": data['email']
-            }), 201
-            
-        except Exception as e:
-            db.session.rollback()
-            current_app.logger.error(f"Error in company registration: {str(e)}")
-            return jsonify({"error": "An error occurred during registration"}), 500
-    
-    current_year = datetime.now().year
-    
-    return render_template("auth/register_company.html", current_year=current_year)
+        title = request.form.get('title')
+        description = request.form.get('description')
+        location = request.form.get('location')
+        category = request.form.get('category')
+        nature = request.form.get('nature')
+        email = request.form.get('email')
+        phone_number = request.form.get('phone_number')
+        website_url = request.form.get('website_url')
+        linkedin_url = request.form.get('linkedin_url')
+        twitter_url = request.form.get('twitter_url')
+        facebook_url = request.form.get('facebook_url')
+        number_of_employees = request.form.get('number_of_employees')
+        year_established = request.form.get('year_established')
+        annual_revenue = request.form.get('annual_revenue')
 
-def validate_email(email):
-    """Simple email validation"""
-    return re.match(r"[^@]+@[^@]+\.[^@]+", email)
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirm_password')
 
-def allowed_file(filename):
-    """Check if file extension is allowed"""
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']
+        if not password or len(password) < 8:
+            return jsonify({"error": "Password must be at least 8 characters"}), 400
+        if password != confirm_password:
+            return jsonify({"error": "Passwords do not match"}), 400
+
+        logo_file = request.files.get('logo')
+
+        if not title:
+            return jsonify({"error": "Company title is required"}), 400
+        if not logo_file:
+            return jsonify({"error": "Logo file is required"}), 400
+        
+        
+        if check_internet_connection():
+            saved_logo_url = save_files([logo_file], "company_logos")[0]
+        else:
+            save_result = save_file_locally(logo_file, folder_name="company_logos")
+    
+            saved_logo_url = url_for('auth.local_files', 
+                folder='company_logos',
+                filename=os.path.basename(save_result["absolute_path"]),
+                _external=True)
+
+
+
+        company = Company(
+            title=title,
+            description=description,
+            logo_url=saved_logo_url,
+            location=location,
+            category=category,
+            nature=nature,
+            email=email,
+            phone_number=phone_number,
+            website_url=website_url,
+            linkedin_url=linkedin_url,
+            twitter_url=twitter_url,
+            facebook_url=facebook_url,
+            number_of_employees=number_of_employees,
+            year_established=year_established,
+            annual_revenue=annual_revenue
+        )
+
+        db.session.add(company)
+        db.session.commit()
+
+
+        new_it_admin = User(
+            email=email,
+            password_hash=generate_password_hash(password),
+            company_id=company.id
+        )
+
+        if company.category == 'Education':
+            it_admin_role = Role.query.filter_by(name='School IT Administrator').first()
+            if it_admin_role:
+                new_it_admin.role = it_admin_role
+        
+        elif company.category == 'Other':
+            admin_role = Role.query.filter_by(name='HR Manager').first()
+            if admin_role:
+                new_it_admin.role = admin_role
+
+        else:
+            it_admin_role = Role.query.filter_by(name='IT Administrator').first()
+            if it_admin_role:
+                new_it_admin.role = it_admin_role
+
+        db.session.add(new_it_admin)
+        db.session.commit()
+
+        if check_internet_connection():
+            welcome_company(email, password)
+
+        return jsonify({"message": "Company registered successfully!"}), 200
+    
+    return render_template("auth/register_company.html")
+
+
+@auth.route('/local_files/<folder>/<filename>')
+def local_files(folder, filename):
+    """Serve locally stored files"""
+    base_dir = get_resource_path(folder)
+    return send_from_directory(base_dir, filename)
 
 
 # for school admins

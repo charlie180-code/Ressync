@@ -11,7 +11,6 @@ class Role(db.Model):
     
     """
     position = db.Column(db.String())
-
     description = db.Column(db.String(255))
     users = db.relationship('User', backref='role', lazy='dynamic')
 
@@ -32,7 +31,7 @@ class Role(db.Model):
 
         """
         roles = {
-            'SAILSMARK_Ceo': {'description': "Oversee sailsmark operations and strategy", 'position': 'CEO'},
+            'Ressync_Ceo': {'description': "Oversee Ressync operations and strategy", 'position': 'CEO'},
             'Ressync_HR_Manager': {'description': 'Manage human resources tasks and employee relations for Ressync', 'position': 'HR Manager'},
             'Ressync_Accountant': {'description': 'Handle financial tasks, bookkeeping, and transactions for Ressync', 'position': 'Accountant'},
             'Ressync_Sales_Director': {'description': 'Oversee sales operations and strategies for Ressync', 'position': 'Ressync Sales Director'},
@@ -54,7 +53,7 @@ class Role(db.Model):
             'Librarian': {'description': 'Manage book lending and ensure timely returns', 'position': 'Librarian'},
             'Teacher': {'description': 'Submit assignments, take attendance, add quizzes/exams, create grading rules, calculate averages, and print student records', 'position': 'Teacher'},
             'Parent': {'description': 'View children’s grades, due fees, attendance, and reports', 'position': 'Parent'},
-            'Student': {'description': 'View own grades, attendance, borrowed books, and due dates', 'position': 'Student'}
+            'Student': {'description': 'View own grades, attendance, borrowed books, and due dates', 'position': 'Student'},
         }
         
         for role_name, details in roles.items():

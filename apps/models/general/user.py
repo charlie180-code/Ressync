@@ -35,6 +35,9 @@ class User(db.Model, UserMixin):
     wages = db.relationship('Wage', backref='user', lazy=True)
     contacts = db.relationship('Contact', back_populates='user', lazy='dynamic')
 
+    remember_token = db.Column(db.String(100))
+    remember_token_expiry = db.Column(db.DateTime)
+
     company_id = db.Column(db.Integer, db.ForeignKey('companies.id'))
 
 
@@ -140,13 +143,18 @@ class User(db.Model, UserMixin):
     def password(self):
         raise AttributeError('password is not a readable attribute')
 
-    def set_email_password(self, password):
-        # Implement encryption here (e.g., using Fernet)
-        self.email_password = password  # In production, encrypt this
-        
-    def get_email_password(self):
-        # Implement decryption here
-        return self.email_password
+    def get_remember_token(self, expires_in=30*86400):  # 30 days
+        s = Serializer(current_app.config['SECRET_KEY'])
+        return s.dumps({'user_id': self.id})
+    
+    @staticmethod
+    def verify_remember_token(token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return None
+        return User.query.get(data['user_id'])
 
     @password.setter
     def password(self, password):
@@ -214,6 +222,9 @@ class User(db.Model, UserMixin):
 
     def is_employee(self):
         return self.role.name == 'Employee'
+    
+    def is_administrator(self):
+        return self.role.name == 'Administrator'
 
     def is_hr_manager(self):
         return self.role.name == 'HR Manager'

@@ -1,0 +1,230 @@
+<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 shadow-lg" id="">
+    <div class="sidenav-header text-center">
+        <i class="fas fa-times p-3 cursor-pointer text-dark opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+        <div class="d-flex align-items-center justify-content-center my-4 flex-column">
+            <div class="logo-square mb-5">
+                <img src="{{ company.logo_url }}" alt="{{ company.title }} {{ _('Logo') }}">
+            </div>
+        </div>        
+    </div>
+    <hr class="horizontal light mt-0 mb-2">
+    <div class="collapse navbar-collapse w-auto max-height-vh-100" id="sidenav-collapse-main">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link text-dark {% if request.path == url_for('user.user_home', company_id=company.id) %}active bg-gradient-dark{% endif %}" href="{{ url_for('user.user_home', company_id=company.id) }}">
+                    <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">home</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Accueil') }}</span>
+                </a>
+            </li>
+
+    
+
+            {% if current_user.is_responsible() or current_user.is_company_it_administrator() %}
+                <li class="nav-item">
+                    <a class="nav-link text-dark {% if request.path == url_for('auth.manage_company_admins', company_id=company.id) %}active bg-gradient-dark{% endif %}" href="{{ url_for('auth.manage_company_admins', company_id=company.id) }}">
+                        <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">admin_panel_settings</i>
+                        </div>
+                        <span class="nav-link-text ms-1">{{ _('Gérer les accès') }}</span>
+                    </a>
+                </li>
+            {% endif %}
+            
+
+
+            {% if current_user.is_responsible() or current_user.is_company_it_administrator() or current_user.is_sales() %}
+            <li class="nav-item">
+                <a class="nav-link text-dark {% if request.path == url_for('accounting.manage_invoices', company_id=company.id) %}active bg-gradient-dark{% endif %}" href="{{ url_for('accounting.manage_invoices', company_id=company.id) }}">
+                    <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">receipt</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Factures') }}</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if current_user.is_responsible() or current_user.is_company_it_administrator() or current_user.is_sales() %}
+            <li class="nav-item">
+                <a class="nav-link text-dark {% if request.path == url_for('archive.folders', company_id=company.id) %}active bg-gradient-dark{% endif %}" href="{{ url_for('archive.folders', company_id=company.id) }}">
+                    <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">folder</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Projets') }}</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if current_user.is_responsible() %}
+            <li class="nav-item">
+                <a class="nav-link text-dark {% if request.path == url_for('task.tasks', company_id=company.id) %}active bg-gradient-dark{% endif %}" href="{{ url_for('task.tasks', company_id=company.id) }}">
+                    <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">task</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Tâches') }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark {% if request.path == url_for('calendar.events_calendar', company_id=company.id) %}active bg-gradient-dark{% endif %}" href="{{ url_for('calendar.events_calendar', company_id=company.id) }}">
+                    <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">event</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Meets') }}</span>
+                </a>
+            </li>
+            {% endif %}
+
+
+
+            {% if current_user.is_responsible() %}
+            <li class="nav-item">
+                <div class="text-dark" data-bs-toggle="collapse" href="#MyNotes" role="button" aria-expanded="false" aria-controls="MyNotes">
+                    <div class="text-dark text-center d-flex align-items-start justify-content-start dashboard-toggler">
+                        <i class="material-icons opacity-10">note</i>
+                        <span class="nav-link-text ms-2">{{ _('Notes') }}</span>
+                        <i class="material-icons ms-auto opacity-50 rotate-icon">keyboard_arrow_down</i>
+                    </div>
+                </div>
+                <div class="collapse" id="MyNotes">
+                    <ul class="navbar-nav ps-3">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark {% if request.path == url_for('note.add_notes', company_id=company.id) %}active bg-gradient-dark{% endif %}" href="{{ url_for('note.add_notes', company_id=company.id) }}">
+                                <span class="nav-link-text ms-1">{{ _('Ajouter une note') }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark {% if request.path == url_for('note.previous_notes', company_id=company.id) %}active bg-gradient-dark{% endif %}" href="{{ url_for('note.previous_notes', company_id=company.id) }}">
+                                <span class="nav-link-text ms-1">{{ _('Notes récentes') }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            {% endif %}
+
+
+            <li class="nav-item">
+                <div class="text-dark" data-bs-toggle="collapse" href="#ContactBook" role="button" aria-expanded="false" aria-controls="ContactBook">
+                    <div class="text-dark text-center d-flex align-items-start justify-content-start dashboard-toggler">
+                        <i class="material-icons opacity-10">contacts</i>
+                        <span class="nav-link-text ms-2">{{ _('Contacts') }}</span>
+                        <i class="material-icons ms-auto opacity-50 rotate-icon">keyboard_arrow_down</i>
+                    </div>
+                </div>
+                <div class="collapse" id="ContactBook">
+                    <ul class="navbar-nav ps-3">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark {% if request.path == url_for('msg.create_contact', company_id=company.id) %}active bg-gradient-dark{% endif %}" href="{{ url_for('msg.create_contact', company_id=company.id) }}">
+                                    <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
+                                        <i class="material-icons opacity-10">person_add</i>
+                                    </div>
+                                    <span class="nav-link-text ms-1">{{ _('Ajouter un contact') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark {% if request.path == url_for('msg.view_contacts', company_id=company.id) %}active bg-gradient-dark{% endif %}" href="{{ url_for('msg.view_contacts', company_id=company.id) }}">
+                                    <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
+                                        <i class="material-icons opacity-10">list</i>
+                                    </div>
+                                    <span class="nav-link-text ms-1">{{ _('Voir les contacts') }}</span>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </li>
+
+            <!--
+                <li class="nav-item">
+                    <a class="nav-link text-dark" data-bs-toggle="collapse" href="#MessageOptions" role="button" aria-expanded="false" aria-controls="MessageOptions">
+                        <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">message</i>
+                        </div>
+                        <span class="nav-link-text ms-1">{{ _('Messages') }}</span>
+                    </a>
+                    <div class="collapse" id="MessageOptions">
+                        <ul class="navbar-nav ps-3">
+                            <li class="nav-item">
+                            <a class="nav-link text-dark {% if request.path == url_for('msg.new_message', company_id=company.id) %}active bg-gradient-dark{% endif %}" href="{{ url_for('msg.new_message', company_id=company.id) }}">
+                                <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="material-icons opacity-10">add_comment</i>
+                                </div>
+                                <span class="nav-link-text ms-1">{{ _('Nouveau message') }}</span>
+                            </a>
+                            </li>
+                            <li class="nav-item">
+                            <a class="nav-link text-dark {% if request.path == url_for('msg.recent_messages', company_id=company.id) %}active bg-gradient-dark{% endif %}" href="{{ url_for('msg.recent_messages', company_id=company.id) }}">
+                                <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="material-icons opacity-10">history</i>
+                                </div>
+                                <span class="nav-link-text ms-1">{{ _('Messages récents') }}</span>
+                            </a>
+                            </li>
+                            <li class="nav-item">
+                            <a class="nav-link text-dark {% if request.path == url_for('msg.programmed_messages') %}active bg-gradient-dark{% endif %}" href="{{ url_for('msg.programmed_messages') }}" disabled>
+                                <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="material-icons opacity-10">schedule_send</i>
+                                </div>
+                                <span class="nav-link-text ms-1">{{ _('Messages programmés') }}</span>
+                            </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            
+            -->
+
+        
+            
+
+            
+            <li class="nav-item">
+                <div class="text-dark" data-bs-toggle="collapse" href="#Careers" role="button" aria-expanded="false" aria-controls="Careers">
+                    <div class="text-dark text-center d-flex align-items-start justify-content-start dashboard-toggler">
+                        <i class="material-icons opacity-10">work</i>
+                        <span class="nav-link-text ms-2">{{ _('Careers') }}</span>
+                        <i class="material-icons ms-auto opacity-50 rotate-icon">keyboard_arrow_down</i>
+                    </div>
+                </div>
+                <div class="collapse" id="Careers">
+                        <ul class="navbar-nav ps-3">
+                            {% if current_user.is_responsible() %}
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark {% if request.path == url_for('career.employees', company_id=company.id) %}active bg-gradient-dark{% endif %}" href="{{ url_for('career.employees', company_id=company.id) }}">
+                                        <span class="nav-link-text ms-1">{{ _('Ressources Humaines') }}</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                        </ul>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link text-dark {% if request.path == url_for('msg.email_signature', user_id=current_user.id) %}active bg-gradient-dark{% endif %}" href="{{ url_for('msg.email_signature', company_id=company.id, user_id=current_user.id) }}">
+                    <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">draw</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Signature') }}</span>
+                </a>
+            </li>            
+
+            <li class="nav-item">
+                <a class="nav-link text-dark {% if request.path == url_for('user.settings', company_id=company.id) %}active bg-gradient-dark{% endif %}" href="{{ url_for('user.settings', company_id=company.id) }}">
+                    <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">settings</i>
+                    </div>
+                    <span class="nav-link-text ms-1">{{ _('Paramètres') }}</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="sidenav-footer position-absolute w-100 bottom-0 ">
+        <div class="mx-3">
+            <a class="btn text-danger border border-2 border-danger mt-4 w-100" href="{{ url_for('auth.logout') }}" type="button">
+                <i class="bi bi-box-arrow-left"></i>
+                {{ _('Se déconnecter') }}
+            </a>
+        </div>
+    </div>
+</aside>

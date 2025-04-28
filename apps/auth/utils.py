@@ -17,6 +17,8 @@ import os
 import requests
 from sqlalchemy.orm import joinedload
 from ..models.general.file import File
+import sys
+from pathlib import Path
 
 
 
@@ -120,22 +122,9 @@ def confirm_reset_token(token, expiration=3600):
     return data['reset']
 
 
-
 def save_file_locally(file, folder_name="uploads"):
-    """
-    Save uploaded file to the user's Documents/Ressync/[folder_name] directory.
-    Returns the absolute path to the saved file.
-    
-    Args:
-        file: The file object to save
-        folder_name: Subfolder within Ressync to store the files (default: "uploads")
-    
-    Returns:
-        str: Absolute path to the saved file
-    """
-    home_dir = os.path.expanduser("~")
-    base_dir = os.path.join(home_dir, "Documents", "Ressync", folder_name)
-    
+    """Returns dict with both storage and URL info"""
+    base_dir = get_resource_path(folder_name)
     os.makedirs(base_dir, exist_ok=True)
     
     filename = secure_filename(file.filename)
@@ -150,8 +139,23 @@ def save_file_locally(file, folder_name="uploads"):
     
     file.save(file_path)
     
-    return file_path
+    return {
+        "absolute_path": file_path,
+        "filename": filename,
+        "url_path": f"/local_files/{folder_name}/{filename}"
+    }
 
+
+def get_resource_path(*relative_path):
+    """Get absolute path to resource, works for dev and for PyInstaller"""
+    if getattr(sys, 'frozen', False):
+        # Running in a bundle (PyInstaller)
+        base_path = Path(sys._MEIPASS)
+    else:
+        # Running in normal Python environment
+        base_path = Path.home() / "Documents" / "Ressync"
+    
+    return str(base_path.joinpath(*relative_path).absolute())
 
 def check_internet_connection():
     url = "https://www.google.com"

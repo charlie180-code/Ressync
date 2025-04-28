@@ -19,6 +19,9 @@ const AnnualRevenue = document.querySelector("#AnnualRevenue");
 const addressInput = document.querySelector("#Location");
 const suggestionsContainer = document.querySelector("#suggestions");
 const privacyCheck = document.getElementById('privacyCheck');
+const PasswordInput = document.querySelector("#Password");
+const ConfirmPasswordInput = document.querySelector("#ConfirmPassword");
+
 
 // Error Elements
 const privacyCheckError = document.getElementById('PrivacyCheckError');
@@ -30,6 +33,8 @@ const InvalidEmailAddress = document.querySelector("#InvalidEmailAddress");
 const AddressEmptyError = document.querySelector("#AddressEmptyError");
 const CategoryEmptyError = document.querySelector("#CategoryEmptyError");
 const CompanySizeEmptyError = document.querySelector("#CompanySizeEmptyError");
+const PasswordError = document.querySelector("#PasswordError");
+const PasswordMatchError = document.querySelector("#PasswordMatchError");
 
 const CreateCompanyButton = document.querySelector("#CreateCompanyButton");
 const Spinner = document.querySelector("#Spinner");
@@ -49,6 +54,10 @@ export default function validateForm() {
     valid = false;
   } else {
     LogoEmptyError.classList.add('hidden');
+  }
+
+  if (!validatePassword()) {
+    valid = false;
   }
 
   if (!validateLogoFile()) {
@@ -87,6 +96,27 @@ function validateCompanyTitle() {
   }
   validateForm();
 }
+
+function validatePassword() {
+  let isValid = true;
+  
+  if (PasswordInput.value.length < 8) {
+    PasswordError.classList.remove('hidden');
+    isValid = false;
+  } else {
+    PasswordError.classList.add('hidden');
+  }
+  
+  if (PasswordInput.value !== ConfirmPasswordInput.value) {
+    PasswordMatchError.classList.remove('hidden');
+    isValid = false;
+  } else {
+    PasswordMatchError.classList.add('hidden');
+  }
+  
+  return isValid;
+}
+
 
 function showSuccessModal(email) {
   const modal = document.getElementById('successModal');
@@ -306,6 +336,11 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('input[name="category"]').forEach(radio => {
     radio.addEventListener('change', validateCategory);
   });
+
+  if (PasswordInput && ConfirmPasswordInput) {
+    PasswordInput.addEventListener('input', validatePassword);
+    ConfirmPasswordInput.addEventListener('input', validatePassword);
+  }
   
 
   // Handle form submission
@@ -326,6 +361,9 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('number_of_employees', NumberOfEmployees.value.trim());
         formData.append('year_established', YearEstablished.value.trim());
         formData.append('annual_revenue', AnnualRevenue.value.trim());
+        formData.append('password', PasswordInput.value.trim());
+        formData.append('confirm_password', ConfirmPasswordInput.value.trim());
+
         const selectedCategory = document.querySelector('input[name="category"]:checked');
         if (selectedCategory) {
           formData.append('category', selectedCategory.value);

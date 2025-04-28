@@ -1,8 +1,8 @@
 {% extends 'dashboard/dashboard.html' %}
-{% block title %}<title>{{ _('Table des accès: Ressync') }}</title>{% endblock %}
+{% block title %}<title>{{ _('Table des accès : Ressync') }}</title>{% endblock %}
 {% block content %}
 <div class="container">
-    <div class="my-5 d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center justify-content-between">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
                 <li class="breadcrumb-item">
@@ -25,8 +25,7 @@
         {{ _('Gérer les accès') }}
     </h2>
 
-    <div class="mb-3">
-        <label for="student-search" class="form-label">{{ _('Rechercher un administrateur ou un agent') }}</label>
+    <div class="mb-3 col-4 d-flex justify-content-end">
         <input type="text" class="form-control" id="admin-search" oninput="filterAdmins()" placeholder="{{ _('Entrez le nom ou l\'email...') }}">
     </div>
     

@@ -362,38 +362,8 @@
                     <ul class="navbar-nav ps-3">
                         {% if current_user.is_responsible() %}
                         <li class="nav-item">
-                            <a class="nav-link text-white {% if request.path == url_for('career.create_job', company_id=company.id) %}active bg-gradient-info{% endif %}" href="{{ url_for('career.create_job', company_id=company.id) }}">
-                                <span class="nav-link-text ms-1">{{ _('Ajouter une offre') }}</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white {% if request.path == url_for('career.previous_created_jobs', company_id=company.id) %}active bg-gradient-info{% endif %}" href="{{ url_for('career.previous_created_jobs', company_id=company.id) }}">
-                                <span class="nav-link-text ms-1">{{ _('Offres récentes') }}</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white {% if request.path == url_for('career.recent_applications', company_id=company.id) %}active bg-gradient-info{% endif %}" href="{{ url_for('career.recent_applications', company_id=company.id) }}">
-                                <span class="nav-link-text ms-1">{{ _('Applications récentes') }}</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white {% if request.path == url_for('career.employee_table', company_id=company.id) %}active bg-gradient-info{% endif %}" href="{{ url_for('career.employee_table', company_id=company.id) }}">
-                                <span class="nav-link-text ms-1">{{ _('Table des employés') }}</span>
-                            </a>
-                        </li>
-                        {% endif %}
-
-                        {% if not current_user.is_responsible() %}
-                        <li class="nav-item">
-                            <a class="nav-link text-white {% if request.path == url_for('career.new_jobs', company_id=company.id) %}active bg-gradient-info{% endif %}" href="{{ url_for('career.new_jobs', company_id=company.id) }}">
-                                <span class="nav-link-text ms-1">{{ _('Toutes les offres') }}</span>
-                            </a>
-                        </li>
-                        {% endif %}
-                        {% if current_user.is_user() %}
-                        <li class="nav-item">
-                            <a class="nav-link text-white {% if request.path == url_for('career.my_previous_applications', company_id=company.id) %}active bg-gradient-info{% endif %}" href="{{ url_for('career.my_previous_applications', company_id=company.id) }}">
-                                <span class="nav-link-text ms-1">{{ _('Mes applications') }}</span>
+                            <a class="nav-link text-white {% if request.path == url_for('career.employees', company_id=company.id) %}active bg-gradient-info{% endif %}" href="{{ url_for('career.employees', company_id=company.id) }}">
+                                <span class="nav-link-text ms-1">{{ _('Ressources Humaines') }}</span>
                             </a>
                         </li>
                         {% endif %}

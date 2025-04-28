@@ -17,10 +17,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const progressBar = modal.querySelector("#progressBar");
         const removeFileButton = modal.querySelector(".remove-file-icon");
 
-        let isAdvancedUpload = function () {
-            var div = document.createElement('div');
-            return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
-        }();
+        const isAdvancedUpload = (() => {
+            const div = document.createElement('div');
+            return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 
+                   'FormData' in window && 
+                   'FileReader' in window;
+        })();
 
         if (isAdvancedUpload) {
             ["drag", "dragstart", "dragend", "dragover", "dragenter", "dragleave", "drop"].forEach(evt => {
@@ -112,34 +114,37 @@ document.addEventListener("DOMContentLoaded", () => {
                 method: 'PUT',
                 body: formData
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to submit form');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    Swal.fire({
-                        title: data.title,
-                        text: data.message,
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    }).then(() => window.location.reload());
-                })
-                .catch(error => {
-                    Swal.fire({
-                        title: 'Erreur',
-                        text: error.message,
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
-                })
-                .finally(() => {
-                    loadingSpinner.style.display = 'none';
-                    loadingText.style.display = 'none';
-                    buttonText.style.display = 'inline';
-                    submitButton.disabled = false;
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to submit form');
+                }
+                return response.json();
+            })
+            .then(data => {
+                Swal.fire({
+                    title: data.title,
+                    text: data.message,
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    window.location.reload();
                 });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    title: 'Erreur',
+                    text: error.message || 'Une erreur est survenue lors de la mise à jour',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            })
+            .finally(() => {
+                loadingSpinner.style.display = 'none';
+                loadingText.style.display = 'none';
+                buttonText.style.display = 'inline';
+                submitButton.disabled = false;
+            });
         }
     });
 });

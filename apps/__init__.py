@@ -103,7 +103,7 @@ def create_app(development=True, template_folder='templates', static_folder='sta
     app.register_blueprint(order_blueprint, url_prefix='/order/v1')
 
     from .accounting import accounting as accounting_blueprint
-    app.register_blueprint(accounting_blueprint, url_prefix='/invoice/v1')
+    app.register_blueprint(accounting_blueprint, url_prefix='/accounting/v1')
 
     from .career import career as career_blueprint
     app.register_blueprint(career_blueprint, url_prefix='/career/v1')

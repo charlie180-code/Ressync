@@ -173,10 +173,13 @@ def settings(company_id):
                 try:
                     if check_internet_connection():
                         # Save the profile image remotely
-                        saved_profile_image_url = save_files([profile_image], "user_profile_pictures/")[0]
+                        saved_profile_image_url = save_files([profile_image], "user_profile_pictures")[0]
                     else:
-                        saved_profile_image_filename = save_file_locally(profile_image, folder_name="static/user_profile_pictures")
-                        saved_profile_image_url = url_for('static', filename=f"user_profile_pictures/{saved_profile_image_filename}", _external=True)
+                        save_result = save_file_locally(profile_image, folder_name="user_profile_pictures")
+                        saved_profile_image_url = url_for('auth.local_files',
+                            folder='user_profile_pictures',
+                            filename=os.path.basename(save_result["absolute_path"]),
+                            _external=True)
 
                     current_user.profile_picture_url = saved_profile_image_url
                 except Exception as e:
@@ -202,10 +205,13 @@ def settings(company_id):
                     return redirect(url_for('user.settings', company_id=company.id))
                 try:
                     if check_internet_connection():
-                        saved_company_logo_url = save_files([company_logo], "company_logos/")[0]
+                        saved_company_logo_url = save_files([company_logo], "company_logos")[0]
                     else:
-                        saved_company_logo_filename = save_file_locally(company_logo, folder_name="static/company_logos")
-                        saved_company_logo_url = url_for('static', filename=f"company_logos/{saved_company_logo_filename}", _external=True)
+                        save_result = save_file_locally(company_logo, folder_name="company_logos")
+                        saved_company_logo_url = url_for('auth.local_files',
+                            folder='company_logos',
+                            filename=os.path.basename(save_result["absolute_path"]),
+                            _external=True)
 
                     company.logo_url = saved_company_logo_url
                 except Exception as e:
