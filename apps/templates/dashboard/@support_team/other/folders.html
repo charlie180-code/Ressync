@@ -79,11 +79,11 @@
                 <tbody>
                     {% for folder in folders %}
                         <tr>
-                            <td>{{ folder.id }}</td>
-                            <td>{{ folder.name }}</td>
-                            <td>{{ folder.budget }} {{ folder.currency }}</td>
-                            <td>{{ folder.created_at.strftime('%Y-%m-%d') }}</td>
-                            <td>{{ folder.deadline.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td class="text-secondary text-xs ps-3">{{ folder.id }}</td>
+                            <td class="text-secondary text-xs ps-2">{{ folder.name }}</td>
+                            <td class="text-secondary text-xs ps-2">{{ folder.budget }} {{ folder.currency }}</td>
+                            <td class="text-secondary text-xs ps-2">{{ folder.created_at.strftime('%Y-%m-%d') }}</td>
+                            <td class="text-secondary text-xs ps-2">{{ folder.deadline.strftime('%Y-%m-%d %H:%M') }}</td>
                             <td>
                                 <button class="btn shadow-lg" type="button" data-bs-toggle="modal" data-bs-target="#viewFolderModal{{ folder.id }}" title="{{ _('Voir les détails') }}">
                                     {{ _('...') }}

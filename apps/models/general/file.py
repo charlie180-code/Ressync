@@ -10,11 +10,3 @@ class File(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     folder_id = db.Column(db.Integer, db.ForeignKey('folders.id'))
     company_id = db.Column(db.Integer, db.ForeignKey('companies.id'))
-
-    def __init__(self, label, filepath, folder_id, user_id, company_id, uploaded_at=None):
-        self.label = label
-        self.filepath = filepath
-        self.uploaded_at = uploaded_at or datetime.utcnow()
-        self.folder_id = folder_id
-        self.user_id = user_id
-        self.company_id = company_id

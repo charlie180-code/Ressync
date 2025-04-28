@@ -11,7 +11,7 @@
                         <span class="visually-hidden">{{ _('Accueil') }}</span>
                     </a>
                 </li>
-                <li class="breadcrumb-item">{{ _('factures') }}</li>
+                <li class="breadcrumb-item">{{ _('Factures') }}</li>
             </ol>
         </nav>
         <div class="btn-group">
@@ -25,24 +25,24 @@
 
     {% if invoices %}
         <div class="table-responsive" id="invoiceTable">
-            <table class="table table-striped align-items-center mb-0">
+            <table class="table align-items-center mb-0 border-bottom">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>{{ _("Date de création") }}</th>
-                        <th>{{ _("Montant total") }}</th>
-                        <th>{{ _("Options") }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">#</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _("Date de création") }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _("Montant total") }}</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ _("Options") }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for invoice in invoices %}
                         <tr>
-                            <td>{{ invoice.id }}</td>
-                            <td>{{ invoice.date_created.strftime('%Y-%m-%d %H:%M') }}</td>
-                            <td>
+                            <td class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ invoice.id }}</td>
+                            <td class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ invoice.date_created.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                 {{ invoice.expenses | sum(attribute='total_cost', start=0) }}
                             </td>                            
-                            <td>
+                            <td class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                 <button class="btn shadow-lg delete-invoice-btn" type="button" data-invoice-id="{{ invoice.id }}" title="{{ _('Supprimer la facture') }}">
                                     <i class="bi bi-trash"></i>
                                 </button>
@@ -116,6 +116,71 @@
                                 <input type="text" class="form-control" id="clientCountry" name="client_country" placeholder="{{ _('Entrez le pays') }}">
                             </div>
                         </div>
+
+                        <form id="createInvoiceForm" action="{{ url_for('accounting.manage_invoices', company_id=company.id) }}" method="POST">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="clientName" class="form-label">{{ _('Nom du client') }}</label>
+                                    <input type="text" class="form-control" id="clientName" name="client_name" placeholder="{{ _('Entrez le nom du client') }}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="clientType" class="form-label">{{ _('Type de client') }}</label>
+                                    <input type="text" class="form-control" id="clientType" name="client_type" placeholder="{{ _('Type de client') }}">
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="clientPhone" class="form-label">{{ _('Téléphone du client') }}</label>
+                                    <input type="text" class="form-control" id="clientPhone" name="client_phone" placeholder="{{ _('Entrez le numéro de téléphone') }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="clientEmail" class="form-label">{{ _('Email du client') }}</label>
+                                    <input type="email" class="form-control" id="clientEmail" name="client_email" placeholder="{{ _('Entrez l\'adresse email') }}">
+                                </div>
+                            </div>
+                        
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="clientAddress" class="form-label">{{ _('Adresse') }}</label>
+                                    <input type="text" class="form-control" id="clientAddress" name="client_address" placeholder="{{ _('Entrez l\'adresse') }}">
+                                </div>
+                            </div>
+                        
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label for="clientCity" class="form-label">{{ _('Ville') }}</label>
+                                    <input type="text" class="form-control" id="clientCity" name="client_city" placeholder="{{ _('Entrez la ville') }}">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="clientPostalCode" class="form-label">{{ _('Code postal') }}</label>
+                                    <input type="text" class="form-control" id="clientPostalCode" name="client_postal_code" placeholder="{{ _('Entrez le code postal') }}">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="clientCountry" class="form-label">{{ _('Pays') }}</label>
+                                    <input type="text" class="form-control" id="clientCountry" name="client_country" placeholder="{{ _('Entrez le pays') }}">
+                                </div>
+                            </div>
+                        
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="attachToProject" name="attach_to_project">
+                                        <label class="form-check-label" for="attachToProject">
+                                            {{ _('Attacher cette facture à un projet') }}
+                                        </label>
+                                    </div>
+                                    <select class="form-select" id="projectSelect" name="project_id" disabled>
+                                        <option value="" selected>{{ _('Sélectionner un projet') }}</option>
+                                        {% for project in company.folders %}
+                                            <option value="{{ project.id }}" data-budget="{{ project.budget }}">
+                                                {{ project.name }} - {{ _('Budget') }}: {{ project.budget }} {{ project.currency or 'USD' }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                    
 
                         
                         <!-- Button Group -->

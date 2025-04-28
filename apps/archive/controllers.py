@@ -12,6 +12,7 @@ from ..models.general.user import User
 from ..models.general.role import Role
 from ..decorators import librarian_required
 from ..utils import save_files
+from ..auth.utils import save_file_locally, check_internet_connection, get_resource_path
 from .. import db
 from math import ceil
 from flask_babel import gettext as _
@@ -89,7 +90,7 @@ def folders(company_id):
         db.session.commit()
 
 
-        if company.category != 'Other':
+        if check_internet_connection():
             notify_for_new_folder(
                 company_name=company.title,
                 folder_name=new_folder.name,
@@ -105,35 +106,74 @@ def folders(company_id):
             'confirmButtonText': _('OK'),
         }), 201
 
-
     if request.method == 'DELETE':
-        data = request.json
-        folder_id = data['id']
+        data = request.get_json()
+        folder_id = data.get('id')
+        
+        if not folder_id:
+            return jsonify({
+                'title': _('Erreur'),
+                'error': _('ID du dossier manquant'),
+                'confirmButtonText': _('OK')
+            }), 400
+
         folder = Folder.query.get(folder_id)
-        if folder:
+        
+        if not folder:
+            return jsonify({
+                'title': _('Dossier introuvable'),
+                'error': _('Dossier introuvable'),
+                'confirmButtonText': _('OK')
+            }), 404
+
+        try:
+            files = File.query.filter_by(folder_id=folder_id).all()
+            for file in files:
+                try:
+                    if check_internet_connection() and not file.filepath.startswith('/local_files/'):
+                        pass
+                    
+                    elif file.filepath.startswith('/local_files/'):
+                        file_path = os.path.join(
+                            get_resource_path('client_folder'),
+                            os.path.basename(file.filepath)
+                        )
+                        if os.path.exists(file_path):
+                            os.remove(file_path)
+                except Exception as file_error:
+                    current_app.logger.error(f"Error deleting file {file.id}: {file_error}")
+                
+                db.session.delete(file)
+            
             company = Company.query.get(folder.company_id)
             db.session.delete(folder)
             db.session.commit()
 
-            notify_for_deleted_folder(
-                company_name=company.title, 
-                folder_name=folder.name, 
-                folder_id=folder_id, 
-                company_id=folder.company_id
-            )
+            if check_internet_connection():
+                notify_for_deleted_folder(
+                    company_name=company.title,
+                    folder_name=folder.name,
+                    folder_id=folder_id,
+                    company_id=folder.company_id
+                )
 
             return jsonify({
                 'title': _('Supprimé'),
-                'message': _(f"Le dossier N°{folder_id} vient d\'être supprimé"),
+                'message': _("Le dossier et son contenu ont été supprimés avec succès"),
                 'confirmButtonText': _('OK')
             }), 200
-        else:
+
+        except Exception as e:
+            db.session.rollback()
+            current_app.logger.error(f"Folder deletion error: {str(e)}")
             return jsonify({
-                'title': _('Dossier introuvable'),
-                "error": _('Dossier introuvable')
-            }), 404
-
-
+                'title': _('Erreur'),
+                'error': _('Échec de la suppression du dossier'),
+                'details': str(e),
+                'confirmButtonText': _('OK')
+            }), 500
+    
+        
 @archive.route('/search_folders_files/<int:company_id>', methods=['GET'])
 @login_required
 def search_folders_files(company_id):
@@ -233,7 +273,26 @@ def save_folder_files(folder_id, company_id):
             'confirmButtonText': _('OK')
         }), 400
 
-    saved_files = save_files(files, "client_folder")
+    has_internet = check_internet_connection()
+    
+    saved_files = []
+    for file in files:
+        if has_internet:
+            try:
+                saved_file = save_files([file], "client_folder")[0]
+                saved_files.append(saved_file)
+            except Exception as e:
+                save_result = save_file_locally(file, "client_folder")
+                saved_files.append(url_for('auth.local_files',
+                    folder='client_folder',
+                    filename=os.path.basename(save_result["absolute_path"]),
+                    _external=True))
+        else:
+            save_result = save_file_locally(file, "client_folder")
+            saved_files.append(url_for('auth.local_files',
+                folder='client_folder',
+                filename=os.path.basename(save_result["absolute_path"]),
+                _external=True))
 
     for i, file_url in enumerate(saved_files):
         new_file = File(
@@ -253,20 +312,20 @@ def save_folder_files(folder_id, company_id):
             'confirmButtonText': _('OK')
         }), 500
 
-    notify_users_about_new_files(
-        company=company, 
-        folder=folder, 
-        files=files, 
-        labels=labels
-    )
+    if has_internet:
+        notify_users_about_new_files(
+            company=company, 
+            folder=folder, 
+            files=files, 
+            labels=labels
+        )
 
     return jsonify({
         'title': _('Fichiers sauvegardés'),
         'message': _(f"Le(s) fichier(s) ont été sauvegardé(s) dans {folder_title}"), 
         'files': saved_files,
-        'confirmButtonText': _('OK')
+        'confirmButtonText': _('OK'),
     })
-
 
 
 @archive.route('/get_folders_list/<int:company_id>', methods=['GET'])

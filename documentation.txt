@@ -132,5 +132,6 @@ Please create new sessions before switching the year
 --------------------------------------------------------------------------------------------------------
 
 
-
-
+Pour la catégorie autre:
+Si Pour le personnel administratif veuillez essayer d'ajouter les différents
+responsables an manipulant la config des accès

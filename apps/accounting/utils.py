@@ -86,5 +86,7 @@ def prepare_company_invoice_data(company, invoice, expenses):
         'client_city': invoice.client_city,
         'client_postal_code': invoice.client_postal_code,
         'client_country': invoice.client_country,
+        'payment_details': 'All payments should be made to the account details provided.',
+        'notes': 'Please retain this invoice for your records.',
         'legal_info': 'All payments should be made to the account details provided. Please retain this invoice for your records.'
     }

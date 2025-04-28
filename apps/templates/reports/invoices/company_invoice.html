@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ _('Facture') }}</title>
+    <title>{{ _('Nouvelle Facture') }}</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -39,7 +39,7 @@
 
         .header .invoice-details p {
             margin: 2px 0;
-            font-size: 14px; /* Condensed size */
+            font-size: 14px;
         }
 
         .company-details, .client-details {
@@ -50,7 +50,7 @@
 
         .company-details p, .client-details p {
             margin: 5px 0;
-            font-size: 14px; /* Condensed size */
+            font-size: 14px;
         }
 
         .items-table, .details-table {
@@ -80,7 +80,7 @@
 
         .totals p {
             margin: 5px 0;
-            font-size: 14px; /* Condensed size */
+            font-size: 14px;
         }
 
         .totals .label {
@@ -105,12 +105,12 @@
         .notes p {
             margin: 5px 0;
             font-style: italic;
-            font-size: 14px; /* Condensed size */
+            font-size: 14px;
         }
 
         .payment-details p {
             margin: 5px 0;
-            font-size: 14px; /* Condensed size */
+            font-size: 14px;
         }
 
         .footer span {
@@ -119,19 +119,19 @@
 
         .details-container {
             display: flex;
-            justify-content: space-between; /* Space between company and client details */
+            justify-content: space-between;
             margin-top: 20px;
         }
 
         .company-details, .client-details {
-            width: 45%; /* Adjust width to fit within the parent container */
-            padding: 10px; /* Optional padding */
-            border: 1px solid #333; /* Dark rectangle for emphasis */
+            width: 45%;
+            padding: 10px;
+            border: 1px solid #333;
             border-radius: 5px;
         }
 
         .font-bold {
-            font-weight: bold; /* Ensure bold font is applied */
+            font-weight: bold;
         }
 
     </style>
@@ -298,7 +298,6 @@
         <!-- Totals -->
         
 
-        <!-- Payment Details -->
         <div class="payment-details">
             <p>{{ _('Détails de paiement: ') }}</p>
             <p>{{ invoice_data['payment_details'] }}</p>

@@ -1,5 +1,3 @@
-/**
- *
 import UtilApiURLs from "../_globals/general/Calendar.js";
 const URL = UtilApiURLs.GetEventsApiURL
 
@@ -28,5 +26,3 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   calendar.render();
 }); 
- * 
-*/

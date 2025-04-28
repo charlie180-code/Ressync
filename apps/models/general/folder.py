@@ -15,6 +15,7 @@ class Folder(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     budget = db.Column(db.Float, default=0.0)
     currency = db.Column(db.String, default='USD')
+    project = db.relationship('Invoice', backref='invoices')
 
     company_id = db.Column(db.Integer, db.ForeignKey('companies.id'), nullable=False)
     files = db.relationship('File', backref='folder', lazy=True)

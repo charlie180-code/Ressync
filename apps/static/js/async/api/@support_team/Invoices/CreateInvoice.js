@@ -1,4 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const attachCheckbox = document.getElementById('attachToProject');
+    const projectSelect = document.getElementById('projectSelect');
+    
+    attachCheckbox.addEventListener('change', () => {
+        projectSelect.disabled = !attachCheckbox.checked;
+        if (!attachCheckbox.checked) {
+            projectSelect.value = '';
+        }
+    });
+
     const form = document.getElementById('createInvoiceForm');
     const submitButton = document.getElementById('submitButton');
     const spinner = document.getElementById('spinner');
@@ -10,6 +20,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const formData = new FormData(form);
         const jsonData = {};
+
+        if (attachCheckbox.checked && !projectSelect.value) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Please select a project to attach the invoice to'
+            });
+            return;
+        }
 
         formData.forEach((value, key) => {
             const keys = key.split('[').map(k => k.replace(']', ''));

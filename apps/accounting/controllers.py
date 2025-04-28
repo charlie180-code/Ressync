@@ -14,6 +14,7 @@ from ..models.general.user import User
 from ..models.general.wage import Wage
 from ..models.general.role import Role
 from ..models.school.expense import Expense
+from ..models.general.folder import Folder
 from math import ceil
 from sqlalchemy import func
 from datetime import datetime
@@ -69,6 +70,13 @@ def manage_invoices(company_id):
             client_postal_code=client_postal_code,
             client_country=client_country
         )
+
+        if data.get('attach_to_project'):
+            project_id = data.get('project_id')
+            if project_id:
+                project = Folder.query.get(project_id)
+                if project:
+                    invoice.project_id = project_id
         
         db.session.add(invoice)
         db.session.commit()
@@ -126,21 +134,39 @@ def manage_invoices(company_id):
     elif request.method == 'DELETE':
         data = request.get_json()
         invoice_id = data.get('invoice_id')
+        try:
+            invoice = Invoice.query.options(
+                db.joinedload(Invoice.expenses)
+                .get_or_404(invoice_id))
 
-        invoice = Invoice.query.get_or_404(invoice_id)
+            if invoice.project_id:
+                project = Folder.query.get(invoice.project_id)
+                if project:
+                    # Optionally add back the invoice amount to project budget
+                    # project.budget += invoice.total_amount
+                    db.session.add(project)
 
-        CompanyExpense.query.filter_by(invoice_id=invoice_id).delete()
+            for expense in invoice.expenses:
+                db.session.delete(expense)
 
-        db.session.delete(invoice)
-        db.session.commit()
+            db.session.delete(invoice)
+            db.session.commit()
 
-        return jsonify(
-            {
+            return jsonify({
                 'success': True,
                 'title': _('Facture supprimée'),
                 'message': _('La facture a été supprimée')
-            }
-        )
+            })
+
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({
+                'success': False,
+                'title': _('Erreur'),
+                'message': _('Une erreur est survenue lors de la suppression: ') + str(e)
+            }), 500
+
+        
 
 
 
