@@ -97,16 +97,18 @@ async function createMainWindow() {
         const { width, height } = screen.getPrimaryDisplay().bounds;
 
         mainWindow = new BrowserWindow({
-            width,
-            height,
-            fullscreen: true,
-            icon: getAssetPath('logo-desktop-splash.svg'),
+            width: 1200,
+            height: 800,
+            resizable: true,
+            fullscreen: false,
+            icon: getAssetPath('logo-desktop-splash.png'),
             webPreferences: {
                 nodeIntegration: true,
             },
             autoHideMenuBar: true,
             show: false,
         });
+        
 
         mainWindow.loadURL(loadURL);
         mainWindow.once('ready-to-show', () => {
@@ -136,9 +138,17 @@ app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit();
 });
 
-app.on('quit', () => {
-    if (serverProcess) serverProcess.kill();
+app.on('before-quit', () => {
+    if (serverProcess && !serverProcess.killed) {
+        try {
+            process.kill(serverProcess.pid, 'SIGTERM');
+            console.log('Local server stopped.');
+        } catch (err) {
+            console.error('Error killing server process:', err);
+        }
+    }
 });
+
 
 app.on('activate', () => {
     if (mainWindow === null) {

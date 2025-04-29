@@ -1,0 +1,240 @@
+{% extends 'main/layout.html' %}
+{% block meta %}
+<meta name="keywords" content="{{ _('sailsmakr softwares, CRM, automation, AI, data, insights, business intelligence, optimization, task, project, management, engineering') }}">
+<meta name="description" content="{{ _('sailsmakr softwares pricing page') }}">
+{% endblock %}
+{% block title %}{{ _('sailsmakr: Pricing') }}{% endblock %}
+{% block content %}
+
+    <!-- ====== Banner Section Start -->
+    <div class="relative z-10 overflow-hidden pt-[120px] pb-[60px] md:pt-[130px] lg:pt-[160px] dark:bg-dark">
+      <div
+        class="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-stroke/0 via-stroke dark:via-dark-3 to-stroke/0">
+      </div>
+      <div class="container">
+        <div class="flex flex-wrap items-center -mx-4">
+          <div class="w-full px-4">
+            <div class="text-center">
+              <h1 class="mb-4 text-3xl font-bold text-dark dark:text-white sm:text-4xl md:text-[40px] md:leading-[1.2]">
+                {{ _('Our pricing grids') }}
+              </h1>
+              <p class="mb-5 text-base text-body-color dark:text-dark-6">
+                {{ _('We value your success') }}
+              </p>
+
+              <ul class="flex items-center justify-center gap-[10px]">
+                <li>
+                  <a href="{{ url_for('main.home') }}"
+                    class="flex items-center gap-[10px] text-base font-medium text-dark dark:text-white">
+                    {{ _('Home') }}
+                  </a>
+                </li>
+                <li>
+                  <a href="javascript:void(0)" class="flex items-center gap-[10px] text-base font-medium text-body-color">
+                    <span class="text-body-color dark:text-dark-6"> / </span>
+                    {{ _('Pricing') }}
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ====== Banner Section End -->
+
+    <!-- ====== Pricing Section Start -->
+    <section
+      id="pricing"
+      class="relative z-20 overflow-hidden bg-white pb-12 pt-20 dark:bg-dark lg:pb-[90px] lg:pt-[120px]"
+    >
+      <div class="container mx-auto">
+        <div class="-mx-4 flex flex-wrap">
+          <div class="w-full px-4">
+            <div class="mx-auto mb-[60px] max-w-[510px] text-center">
+              <span class="mb-2 block text-lg font-semibold text-primary">
+                {{ _('Pricing') }}
+              </span>
+              <p class="text-base text-body-color dark:text-dark-6">
+                {{ _('Discover our pricing plans to help you succed') }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="-mx-4 flex flex-wrap justify-center">
+          <div class="w-full px-4 md:w-1/2 lg:w-1/3">
+            <div
+              class="relative z-10 mb-10 overflow-hidden rounded-xl bg-white px-8 py-10 shadow-pricing dark:bg-dark-2 sm:p-12 lg:px-6 lg:py-10 xl:p-14"
+            >
+              <span
+                class="mb-5 block text-xl font-medium text-dark dark:text-white"
+              >
+                {{ _('Edge') }}
+              </span>
+              <h2
+                class="mb-11 text-4xl font-semibold text-dark dark:text-white xl:text-[42px] xl:leading-[1.21]"
+              >
+                <span class="text-xl font-medium">$</span>
+                <span class="-ml-1 -tracking-[2px]">{{ _('500') }}</span>
+                <span
+                  class="text-base font-normal text-body-color dark:text-dark-6"
+                >
+                  {{ _('Per year') }}
+                </span>
+              </h2>
+              <div class="mb-[50px]">
+                <h5 class="mb-5 text-lg font-medium text-dark dark:text-white">
+                  {{ _('Features') }}
+                </h5>
+                <div class="flex flex-col gap-[14px]">
+                  <p class="text-base text-body-color dark:text-dark-6">
+                    {{ _('Supports up to 3,000 students and 200 teachers.') }}
+                  </p>
+                  <p class="text-base text-body-color dark:text-dark-6">
+                    {{ _('Access for teachers, students, HR, library, and accountant.') }}
+                  </p>
+                  <p class="text-base text-body-color dark:text-dark-6">
+                    {{ _('Archiving and management system for school books') }}
+                  </p>
+                  <p class="text-base text-body-color dark:text-dark-6">
+                    {{ _('Tools for managing student financial records.') }}
+                  </p>
+                  <p class="text-base text-body-color dark:text-dark-6">
+                    {{ _('Project & Task Management') }}
+                  </p>
+                  <p class="text-base text-body-color dark:text-dark-6">
+                    {{ _('Invoice Management') }}
+                  </p>
+                  <p class="text-base text-body-color dark:text-dark-6">
+                    {{ _('Up to 500GB storage for school documents and files.') }}
+                  </p>
+                  <p class="text-base text-body-color dark:text-dark-6">
+                    {{ _('50 professional email accounts.') }}
+                  </p>
+                  <p class="text-base text-body-color dark:text-dark-6">
+                    {{ _('1 custom domain with basic website hosting (up to 10GB).') }}
+                  </p>
+                </div>
+              </div>
+              <a
+                href="javascript:void(0)"
+                class="inline-block rounded-md bg-primary px-7 py-3 text-center text-base font-medium text-white transition hover:bg-blue-dark"
+              >
+                {{ _('Purchase Now') }}
+              </a>
+            </div>
+          </div>
+          <div class="w-full px-4 md:w-1/2 lg:w-1/3">
+            <div
+              class="relative z-10 mb-10 overflow-hidden rounded-xl bg-white px-8 py-10 shadow-pricing dark:bg-dark-2 sm:p-12 lg:px-6 lg:py-10 xl:p-14"
+            >
+              <span
+                class="mb-5 block text-xl font-medium text-dark dark:text-white"
+              >
+                {{ _('Shipper') }}
+              </span>
+              <h2
+                class="mb-11 text-4xl font-semibold text-dark dark:text-white xl:text-[42px] xl:leading-[1.21]"
+              >
+                <span class="text-xl font-medium">$</span>
+                <span class="-ml-1 -tracking-[2px]">{{ _('1000') }}</span>
+                <span
+                  class="text-base font-normal text-body-color dark:text-dark-6"
+                >
+                  {{ _('Per Year') }}
+                </span>
+              </h2>
+              <div class="mb-[50px]">
+                <h5 class="mb-5 text-lg font-medium text-dark dark:text-white">
+                  {{ _('Features') }}
+                </h5>
+                <div class="flex flex-col gap-[14px]">
+                  <p class="text-base text-body-color dark:text-dark-6">
+                    {{ _('Reseller Dashboard') }}
+                  </p>
+                  <p class="text-base text-body-color dark:text-dark-6">
+                    {{ _('Stock Management Tools') }}
+                  </p>
+                  <p class="text-base text-body-color dark:text-dark-6">
+                    {{ _('Employee Management') }}
+                  </p>
+                  <p class="text-base text-body-color dark:text-dark-6">
+                    {{ _('Project & Task Management') }}
+                  </p>
+                  <p class="text-base text-body-color dark:text-dark-6">
+                    {{ _('Automated invoicing for shipping services.') }}
+                  </p>
+                  <p class="text-base text-body-color dark:text-dark-6">
+                    {{ _('Up to 500GB storage for documents and files.') }}
+                  </p>
+                  <p class="text-base text-body-color dark:text-dark-6">
+                    {{ _('100 professional email accounts.') }}
+                  </p>
+                  <p class="text-base text-body-color dark:text-dark-6">
+                    {{ _('1 custom domain with premium website hosting (up to 20GB).') }}
+                  </p>
+                </div>
+              </div>
+              <a
+                href="javascript:void(0)"
+                class="inline-block rounded-md bg-primary px-7 py-3 text-center text-base font-medium text-white transition hover:bg-blue-dark"
+              >
+                {{ _('Purchase Now') }}
+              </a>
+            </div>
+          </div>
+          <div class="w-full px-4 md:w-1/2 lg:w-1/3">
+            <div
+              class="relative z-10 mb-10 overflow-hidden rounded-xl bg-white px-8 py-10 shadow-pricing dark:bg-dark-2 sm:p-12 lg:px-6 lg:py-10 xl:p-14"
+            >
+              <span
+                class="mb-5 block text-xl font-medium text-dark dark:text-white"
+              >
+                {{ _('Precision') }}
+              </span>
+              <h2
+                class="mb-11 text-4xl font-semibold text-dark dark:text-white xl:text-[42px] xl:leading-[1.21]"
+              >
+                <span class="text-xl font-medium">$</span>
+                <span class="-ml-1 -tracking-[2px]">{{ _('1500') }}</span>
+                <span
+                  class="text-base font-normal text-body-color dark:text-dark-6"
+                >
+                  {{ _('Per Year') }}
+                </span>
+              </h2>
+              <div class="mb-[50px]">
+                <h5 class="mb-5 text-lg font-medium text-dark dark:text-white">
+                  {{ _('Features') }}
+                </h5>
+                <div class="flex flex-col gap-[14px]">
+                  <p class="text-base text-body-color dark:text-dark-6">
+                    {{ _('Project & Task Management') }}
+                  </p>
+                  <p class="text-base text-body-color dark:text-dark-6">
+                    {{ _('Scientific Tools & APIs') }}
+                  </p>
+                  <p class="text-base text-body-color dark:text-dark-6">
+                    {{ _('Up to 750GB storage for project files and docs') }}
+                  </p>
+                  <p class="text-base text-body-color dark:text-dark-6">
+                    {{ _('75 professional email accounts.') }}
+                  </p>
+                  <p class="text-base text-body-color dark:text-dark-6">
+                    {{ _('1 custom domain with standard website hosting (up to 15GB).') }}
+                  </p>
+                </div>
+              </div>
+              <a
+                href="javascript:void(0)"
+                class="inline-block rounded-md bg-primary px-7 py-3 text-center text-base font-medium text-white transition hover:bg-blue-dark"
+              >
+                {{ _('Purchase Now') }}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ====== Pricing Section End -->
+{% endblock %}

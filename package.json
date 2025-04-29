@@ -53,7 +53,7 @@
       "./main.js",
       "./build/icon.ico",
       "./splash.html",
-      "./logo-desktop-splash.svg",
+      "./logo-desktop-splash.png",
       "server/**/*"
     ],
     "extraResources": [
