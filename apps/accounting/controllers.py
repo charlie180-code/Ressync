@@ -20,7 +20,7 @@ from sqlalchemy import func
 from datetime import datetime
 from .emails.expense_notifier import notify_ceo
 from .. import db
-from flask_babel import gettext as _
+from flask_babel import _ 
 from .utils import generate_company_invoice
 import json
 from flask import send_file
@@ -57,6 +57,7 @@ def manage_invoices(company_id):
         client_city = data.get('client_city', '')
         client_postal_code = data.get('client_postal_code', '')
         client_country = data.get('client_country', '')
+        preferred_currency = data.get('preferred_currency', 'USD')
 
 
         invoice = Invoice(
@@ -83,11 +84,20 @@ def manage_invoices(company_id):
 
         expenses = data.get('expenses', {})
 
+
         for _, expense in expenses.items():
             service_type = expense.get('service_type', '')
             unit_price = float(expense.get('unit_price', '0') or '0')
             quantity = int(expense.get('quantity', '0') or '0')
             currency = expense.get('currency', '')
+            expense_type = expense.get('type', 'gain')
+
+            if expense_type == 'gain':
+                is_gain = True
+            else:
+                is_gain = False
+
+
             details = {
                 'storage': expense.get('storage', ''),
                 'time of usage': expense.get('time_of_usage', ''),
@@ -123,7 +133,8 @@ def manage_invoices(company_id):
                 currency=currency,
                 quantity=quantity,
                 details=details,
-                invoice_id=invoice.id
+                invoice_id=invoice.id,
+                is_gain=is_gain
             )
             db.session.add(expense_record)
 
@@ -134,37 +145,19 @@ def manage_invoices(company_id):
     elif request.method == 'DELETE':
         data = request.get_json()
         invoice_id = data.get('invoice_id')
-        try:
-            invoice = Invoice.query.options(
-                db.joinedload(Invoice.expenses)
-                .get_or_404(invoice_id))
 
-            if invoice.project_id:
-                project = Folder.query.get(invoice.project_id)
-                if project:
-                    # Optionally add back the invoice amount to project budget
-                    # project.budget += invoice.total_amount
-                    db.session.add(project)
+        invoice = Invoice.query.get_or_404(invoice_id)
 
-            for expense in invoice.expenses:
-                db.session.delete(expense)
+        db.session.delete(invoice)
+        db.session.commit()
 
-            db.session.delete(invoice)
-            db.session.commit()
-
-            return jsonify({
+        return jsonify(
+            {
                 'success': True,
-                'title': _('Facture supprimée'),
-                'message': _('La facture a été supprimée')
-            })
-
-        except Exception as e:
-            db.session.rollback()
-            return jsonify({
-                'success': False,
-                'title': _('Erreur'),
-                'message': _('Une erreur est survenue lors de la suppression: ') + str(e)
-            }), 500
+                'title': 'Supprimée',
+                'message': 'La facture a été supprimée'
+            }
+        )
 
         
 

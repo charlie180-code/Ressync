@@ -9,9 +9,10 @@ class CompanyExpense(db.Model):
     is_gain = db.Column(db.Boolean, default=True)
     details = db.Column(db.JSON)
     currency = db.Column(db.String, default='USD')
+    date = db.Column(db.Date, default=datetime.utcnow)
     unit_price = db.Column(db.Float)  # Optional: Unit price for the expense
     quantity = db.Column(db.Integer)  # Optional: Quantity for the expense
-    invoice_id = db.Column(db.Integer, db.ForeignKey('invoices.id'), nullable=False)
+    invoice_id = db.Column(db.Integer, db.ForeignKey('invoices.id'))
     
     @hybrid_property
     def total_cost(self):

@@ -3,7 +3,18 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', async (event) => {
             const invoiceId = event.target.dataset.invoiceId;
 
-            if (confirm("Êtes-vous sûr de vouloir supprimer cette facture ?")) {
+            const confirmResult = await Swal.fire({
+                title: 'Êtes-vous sûr ?',
+                text: "Cette action supprimera définitivement la facture.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Oui, supprimer',
+                cancelButtonText: 'Annuler'
+            });
+
+            if (confirmResult.isConfirmed) {
                 try {
                     const response = await fetch(window.location.pathname, {
                         method: 'DELETE',
@@ -28,14 +39,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     } else {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Error!',
+                            title: 'Erreur!',
                             text: result.message
                         });
                     }
                 } catch (error) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Error!',
+                        title: 'Erreur!',
                         text: error.message
                     });
                 }

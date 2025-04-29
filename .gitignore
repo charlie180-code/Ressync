@@ -16,6 +16,7 @@ task.todo
 server
 screenshots
 migrations
+win-venv
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*

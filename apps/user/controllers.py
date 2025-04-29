@@ -31,36 +31,54 @@ from datetime import datetime
 def user_home(company_id):
     company = Company.query.get_or_404(company_id)
 
-    api = NewsDataApiClient(apikey=os.environ.get('NEWS_API_KEYS')) 
-    
-    student_count = count_all_students(company_id) or 0
-    student_count_percentage_difference = calculate_student_count_percentage_difference(company_id) or 0
-    student_data_size = calculate_student_data_size(company_id) or 0
-    session_count = count_school_sessions(company_id) or 0
-    academic_year = get_academic_year_for_session(company_id) or "N/A"
-    book_count = get_number_of_books(company_id) or 0
-    book_loan_count = get_number_of_book_loans(company_id) or 0
-    total_versed = calculate_total_versed_by_students(company_id) or 0
-    total_expenses = calculate_total_expenses(company_id) or 0
+    # Initialize all variables with default values
+    student_count = 0
+    student_count_percentage_difference = 0
+    student_data_size = 0
+    session_count = 0
+    academic_year = "N/A"
+    book_count = 0
+    book_loan_count = 0
+    total_versed = 0
+    total_expenses = 0
+    summary = {}
+    user_summary = {}
+    client_summary = {}
+    invoices = []
+    purchases = []
+    published_products = []
+    new_products = []
+    expenses = []
+    total_size_mb = 0
 
-    summary = get_weekly_financial_summary(company_id) or {}
-    user_summary = get_monthly_user_summary(company_id) or {}
-    client_summary = get_daily_client_summary(company_id) or {}
+    if company.category != 'Other':
+        api = NewsDataApiClient(apikey=os.environ.get('NEWS_API_KEYS')) 
+        
+        student_count = count_all_students(company_id) or 0
+        student_count_percentage_difference = calculate_student_count_percentage_difference(company_id) or 0
+        student_data_size = calculate_student_data_size(company_id) or 0
+        session_count = count_school_sessions(company_id) or 0
+        academic_year = get_academic_year_for_session(company_id) or "N/A"
+        book_count = get_number_of_books(company_id) or 0
+        book_loan_count = get_number_of_book_loans(company_id) or 0
+        total_versed = calculate_total_versed_by_students(company_id) or 0
+        total_expenses = calculate_total_expenses(company_id) or 0
+
+        summary = get_weekly_financial_summary(company_id) or {}
+        user_summary = get_monthly_user_summary(company_id) or {}
+        client_summary = get_daily_client_summary(company_id) or {}
+        invoices = get_user_invoices(current_user.id) or []
+        published_products = Product.query.filter_by(user_id=current_user.id).all() or []
+        new_products = Product.query.filter_by(company_id=company.id).all() or []
+        purchases = Purchase.query.filter_by(user_id=current_user.id).all() or []
+
+        invoices = Invoice.query.filter_by(company_id=company_id).all()    
+        expenses = [expense for invoice in invoices for expense in invoice.expenses]
+
+        total_size_mb = get_data_size_for_company(company_id) / (1024 * 1024)
+
     companies = count_all_companies() or 0
-    invoices = get_user_invoices(current_user.id) or []
     daily_company_summary = get_daily_company_summary() or {}
-    published_products = Product.query.filter_by(user_id=current_user.id).all() or []
-    new_products = Product.query.filter_by(company_id=company.id).all() or []
-    purchases = Purchase.query.filter_by(user_id=current_user.id).all() or []
-
-    invoices = Invoice.query.filter_by(company_id=company_id).all()    
-    expenses = [expense for invoice in invoices for expense in invoice.expenses]
-
-
-
-    total_size_mb = get_data_size_for_company(company_id) / (1024 * 1024)  
-
-    
 
     return render_template(
         "dashboard/user_home.html",

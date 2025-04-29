@@ -157,15 +157,7 @@
                                 <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
                                     <i class="material-icons opacity-10">history</i>
                                 </div>
-                                <span class="nav-link-text ms-1">{{ _('Messages récents') }}</span>
-                            </a>
-                            </li>
-                            <li class="nav-item">
-                            <a class="nav-link text-dark {% if request.path == url_for('msg.programmed_messages') %}active bg-gradient-dark{% endif %}" href="{{ url_for('msg.programmed_messages') }}" disabled>
-                                <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
-                                    <i class="material-icons opacity-10">schedule_send</i>
-                                </div>
-                                <span class="nav-link-text ms-1">{{ _('Messages programmés') }}</span>
+                                <span class="nav-link-text ms-1">{{ _('Inbox') }}</span>
                             </a>
                             </li>
                         </ul>

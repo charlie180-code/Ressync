@@ -6,86 +6,122 @@
     <div class="ms-3">
       <h3 class="mb-0 h4 font-weight-bolder">Dashboard</h3>
       <p class="mb-4">
-        Check the sales, value and bounce rate by country.
+        {{ company.title }} 's {{ _('performance overview') }}
       </p>
     </div>
+    
+    <!-- Employee Count Card -->
     <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
       <div class="card">
         <div class="card-header p-2 ps-3">
           <div class="d-flex justify-content-between">
             <div>
-              <p class="text-sm mb-0 text-capitalize">Today's Money</p>
-              <h4 class="mb-0">$53k</h4>
+              <p class="text-sm mb-0 text-capitalize">{{ _('Ressources Humaines') }}</p>
+              <h4 class="mb-0" id="employee-count">
+                <div class="spinner-border spinner-border-sm" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </h4>
             </div>
             <div class="icon icon-md icon-shape bg-gradient-dark shadow-dark shadow text-center border-radius-lg">
-              <i class="material-icons opacity-10">weekend</i>
+              <i class="material-icons opacity-10">people</i>
             </div>
           </div>
         </div>
         <hr class="dark horizontal my-0">
         <div class="card-footer p-2 ps-3">
-          <p class="mb-0 text-sm"><span class="text-success font-weight-bolder">+55% </span>than last week</p>
+          <p class="mb-0 text-sm" id="employee-change">
+            <span class="spinner-border spinner-border-sm" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </span>
+          </p>
         </div>
       </div>
     </div>
+    
+    <!-- Expense Card -->
     <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
       <div class="card">
         <div class="card-header p-2 ps-3">
           <div class="d-flex justify-content-between">
             <div>
-              <p class="text-sm mb-0 text-capitalize">Today's Users</p>
-              <h4 class="mb-0">2300</h4>
+              <p class="text-sm mb-0 text-capitalize">{{ _('Dépenses') }}</p>
+              <h4 class="mb-0" id="expense-total">
+                <div class="spinner-border spinner-border-sm" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </h4>
             </div>
             <div class="icon icon-md icon-shape bg-gradient-dark shadow-dark shadow text-center border-radius-lg">
-              <i class="material-icons opacity-10">person</i>
+              <i class="material-icons opacity-10">payments</i>
             </div>
           </div>
         </div>
         <hr class="dark horizontal my-0">
         <div class="card-footer p-2 ps-3">
-          <p class="mb-0 text-sm"><span class="text-success font-weight-bolder">+3% </span>than last month</p>
+          <p class="mb-0 text-sm" id="expense-change">
+            <span class="spinner-border spinner-border-sm" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </span>
+          </p>
         </div>
       </div>
     </div>
+    
+    <!-- Project Count Card -->
     <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
       <div class="card">
         <div class="card-header p-2 ps-3">
           <div class="d-flex justify-content-between">
             <div>
-              <p class="text-sm mb-0 text-capitalize">Ads Views</p>
-              <h4 class="mb-0">3,462</h4>
+              <p class="text-sm mb-0 text-capitalize">{{ _('Projets') }}</p>
+              <h4 class="mb-0" id="project-count">
+                <div class="spinner-border spinner-border-sm" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </h4>
             </div>
             <div class="icon icon-md icon-shape bg-gradient-dark shadow-dark shadow text-center border-radius-lg">
-              <i class="material-icons opacity-10">leaderboard</i>
+              <i class="material-icons opacity-10">assignment</i>
             </div>
           </div>
         </div>
         <hr class="dark horizontal my-0">
         <div class="card-footer p-2 ps-3">
-          <p class="mb-0 text-sm"><span class="text-danger font-weight-bolder">-2% </span>than yesterday</p>
+          <p class="mb-0 text-sm">
+            <span id="max-budget">Loading max budget...</span>
+          </p>
         </div>
       </div>
     </div>
+    
+    <!-- Max Budget Card -->
     <div class="col-xl-3 col-sm-6">
       <div class="card">
         <div class="card-header p-2 ps-3">
           <div class="d-flex justify-content-between">
             <div>
-              <p class="text-sm mb-0 text-capitalize">Sales</p>
-              <h4 class="mb-0">$103,430</h4>
+              <p class="text-sm mb-0 text-capitalize">{{ _('Budget Max') }}</p>
+              <h4 class="mb-0" id="max-budget-amount">
+                <div class="spinner-border spinner-border-sm" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </h4>
             </div>
             <div class="icon icon-md icon-shape bg-gradient-dark shadow-dark shadow text-center border-radius-lg">
-              <i class="material-icons opacity-10">weekend</i>
+              <i class="material-icons opacity-10">attach_money</i>
             </div>
           </div>
         </div>
         <hr class="dark horizontal my-0">
         <div class="card-footer p-2 ps-3">
-          <p class="mb-0 text-sm"><span class="text-success font-weight-bolder">+5% </span>than yesterday</p>
+          <p class="mb-0 text-sm">Highest budget project</p>
         </div>
       </div>
     </div>
   </div>
+  
+
   <div class="row">
     <div class="col-lg-4 col-md-6 mt-4 mb-4">
       <div class="card">
@@ -143,7 +179,7 @@
     </div>
   </div>
   <script src="{{ url_for('static', filename='js/lib/plugins/chartjs.min.js') }}"></script>
-  <script type="module" src="{{ url_for('static', filename='js/functions/geocoding/realtime_weather.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='js/async/api/@support_team/Stats/Other/GetCompanyPerf.js') }}"></script>
 
   <script>
     var ctx = document.getElementById("chart-bars").getContext("2d");

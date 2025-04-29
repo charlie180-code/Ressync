@@ -629,3 +629,77 @@ def get_data_size_for_company(company_id):
         total_size += get_table_data_size(table, company_id)
 
     return total_size
+
+
+
+
+
+def get_employee_stats(company_id):
+    """Calculate employee-related statistics"""
+    total_employees = db.session.query(db.func.count(Employee.id)).filter(
+        Employee.company_id == company_id
+    ).scalar() or 0
+    
+    # Calculate percentage change from last month
+    last_month = datetime.utcnow() - timedelta(days=30)
+    prev_month_count = db.session.query(db.func.count(Employee.id)).filter(
+        Employee.company_id == company_id,
+        Employee.member_since < last_month
+    ).scalar() or 0
+    
+    percentage_change = 0
+    if prev_month_count > 0:
+        percentage_change = ((total_employees - prev_month_count) / prev_month_count) * 100
+    
+    return {
+        'total_employees': total_employees,
+        'percentage_change': round(percentage_change, 1)
+    }
+
+
+def get_expense_stats(company_id):
+    """Calculate expense-related statistics using CompanyExpense"""
+    # Calculate total expenses using the total_cost hybrid property
+    total_expenses = db.session.query(
+        db.func.sum(CompanyExpense.unit_price * CompanyExpense.quantity)
+    ).filter(
+        CompanyExpense.invoice.has(company_id=company_id),
+        CompanyExpense.is_gain == False  # Only count actual expenses, not gains
+    ).scalar() or 0
+    
+    # Calculate percentage change from last month
+    last_month = datetime.utcnow() - timedelta(days=30)
+    prev_month_expenses = db.session.query(
+        db.func.sum(CompanyExpense.unit_price * CompanyExpense.quantity)
+    ).filter(
+        CompanyExpense.invoice.has(company_id=company_id),
+        CompanyExpense.is_gain == False,
+        CompanyExpense.date >= last_month - timedelta(days=30),
+        CompanyExpense.date < last_month
+    ).scalar() or 0
+    
+    percentage_change = 0
+    if prev_month_expenses > 0:
+        percentage_change = ((total_expenses - prev_month_expenses) / prev_month_expenses) * 100
+    
+    return {
+        'total_expenses': total_expenses,
+        'percentage_change': round(percentage_change, 1)
+    }
+
+def get_project_stats(company_id):
+    """Calculate project-related statistics"""
+    # Number of projects
+    total_projects = db.session.query(db.func.count(Folder.id)).filter(
+        Folder.company_id == company_id
+    ).scalar() or 0
+    
+    # Max budget
+    max_budget = db.session.query(db.func.max(Folder.budget)).filter(
+        Folder.company_id == company_id
+    ).scalar() or 0
+    
+    return {
+        'total_projects': total_projects,
+        'max_budget': max_budget
+    }

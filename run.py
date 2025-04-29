@@ -1,7 +1,6 @@
 import os
 import sys
 from apps import create_app
-from apps.extensions import socketio
 from dotenv import load_dotenv
 
 if getattr(sys, 'frozen', False):
@@ -23,9 +22,7 @@ app = create_app(
 )
 
 if __name__ == '__main__':
-    socketio.run(
-        app,
+    app.run(
         host='0.0.0.0',
-        port=5000,
-        allow_unsafe_werkzeug=True
+        port=5000
     )

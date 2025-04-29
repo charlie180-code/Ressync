@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, screen } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const path = require('path');
 const http = require('http');
@@ -7,11 +7,22 @@ const { spawn } = require('child_process');
 let mainWindow;
 let splash;
 let serverProcess;
-const LOCAL_SERVER_URL = ' http://127.0.0.1:5000';
+
+const isDev = !app.isPackaged;
+const LOCAL_SERVER_URL = 'http://127.0.0.1:5000';
+
+function getAssetPath(...paths) {
+    return isDev
+        ? path.join(__dirname, ...paths)
+        : path.join(process.resourcesPath, ...paths);
+}
 
 function startLocalServer() {
-    const serverPath = path.join(__dirname, 'server', 'ressync.exe');
-    serverProcess = spawn(serverPath, [], { detached: true, stdio: 'ignore' });
+    const serverExecutable = isDev
+        ? path.join(__dirname, 'server', 'ressync.exe')
+        : path.join(process.resourcesPath, 'server', 'ressync.exe');
+
+    serverProcess = spawn(serverExecutable, [], { detached: true, stdio: 'ignore' });
     serverProcess.unref();
     console.log('Local server started.');
 }
@@ -35,11 +46,14 @@ async function waitForServer() {
 }
 
 function createSplashWindow() {
+    const { width, height } = screen.getPrimaryDisplay().bounds;
+
     splash = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width,
+        height,
+        frame: false,
         transparent: true,
-        center: true,
+        fullscreen: true,
         autoHideMenuBar: true,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
@@ -47,14 +61,12 @@ function createSplashWindow() {
         }
     });
 
-    splash.loadFile(path.join(__dirname, './splash.html'));
+    splash.loadFile(getAssetPath('splash.html'));
     splash.on('closed', () => splash = null);
 }
 
 ipcMain.on('close-splash', () => {
-    if (splash) {
-        splash.close();
-    }
+    if (splash) splash.close();
 });
 
 async function checkAuthentication() {
@@ -62,10 +74,7 @@ async function checkAuthentication() {
         http.get(`${LOCAL_SERVER_URL}/auth/status`, (res) => {
             let data = '';
 
-            res.on('data', chunk => {
-                data += chunk;
-            });
-
+            res.on('data', chunk => data += chunk);
             res.on('end', () => {
                 try {
                     const response = JSON.parse(data);
@@ -74,21 +83,24 @@ async function checkAuthentication() {
                     reject(error);
                 }
             });
-        }).on('error', (err) => reject(err));
+        }).on('error', reject);
     });
 }
 
 async function createMainWindow() {
     try {
         const authStatus = await checkAuthentication();
-        let loadURL = authStatus.authenticated
+        const loadURL = authStatus.authenticated
             ? `${LOCAL_SERVER_URL}/user_home/${authStatus.company_id}`
             : `${LOCAL_SERVER_URL}/auth/login`;
 
+        const { width, height } = screen.getPrimaryDisplay().bounds;
+
         mainWindow = new BrowserWindow({
-            width: 800,
-            height: 600,
-            icon: path.join(__dirname, './logo-desktop-splash.svg'),
+            width,
+            height,
+            fullscreen: true,
+            icon: getAssetPath('logo-desktop-splash.svg'),
             webPreferences: {
                 nodeIntegration: true,
             },
@@ -121,15 +133,11 @@ app.on('ready', async () => {
 });
 
 app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-        app.quit();
-    }
+    if (process.platform !== 'darwin') app.quit();
 });
 
 app.on('quit', () => {
-    if (serverProcess) {
-        serverProcess.kill();
-    }
+    if (serverProcess) serverProcess.kill();
 });
 
 app.on('activate', () => {

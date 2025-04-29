@@ -3,316 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ _('Nouvelle Facture') }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/customs/reports/invoices/company_invoice.css') }}">
+    <title>{{ _('Facture') }} {{ invoice_data['invoice_id'] }}</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #ffffff;
-            color: #333;
+        @page {
+            size: A4;
+            margin: 1cm;
         }
-
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #212529;
+            background-color: #fff;
+            font-size: 12px;
+            line-height: 1.4;
+        }
         .invoice-container {
             max-width: 800px;
-            margin: 30px auto;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            margin: 0 auto;
+            padding: 1rem;
         }
-
-        .header {
+        .invoice-header {
+            border-bottom: 1px solid #e5e5e5;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            border-bottom: 2px solid #333;
+            align-items: flex-start;
         }
-
-        .header img {
-            max-height: 70px;
+        .invoice-title {
+            font-weight: 600;
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
         }
-
-        .header .invoice-details {
-            text-align: right;
+        .invoice-meta {
+            font-size: 0.8rem;
         }
-
-        .header .invoice-details p {
-            margin: 2px 0;
-            font-size: 14px;
+        .client-card, .company-card, .payment-card, .notes-card, .totals-card {
+            background-color: #f8f9fa;
+            border-radius: 0.3rem;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
         }
-
-        .company-details, .client-details {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 5px;
+        .section-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
         }
-
-        .company-details p, .client-details p {
-            margin: 5px 0;
-            font-size: 14px;
-        }
-
-        .items-table, .details-table {
+        .table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
         }
-
-        .items-table th,
-        .items-table td,
-        .details-table th,
-        .details-table td {
-            padding: 10px;
-            border: 1px solid #333;
-            text-align: left;
+        .table thead th {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            padding: 0.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
         }
-
-        .items-table th, .details-table th {
-            color:  #333;
-            text-align: center;
+        .table td {
+            padding: 0.5rem;
+            border-bottom: 1px solid #e9ecef;
+            vertical-align: top;
         }
-
-        .totals {
+        .text-end {
             text-align: right;
-            margin-top: 20px;
         }
-
-        .totals p {
-            margin: 5px 0;
-            font-size: 14px;
-        }
-
-        .totals .label {
-            font-weight: bold;
-        }
-
-        .footer {
-            margin-top: 20px;
-            padding: 10px;
+        .text-center {
             text-align: center;
-            color: #888888;
-            font-size: 12px;
-            border-top: 2px solid #333;
         }
-
-        .payment-details,
-        .notes {
-            margin: 20px 0;
-            padding: 10px;
+        .grand-total {
+            border-top: 1px solid #212529;
+            font-weight: 600;
+            padding-top: 0.3rem;
+            margin-top: 0.3rem;
+            font-size: 0.95rem;
         }
-
-        .notes p {
-            margin: 5px 0;
-            font-style: italic;
-            font-size: 14px;
+        .converted-totals {
+            border-top: 1px dashed #6c757d;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            font-size: 0.8rem;
         }
-
-        .payment-details p {
-            margin: 5px 0;
-            font-size: 14px;
+        .invoice-footer {
+            border-top: 1px solid #dee2e6;
+            padding-top: 0.5rem;
+            margin-top: 1rem;
+            font-size: 0.75rem;
+            text-align: center;
         }
-
-        .footer span {
-            color: #9e9e9e;
+        .qr-code {
+            max-height: 60px;
         }
-
-        .details-container {
+        .company-logo {
+            max-height: 50px;
+        }
+        .print-button {
+            font-size: 0.9rem;
+            padding: 0.4rem 0.8rem;
+        }
+        .row {
             display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
+            flex-wrap: wrap;
+            margin: 0 -7px;
         }
-
-        .company-details, .client-details {
-            width: 45%;
-            padding: 10px;
-            border: 1px solid #333;
-            border-radius: 5px;
+        .col-md-6 {
+            flex: 0 0 50%;
+            max-width: 50%;
+            padding: 0 7px;
         }
-
-        .font-bold {
-            font-weight: bold;
+        .mb-1 { margin-bottom: 0.2rem; }
+        .mb-2 { margin-bottom: 0.4rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mt-1 { margin-top: 0.2rem; }
+        .mt-2 { margin-top: 0.4rem; }
+        .mt-4 { margin-top: 1rem; }
+        .pt-2 { padding-top: 0.4rem; }
+        .fw-medium { font-weight: 500; }
+        .fw-bold { font-weight: 700; }
+        .small { font-size: 0.75rem; }
+        .d-flex { display: flex; }
+        .justify-content-between { justify-content: space-between; }
+    
+        @media print {
+            body {
+                font-size: 11px;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .invoice-container {
+                padding: 0;
+            }
         }
-
-    </style>
+    </style>    
 </head>
 <body>
     <div class="invoice-container">
-        <!-- Header -->
-        <div class="header">
+        <!-- Header Section -->
+        <div class="invoice-header">
             <div>
-                <img src="{{ invoice_data['company_logo'] }}" alt="Company Logo">
+                <img src="{{ invoice_data['company_logo'] }}" alt="Company Logo" class="company-logo mb-2">
+                <div>
+                    {{ invoice_data['company_address'] }}<br>
+                    {{ invoice_data['company_email'] }}
+                </div>
             </div>
-            <div class="invoice-details">
-                <p>{{ _('Date: ') }}<span class="font-bold">{{ invoice_data['invoice_date'] }}</span></p>
-                <p>{{ _('Facture N°: ') }}<span class="font-bold">{{ invoice_data['invoice_id'] }}</span></p>
-                <img src="data:image/png;base64,{{ qr_code_base64 }}" alt="QR Code" style="max-height: 100px;">
-            </div>
-        </div>
-
-        <!-- Company and Client Details -->
-        <div class="details-container">
-            <!-- Company Details -->
-            <div class="company-details">
-                <p class="font-bold">{{ invoice_data['company_name'] }}</p>
-                <p>{{ invoice_data['company_address'] }}</p>
-                <p>{{ invoice_data['company_email'] }}</p>
-            </div>
-
-            <!-- Client Details -->
-            <div class="client-details">
-                <p class="font-bold">{{ invoice_data['client_name'] }}</p>
-                <p>{{ _('Type: ') }}{{ invoice_data['client_type'] }}</p>
-                <p>{{ _('Téléphone: ') }}{{ invoice_data['client_phone'] }}</p>
-                <p>{{ _('Email: ') }}{{ invoice_data['client_email'] }}</p>
-                <p>{{ _('Adresse: ') }}{{ invoice_data['client_address'] }}</p>
-                <p>{{ _('Ville: ') }}{{ invoice_data['client_city'] }}</p>
-                <p>{{ _('Code Postal: ') }}{{ invoice_data['client_postal_code'] }}</p>
-                <p>{{ _('Pays: ') }}{{ invoice_data['client_country'] }}</p>
+            <div style="text-align: right;">
+                <h1 class="invoice-title">{{ _('FACTURE') }}</h1>
+                <div class="invoice-meta">
+                    <div><strong>{{ _('Facture N°') }}:</strong> {{ invoice_data['invoice_id'] }}</div>
+                    <div><strong>{{ _('Date') }}:</strong> {{ invoice_data['invoice_date'] }}</div>
+                    <div><strong>{{ _('Échéance') }}:</strong> {{ invoice_data['due_date'] }}</div>
+                </div>
+                <img src="data:image/png;base64,{{ qr_code_base64 }}" alt="QR Code" class="qr-code mt-2">
             </div>
         </div>
 
         <!-- Items Table -->
-        <table class="items-table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>{{ _('Service') }}</th>
-                    <th>{{ _('Prix Unitaire') }}</th>
-                    <th>{{ _('Quantité') }}</th>
-                    <th>{{ _('Devise') }}</th>
-                    <th>{{ _('Total') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for expense in invoice_data['expenses'] %}
-                <tr>
-                    <td>{{ loop.index }}</td>
-                    <td>{{ expense.service_type }}</td>
-                    <td>{{ expense.unit_price }}</td>
-                    <td>{{ expense.quantity }}</td>
-                    <td>{{ expense.currency }}</td>
-                    <td>{{ expense.unit_price * expense.quantity }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-        <!-- Details Tables -->
-        {% for expense in invoice_data['expenses'] %}
-        <table class="details-table">
-            <thead>
-                <tr>
-                    <th colspan="2">{{ expense.service_type }}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% if expense.details['storage'] %}
-                <tr>
-                    <th>{{ _('Stockage') }}</th>
-                    <td>{{ expense.details['storage'] }}</td>
-                </tr>
-                {% endif %}
-                {% if expense.details['time of usage'] %}
-                <tr>
-                    <th>{{ _('Durée d\'utilisation') }}</th>
-                    <td>{{ expense.details['time of usage'] }}</td>
-                </tr>
-                {% endif %}
-                {% if expense.details['compute power'] %}
-                <tr>
-                    <th>{{ _('Puissance de calcul') }}</th>
-                    <td>{{ expense.details['compute power'] }}</td>
-                </tr>
-                {% endif %}
-                {% if expense.details['bandwidth'] %}
-                <tr>
-                    <th>{{ _('Bande passante') }}</th>
-                    <td>{{ expense.details['bandwidth'] }}</td>
-                </tr>
-                {% endif %}
-                {% if expense.details['api calls'] %}
-                <tr>
-                    <th>{{ _('Appels API') }}</th>
-                    <td>{{ expense.details['api calls'] }}</td>
-                </tr>
-                {% endif %}
-                {% if expense.details['licensing costs'] %}
-                <tr>
-                    <th>{{ _('Coûts de licence') }}</th>
-                    <td>{{ expense.details['licensing costs'] }}</td>
-                </tr>
-                {% endif %}
-                {% if expense.details['support'] %}
-                <tr>
-                    <th>{{ _('Support') }}</th>
-                    <td>{{ expense.details['support'] }}</td>
-                </tr>
-                {% endif %}
-                {% if expense.details['additional costs'] %}
-                <tr>
-                    <th>{{ _('Coûts supplémentaires') }}</th>
-                    <td>{{ expense.details['additional costs'] }}</td>
-                </tr>
-                {% endif %}
-                {% if expense.details['network type'] %}
-                <tr>
-                    <th>{{ _('Type de réseau') }}</th>
-                    <td>{{ expense.details['network type'] }}</td>
-                </tr>
-                {% endif %}
-                {% if expense.details['latency'] %}
-                <tr>
-                    <th>{{ _('Latence') }}</th>
-                    <td>{{ expense.details['latency'] }}</td>
-                </tr>
-                {% endif %}
-                {% if expense.details['uptime'] %}
-                <tr>
-                    <th>{{ _('Temps de disponibilité') }}</th>
-                    <td>{{ expense.details['uptime'] }}</td>
-                </tr>
-                {% endif %}
-                {% if expense.details['data transfer costs'] %}
-                <tr>
-                    <th>{{ _('Coûts de transfert de données') }}</th>
-                    <td>{{ expense.details['data transfer costs'] }}</td>
-                </tr>
-                {% endif %}
-                {% if expense.details['number of connections'] %}
-                <tr>
-                    <th>{{ _('Nombre de connexions') }}</th>
-                    <td>{{ expense.details['number of connections'] }}</td>
-                </tr>
-                {% endif %}
-                {% if expense.details['support response time'] %}
-                <tr>
-                    <th>{{ _('Délai de réponse du support') }}</th>
-                    <td>{{ expense.details['support response time'] }}</td>
-                </tr>
-                {% endif %}
-            </tbody>
-        </table>
-        {% endfor %}
-
-        <!-- Totals -->
-        
-
-        <div class="payment-details">
-            <p>{{ _('Détails de paiement: ') }}</p>
-            <p>{{ invoice_data['payment_details'] }}</p>
+        <div style="margin-bottom: 1.5rem; overflow-x: auto;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width="5%">#</th>
+                        <th width="45%">{{ _('Description') }}</th>
+                        <th width="15%" class="text-end">{{ _('Prix Unitaire') }}</th>
+                        <th width="10%" class="text-center">{{ _('Qté') }}</th>
+                        <th width="25%" class="text-end">{{ _('Montant') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for expense in invoice_data['expenses'] %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>
+                            <strong>{{ expense.service_type }}</strong>
+                            {% if expense.details %}
+                            <div class="small mt-1">
+                                {% for key, value in expense.details.items() if value %}
+                                {{ key }}: {{ value }}{% if not loop.last %}, {% endif %}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td class="text-end">{{ "%.2f"|format(expense.unit_price) }}</td>
+                        <td class="text-center">{{ expense.quantity }}</td>
+                        <td class="text-end">
+                            {% if not expense.is_gain %}
+                                <span class="loss-amount">-</span>
+                            {% endif %}
+                            {{ "%.2f"|format(expense.unit_price * expense.quantity) }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
 
-        <!-- Notes -->
-        <div class="notes">
-            <p>{{ _('Notes: ') }}</p>
-            <p>{{ invoice_data['notes'] }}</p>
+        <!-- Totals Section -->
+        <div class="totals-card" style="margin-bottom: 1.5rem;">
+            <h5 class="section-title">{{ _('RÉCAPITULATIF EN') }} {{ invoice_data.company_currency }}</h5>
+            
+            <div class="d-flex justify-content-between mb-2">
+                <span>{{ _('Total HT') }}:</span>
+                <span class="fw-medium">{{ "%.2f"|format(invoice_data.net_amount) }} {{ invoice_data.company_currency }}</span>
+            </div>
+            
+            {% if invoice_data.vat_rate > 0 %}
+            <div class="d-flex justify-content-between mb-2">
+                <span>{{ _('TVA') }} ({{ "%.0f"|format(invoice_data.vat_rate) }}%):</span>
+                <span class="fw-medium">{{ "%.2f"|format(invoice_data.vat_amount) }} {{ invoice_data.company_currency }}</span>
+            </div>
+            {% endif %}
+            
+            <div class="d-flex justify-content-between grand-total">
+                <span>{{ _('Total TTC') }}:</span>
+                <span class="fw-bold">{{ "%.2f"|format(invoice_data.total_amount) }} {{ invoice_data.company_currency }}</span>
+            </div>
+            
+            {% if invoice_data.client_currency != invoice_data.company_currency %}
+            <div class="converted-totals">
+                <h6 class="section-title mb-2">{{ _('MONTANT À PAYER EN') }} {{ invoice_data.client_currency }}</h6>
+                
+                <div class="d-flex justify-content-between mb-2">
+                    <span>{{ _('Total HT') }}:</span>
+                    <span class="fw-medium">{{ "%.2f"|format(invoice_data.net_amount_converted) }} {{ invoice_data.client_currency }}</span>
+                </div>
+                
+                {% if invoice_data.vat_rate > 0 %}
+                <div class="d-flex justify-content-between mb-2">
+                    <span>{{ _('TVA') }}:</span>
+                    <span class="fw-medium">{{ "%.2f"|format(invoice_data.vat_amount_converted) }} {{ invoice_data.client_currency }}</span>
+                </div>
+                {% endif %}
+                
+                <div class="d-flex justify-content-between fw-bold pt-2">
+                    <span>{{ _('Total à payer') }}:</span>
+                    <span>{{ "%.2f"|format(invoice_data.total_amount_converted) }} {{ invoice_data.client_currency }}</span>
+                </div>
+                
+                <div style="text-align: right; font-size: 0.875rem; margin-top: 0.5rem;">
+                    {{ _('Taux de change approximatif appliqué') }}
+                </div>
+            </div>
+            {% endif %}
         </div>
 
         <!-- Footer -->
-        <div class="footer">
-            <p>{{ _('Merci pour votre confiance!') }}</p>
-            <span>{{ _('Cet e-mail a été généré automatiquement, merci de ne pas y répondre.') }}</span>
+        <div class="invoice-footer">
+            <div>
+                {{ invoice_data['company_name'] }}
+                {% if invoice_data['company_capital_social'] %} - {{ _('Capital social') }}: {{ invoice_data['company_capital_social'] }}{% endif %}
+                {% if invoice_data['company_nif'] %} - {{ _('NIF') }}: {{ invoice_data['company_nif'] }}{% endif %}
+                {% if invoice_data['company_rccm'] %} - {{ _('RCCM') }}: {{ invoice_data['company_rccm'] }}{% endif %}
+            </div>
+            {% if invoice_data['company_address'] %}
+            <div class="mt-1">{{ invoice_data['company_address'] }}</div>
+            {% endif %}
+            <div class="mt-1">{{ _('Cet document fait office de facture') }}</div>
+        </div>
+
+        <!-- Print Button -->
+        <div class="no-print">
+            <button onclick="window.print()" class="print-button">
+                {{ _('Imprimer la facture') }}
+            </button>
         </div>
     </div>
 </body>

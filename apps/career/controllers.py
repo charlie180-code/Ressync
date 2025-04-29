@@ -1,5 +1,4 @@
 from flask import render_template, request, jsonify, flash, redirect, url_for, abort, current_app, send_file
-from flask_socketio import emit
 from datetime import datetime
 from flask_login import login_required, current_user
 from . import career
@@ -11,7 +10,6 @@ from ..models.general.company import Company
 from ..models.general.file import File
 from ..models.engineering.pipeline import Pipeline
 import os
-from ..extensions import socketio
 from .. import db
 from ..utils import save_files
 from flask_babel import _

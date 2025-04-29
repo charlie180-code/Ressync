@@ -1,3 +1,4 @@
+from flask import abort
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -35,18 +36,6 @@ def view_contacts(company_id):
                   .paginate(page=page, per_page=10)
     return render_template('dashboard/customers/view_contacts.html', company=company, contacts=contacts)
 
-@msg.route('/messages/recent/<int:company_id>', methods=['GET'])
-@login_required
-def recent_messages(company_id):
-    recent_messages = (
-        Message.query
-        .filter_by(receiver_id=current_user.id, company_id=company_id)
-        .order_by(Message.timestamp.desc())
-        .limit(10)
-        .all()
-    )
-
-    return render_template('messages/recent_messages.html', recent_messages=recent_messages)
 
 
 @msg.route('/messages/programmed', methods=['GET'])
@@ -652,3 +641,37 @@ def send_reply():
 def get_emails():
     emails = fetch_emails(current_user)
     return jsonify(emails)
+
+
+
+@msg.route('/recent_messages/<int:company_id>', methods=['GET'])
+@login_required
+def recent_messages(company_id):
+    page = request.args.get('page', 1, type=int)
+    per_page = 10  # Display 10 emails per page
+    
+    emails = fetch_emails(current_user)
+    total_emails = len(emails)
+    
+    start_idx = (page - 1) * per_page
+    end_idx = start_idx + per_page
+    paginated_emails = emails[start_idx:end_idx]
+    
+    return render_template('dashboard/msg/inbox.html', 
+        emails=paginated_emails,
+        page=page,
+        per_page=per_page,
+        total_emails=total_emails,
+        company_id=company_id
+    )
+
+@msg.route('/view_email/<string:email_id>', methods=['GET'])
+@login_required
+def view_email(email_id):
+    emails = fetch_emails(current_user)
+    email = next((e for e in emails if e.get('id') == email_id), None)
+    
+    if not email:
+        abort(404)
+        
+    return render_template('dashboard/msg/email_detail.html', email=email)

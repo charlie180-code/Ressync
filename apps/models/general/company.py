@@ -8,6 +8,9 @@ class Company(db.Model):
     logo_url = db.Column(db.String)
     location = db.Column(db.String, nullable=False)
     category = db.Column(db.String, nullable=False)
+    nif = db.Column(db.String)
+    rccm = db.Column(db.String)
+    capital_social = db.Column(db.String)  # Social capital of the company
     nature = db.Column(db.String)
     email = db.Column(db.String, nullable=False, unique=True)
     phone_number = db.Column(db.String)
@@ -18,7 +21,7 @@ class Company(db.Model):
     number_of_employees = db.Column(db.String)
     year_established = db.Column(db.Integer)
     annual_revenue = db.Column(db.String)
-    currency = db.Column(db.String)
+    currency = db.Column(db.String, default='USD')
     is_active = db.Column(db.Boolean, default=True)
     registration_date = db.Column(db.DateTime, default=db.func.current_timestamp())
     tags = db.Column(db.String)

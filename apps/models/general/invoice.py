@@ -19,5 +19,6 @@ class Invoice(db.Model):
     client_postal_code = db.Column(db.String)
     client_country = db.Column(db.String)
     client_details = db.Column(db.JSON)
+    preferred_currency = db.Column(db.String, default='USD')
     project_id = db.Column(db.Integer, db.ForeignKey('folders.id'))
-    expenses = db.relationship('CompanyExpense', backref='invoice', lazy=True)
+    expenses = db.relationship('CompanyExpense', backref='invoice', cascade='all, delete-orphan', lazy=True)

@@ -9,6 +9,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    document.getElementById('clientCountry').addEventListener('change', function() {
+        const country = this.value;
+        const currencySelect = document.getElementById('preferredCurrency');
+        
+        if (country === 'Niger') {
+            currencySelect.value = 'XOF';
+        } else if (country === 'France' || country === 'Germany') {
+            currencySelect.value = 'EUR';
+        }
+    });
+
     const form = document.getElementById('createInvoiceForm');
     const submitButton = document.getElementById('submitButton');
     const spinner = document.getElementById('spinner');
