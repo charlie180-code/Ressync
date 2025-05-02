@@ -11,12 +11,14 @@
   "dependencies": {
     "chalk": "^4.1.2",
     "concurrently": "^8.2.2",
+    "dotenv": "^16.5.0",
     "electron-updater": "^6.3.9",
     "i18next": "^23.15.1",
     "i18next-electron-fs-backend": "^3.0.2",
     "lodash": "^4.17.21",
     "open": "^8.4.2",
     "socket.io": "^4.8.1",
+    "tree-kill": "^1.2.2",
     "xml2js": "^0.5.0",
     "yaml": "^2.5.0"
   },
@@ -54,12 +56,17 @@
       "./build/icon.ico",
       "./splash.html",
       "./logo-desktop-splash.png",
-      "server/**/*"
+      "server/**/*",
+      "server/.env"
     ],
     "extraResources": [
       {
         "from": "./server/",
         "to": "server/"
+      },
+      {
+        "from": "./server/.env",
+        "to": "server/.env"
       }
     ],
     "directories": {

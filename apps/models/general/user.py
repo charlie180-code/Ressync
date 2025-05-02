@@ -146,15 +146,18 @@ class User(db.Model, UserMixin):
     def get_remember_token(self, expires_in=30*86400):  # 30 days
         s = Serializer(current_app.config['SECRET_KEY'])
         return s.dumps({'user_id': self.id})
+
     
     @staticmethod
     def verify_remember_token(token):
         s = Serializer(current_app.config['SECRET_KEY'])
         try:
-            data = s.loads(token)
+            data = s.loads(token)  # No need to encode
+            return User.query.get(data['user_id'])
         except:
             return None
-        return User.query.get(data['user_id'])
+
+
 
     @password.setter
     def password(self, password):

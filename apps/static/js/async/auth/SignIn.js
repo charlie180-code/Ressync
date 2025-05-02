@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function(){
     const SubmitButton = document.querySelector('#SubmitButton');
     const buttonText = document.querySelector('#buttonText');
     const spinner = document.querySelector('.animate-spin');
-    const rememberMe = document.querySelector('#remember-checkbox').checked;
   
     function validateEmail(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -55,6 +54,8 @@ document.addEventListener('DOMContentLoaded', function(){
 
             return;
         }
+
+        const rememberMe = document.querySelector('#remember-checkbox').checked;
 
         buttonText.textContent = 'En cours...';
         spinner.classList.remove('hidden');

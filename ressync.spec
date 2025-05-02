@@ -12,7 +12,8 @@ datas = [
     ('run.py', '.'),
     ('config.py', '.'),
     ('apps/templates', 'templates'),
-    ('apps/static', 'static'),
+    ('apps/static/css/customs/reports/invoices/company_invoice.css', 'apps/static/css/customs/reports/invoices'),
+    ('apps/static', 'static')
 ]
 
 hidden_imports = collect_submodules('apps')

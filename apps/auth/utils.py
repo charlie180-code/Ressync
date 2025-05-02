@@ -1,4 +1,4 @@
-from flask import  make_response, render_template, current_app
+from flask import  make_response, render_template, current_app, url_for
 from io import BytesIO
 import qrcode
 from datetime import datetime
@@ -20,6 +20,15 @@ from ..models.general.file import File
 import sys
 from pathlib import Path
 
+def get_app_data_path():
+    """Get cross-platform persistent user data directory"""
+    if getattr(sys, 'frozen', False):  # Running from PyInstaller
+        base = os.path.join(os.path.expanduser('~'), 'RessyncData')
+    else:
+        base = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'instance')
+
+    os.makedirs(base, exist_ok=True)
+    return base
 
 
 def generate_invoice(student_id):
@@ -121,41 +130,24 @@ def confirm_reset_token(token, expiration=3600):
         return False
     return data['reset']
 
+def save_file_locally(file, folder_name):
+    base_path = os.path.join(get_app_data_path(), folder_name)
+    os.makedirs(base_path, exist_ok=True)
 
-def save_file_locally(file, folder_name="uploads"):
-    """Returns dict with both storage and URL info"""
-    base_dir = get_resource_path(folder_name)
-    os.makedirs(base_dir, exist_ok=True)
-    
     filename = secure_filename(file.filename)
-    file_path = os.path.join(base_dir, filename)
-    
-    counter = 1
-    name, ext = os.path.splitext(filename)
-    while os.path.exists(file_path):
-        filename = f"{name}_{counter}{ext}"
-        file_path = os.path.join(base_dir, filename)
-        counter += 1
-    
-    file.save(file_path)
-    
+    full_path = os.path.join(base_path, filename)
+    file.save(full_path)
+
     return {
-        "absolute_path": file_path,
-        "filename": filename,
-        "url_path": f"/local_files/{folder_name}/{filename}"
+        "absolute_path": full_path,
+        "relative_url": url_for('auth.local_files', folder=folder_name, filename=filename, _external=True)
     }
 
 
-def get_resource_path(*relative_path):
-    """Get absolute path to resource, works for dev and for PyInstaller"""
-    if getattr(sys, 'frozen', False):
-        # Running in a bundle (PyInstaller)
-        base_path = Path(sys._MEIPASS)
-    else:
-        # Running in normal Python environment
-        base_path = Path.home() / "Documents" / "Ressync"
-    
-    return str(base_path.joinpath(*relative_path).absolute())
+def get_resource_path(folder):
+    return os.path.join(get_app_data_path(), folder)
+
+
 
 def check_internet_connection():
     url = "https://www.google.com"

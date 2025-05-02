@@ -19,7 +19,6 @@ def generate_company_invoice(invoice_id):
     expenses = CompanyExpense.query.filter_by(invoice_id=invoice_id).all()
 
     qr_code_io = create_qr_code(f"Invoice ID: {invoice.id}\nCompany: {company.title}")
-    barcode_io = create_barcode(f"{invoice.id}")
 
     invoice_data = prepare_company_invoice_data(company, invoice, expenses)
 
@@ -27,7 +26,6 @@ def generate_company_invoice(invoice_id):
         'reports/invoices/company_invoice.html',
         invoice_data=invoice_data,
         qr_code_base64=base64.b64encode(qr_code_io.getvalue()).decode('utf-8'),
-        barcode_base64=base64.b64encode(barcode_io.getvalue()).decode('utf-8')
     )
 
     css_path = os.path.join(current_app.root_path, 'static', 'css', 'customs', 'reports', 'invoices', 'company_invoice.css')

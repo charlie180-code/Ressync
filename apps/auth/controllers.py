@@ -36,6 +36,7 @@ from ..utils import generate_password
 from ..decorators import school_it_admin_required, it_administrator_required
 from .emails.password_reset_request import send_reset_email
 from werkzeug.utils import secure_filename
+from .session import store_session_token, get_session_token, clear_session_token
 import json
 
 load_dotenv()
@@ -74,15 +75,29 @@ def login():
             return jsonify({'success': False, 'errorType': 'incorrectPassword'}), 401
 
         company_id = user.company_id
-
         login_user(user, remember=remember_me)
         
         if remember_me:
             token = user.get_remember_token()
+            expiry = datetime.utcnow() + timedelta(days=30)
+            
+            
             user.remember_token = token
-            user.remember_token_expiry = datetime.utcnow() + timedelta(days=30)
+            user.remember_token_expiry = expiry
             db.session.commit()
             
+            token_data = {
+                'token': token,
+                'expiry': expiry.isoformat(),
+                'company_id': company_id,
+                'email': email,
+                'user_id': user.id
+            }
+            
+            store_session_token(token_data)
+            
+            stored_token = get_session_token()
+
             response = jsonify({
                 'success': True, 
                 'company_id': company_id,
@@ -91,9 +106,9 @@ def login():
             response.set_cookie(
                 'remember_token',
                 value=token,
-                max_age=30*24*60*60,  # 30 days
+                max_age=30*24*60*60,
                 httponly=True,
-                secure=True,
+                secure=False,
                 samesite='Lax'
             )
             return response
@@ -105,6 +120,29 @@ def login():
     return render_template('auth/login.html')
 
 
+@auth.route('/auth/token-login', methods=['POST'])
+def token_login():
+    token_data = request.get_json()
+    if not token_data or 'token' not in token_data:
+        return jsonify({'authenticated': False}), 400
+    
+    # First verify against database
+    user = User.verify_remember_token(token_data['token'])
+    if not user or (user.remember_token_expiry and user.remember_token_expiry < datetime.utcnow()):
+        return jsonify({'authenticated': False}), 401
+    
+    # Then verify against session file
+    session_data = get_session_token()
+    if not session_data or session_data.get('token') != token_data['token']:
+        return jsonify({'authenticated': False}), 401
+    
+    login_user(user)
+    return jsonify({
+        'authenticated': True,
+        'company_id': user.company_id,
+        'user_id': user.id
+    })
+
 @auth.before_app_request
 def load_user_from_remember_token():
     if current_user.is_authenticated:
@@ -115,7 +153,13 @@ def load_user_from_remember_token():
         user = User.verify_remember_token(remember_token)
         if user and user.remember_token_expiry > datetime.utcnow():
             login_user(user)
-
+            return
+    
+    session_data = get_session_token()
+    if session_data:
+        user = User.verify_remember_token(session_data['token'])
+        if user and datetime.fromisoformat(session_data['expiry']) > datetime.utcnow():
+            login_user(user)
 
 
 @auth.route('/status', methods=['GET'])
@@ -123,10 +167,22 @@ def auth_status():
     if current_user.is_authenticated:
         return jsonify({
             'authenticated': True,
-            'company_id': current_user.company_id
+            'company_id': current_user.company_id,
+            'remember_token': request.cookies.get('remember_token')
         })
     else:
+        remember_token = request.cookies.get('remember_token')
+        if remember_token:
+            user = User.verify_remember_token(remember_token)
+            if user and user.remember_token_expiry > datetime.utcnow():
+                login_user(user)
+                return jsonify({
+                    'authenticated': True,
+                    'company_id': user.company_id,
+                    'remember_token': remember_token
+                })
         return jsonify({'authenticated': False})
+    
 
 
 @auth.route('/google_login_authorized')
@@ -302,10 +358,14 @@ def reset_email():
         print('This is a post request')
     return render_template("auth/reset_email.html")
 
-@auth.route("/logout", methods=['GET', 'POST'])
+
+@auth.route('/logout')
 def logout():
+    clear_session_token()
     logout_user()
-    return redirect(url_for('auth.login'))
+    response = redirect(url_for('auth.login'))
+    response.delete_cookie('remember_token')
+    return response
 
 @auth.route("/company/register", methods=['GET', 'POST'])
 def register_company():
@@ -409,7 +469,6 @@ def register_company():
 
 @auth.route('/local_files/<folder>/<filename>')
 def local_files(folder, filename):
-    """Serve locally stored files"""
     base_dir = get_resource_path(folder)
     return send_from_directory(base_dir, filename)
 
