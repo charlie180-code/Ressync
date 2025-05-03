@@ -1,10 +1,11 @@
-const { app, BrowserWindow, ipcMain, screen } = require('electron');
+const { app, BrowserWindow, ipcMain, screen, dialog } = require('electron');
 const path = require('path');
 const http = require('http');
 const { spawn } = require('child_process');
 const fs = require('fs');
 const dotenv = require('dotenv');
 const killProcessTree = require('tree-kill');
+const { autoUpdater } = require('electron-updater');
 
 let mainWindow;
 let splash;
@@ -248,6 +249,40 @@ app.on('ready', async () => {
         startLocalServer();
         await waitForServer();
         await createMainWindow();
+        if (!isDev) {
+            autoUpdater.checkForUpdates();
+        
+            autoUpdater.on('update-available', () => {
+                dialog.showMessageBox({
+                    type: 'info',
+                    title: 'Nouvelle version disponible',
+                    message: 'Une nouvelle version de Ressync est disponible. Voulez-vous la télécharger maintenant?',
+                    buttons: ['Oui', 'Plus tard']
+                }).then(result => {
+                    if (result.response === 0) {
+                        autoUpdater.downloadUpdate();
+                    }
+                });
+            });
+        
+            autoUpdater.on('update-downloaded', () => {
+                dialog.showMessageBox({
+                    type: 'info',
+                    title: 'Mise à jour téléchargée',
+                    message: 'La mise à jour a été téléchargée. Redémarrez maintenant pour l\'appliquer?',
+                    buttons: ['Redémarrer maintenant', 'Plus tard']
+                }).then(result => {
+                    if (result.response === 0) {
+                        autoUpdater.quitAndInstall();
+                    }
+                });
+            });
+        
+            autoUpdater.on('error', (err) => {
+                console.error('Update error:', err);
+            });
+        }
+        
     } catch (err) {
         console.error("Error during startup:", err);
         if (splash) splash.destroy();
