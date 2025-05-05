@@ -69,7 +69,8 @@ def manage_invoices(company_id):
             client_address=client_address,
             client_city=client_city,
             client_postal_code=client_postal_code,
-            client_country=client_country
+            client_country=client_country,
+            preferred_currency=preferred_currency,
         )
 
         if data.get('attach_to_project'):

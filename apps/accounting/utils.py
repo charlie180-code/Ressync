@@ -80,6 +80,92 @@ def get_vat_rate(country):
     }
     return vat_rates.get(country, 0.00)  # Default to 0% if country not found
 
+
+def get_currency_format(currency_code):
+    """Returns symbol, position (before/after), and spacing for currency"""
+    currency_formats = {
+        'USD': ('$', 'before', ''),          # $100
+        'EUR': ('€', 'before', ''),          # €100
+        'XOF': ('CFA', 'after', ' '),        # 100 CFA
+        'XAF': ('FCFA', 'after', ' '),       # 100 FCFA
+        'NGN': ('₦', 'before', ''),         # ₦100
+        'GBP': ('£', 'before', ''),         # £100
+        'JPY': ('¥', 'before', ''),         # ¥100
+        'CAD': ('CA$', 'before', ''),       # CA$100
+        'AUD': ('A$', 'before', ''),       # A$100
+        'CNY': ('¥', 'before', ''),        # ¥100
+        'INR': ('₹', 'before', ''),        # ₹100
+        'RUB': ('₽', 'before', ''),        # ₽100
+        'ZAR': ('R', 'before', ' '),       # R 100
+        'BRL': ('R$', 'before', ''),       # R$100
+        'MXN': ('MX$', 'before', ''),      # MX$100
+        'CHF': ('CHF', 'before', ' '),     # CHF 100
+        'SEK': ('kr', 'after', ' '),       # 100 kr
+        'NOK': ('kr', 'after', ' '),       # 100 kr
+        'DKK': ('kr', 'after', ' '),       # 100 kr
+        'PLN': ('zł', 'after', ' '),       # 100 zł
+        'TRY': ('₺', 'before', ''),        # ₺100
+        'AED': ('د.إ', 'before', ' '),     # د.إ 100
+        'SAR': ('﷼', 'before', ' '),       # ﷼ 100
+        'KRW': ('₩', 'before', ''),        # ₩100
+        'SGD': ('S$', 'before', ''),       # S$100
+        'HKD': ('HK$', 'before', ''),      # HK$100
+        'THB': ('฿', 'before', ''),        # ฿100
+        'IDR': ('Rp', 'before', ' '),      # Rp 100
+        'MYR': ('RM', 'before', ' '),      # RM 100
+        'PHP': ('₱', 'before', ''),        # ₱100
+        'VND': ('₫', 'after', ' '),        # 100 ₫
+    }
+    return currency_formats.get(currency_code, (currency_code, 'before', ' '))
+
+def format_currency_amount(amount, currency_code):
+    """Formats the amount with currency symbol in correct position"""
+    symbol, position, spacing = get_currency_format(currency_code)
+    formatted_amount = "{:,.2f}".format(amount)
+    
+    if position == 'before':
+        return f"{symbol}{spacing}{formatted_amount}"
+    else:
+        return f"{formatted_amount}{spacing}{symbol}"
+
+
+def get_currency_symbol(currency_code):
+    """Returns the currency symbol for a given currency code"""
+    currency_symbols = {
+        'USD': '$',          # US Dollar
+        'EUR': '€',          # Euro
+        'XOF': 'CFA',        # West African CFA franc
+        'XAF': 'FCFA',       # Central African CFA franc
+        'NGN': '₦',         # Nigerian Naira
+        'GBP': '£',         # British Pound
+        'JPY': '¥',         # Japanese Yen
+        'CAD': 'CA$',      # Canadian Dollar
+        'AUD': 'A$',       # Australian Dollar
+        'CNY': '¥',        # Chinese Yuan
+        'INR': '₹',        # Indian Rupee
+        'RUB': '₽',        # Russian Ruble
+        'ZAR': 'R',        # South African Rand
+        'BRL': 'R$',      # Brazilian Real
+        'MXN': 'MX$',      # Mexican Peso
+        'CHF': 'CHF',      # Swiss Franc
+        'SEK': 'kr',       # Swedish Krona
+        'NOK': 'kr',       # Norwegian Krone
+        'DKK': 'kr',       # Danish Krone
+        'PLN': 'zł',       # Polish Zloty
+        'TRY': '₺',        # Turkish Lira
+        'AED': 'د.إ',      # UAE Dirham
+        'SAR': '﷼',        # Saudi Riyal
+        'KRW': '₩',       # South Korean Won
+        'SGD': 'S$',       # Singapore Dollar
+        'HKD': 'HK$',      # Hong Kong Dollar
+        'THB': '฿',       # Thai Baht
+        'IDR': 'Rp',       # Indonesian Rupiah
+        'MYR': 'RM',       # Malaysian Ringgit
+        'PHP': '₱',        # Philippine Peso
+        'VND': '₫',        # Vietnamese Dong
+    }
+    return currency_symbols.get(currency_code, currency_code)  # Default to code if symbol not found
+
 def convert_currency(amount, from_currency, to_currency):
     """Mock currency conversion - in production, use a real API"""
     conversion_rates = {
@@ -101,6 +187,13 @@ def prepare_company_invoice_data(company, invoice, expenses):
     # Get currencies
     company_currency = company.currency or 'USD'
     client_currency = invoice.preferred_currency or company_currency
+
+     
+    # Get currency symbols
+    company_currency_symbol = get_currency_symbol(company_currency)
+    client_currency_symbol = get_currency_symbol(client_currency)
+    company_currency_format = get_currency_format(company_currency)
+    client_currency_format = get_currency_format(client_currency)
     
     # Initialize totals in company currency
     total_gains = 0.0
@@ -158,8 +251,20 @@ def prepare_company_invoice_data(company, invoice, expenses):
         'company_nif': company.nif,
         'company_rccm': company.rccm,
         'company_email': company.email,
+        'company_phone': company.phone_number,
+        'company_website': company.website_url,
         'company_currency': company_currency,
+        'company_currency_symbol': company_currency_symbol,
+        'company_currency_symbol': company_currency_format[0],
+        'company_currency_position': company_currency_format[1],
+        'company_currency_spacing': company_currency_format[2],
         'client_currency': client_currency,
+        'client_currency_symbol': client_currency_symbol,
+        'client_currency': client_currency,
+        'client_currency_symbol': client_currency_format[0],
+        'client_currency_position': client_currency_format[1],
+        'client_currency_spacing': client_currency_format[2],
+        'format_currency': format_currency_amount,
         'invoice_id': generate_invoice_id(),
         'invoice_date': invoice.date_created.strftime('%B %d, %Y'),
         'due_date': invoice.due_date.strftime('%B %d, %Y'),

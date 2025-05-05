@@ -137,11 +137,23 @@ def settings(company_id):
 
         # Get company data
         company_logo = request.files.get('company_logo')
-        company_email = request.form.get('company_email')
-        company_name = request.form.get('company_name')
-        company_address = request.form.get('company_address')
-        company_phone = request.form.get('company_phone')
-        company_website = request.form.get('company_website')
+        company.email = request.form.get('company_email', company.email)
+        company.title = request.form.get('company_name', company.title)
+        company.description = request.form.get('company_description', company.description)
+        company.location = request.form.get('company_address', company.location)
+        company.phone_number = request.form.get('company_phone', company.phone_number)
+        company.website_url = request.form.get('company_website', company.website_url)
+        company.nif = request.form.get('company_nif', company.nif)
+        company.rccm = request.form.get('company_rccm', company.rccm)
+        company.capital_social = request.form.get('company_capital', company.capital_social)
+        company.nature = request.form.get('company_nature', company.nature)
+        company.linkedin_url = request.form.get('company_linkedin', company.linkedin_url)
+        company.twitter_url = request.form.get('company_twitter', company.twitter_url)
+        company.facebook_url = request.form.get('company_facebook', company.facebook_url)
+        company.number_of_employees = request.form.get('company_employees', company.number_of_employees)
+        company.year_established = request.form.get('company_year', company.year_established)
+        company.annual_revenue = request.form.get('company_revenue', company.annual_revenue)
+        company.currency = request.form.get('company_currency', company.currency)
 
         if not email:
             flash(_("L'adresse email est requise"), "error")
@@ -238,17 +250,6 @@ def settings(company_id):
             else:
                 flash(_("Fichier image non valide."), "error")
                 return redirect(url_for('user.settings', company_id=company.id))
-
-        if company_email:
-            company.email = company_email
-        if company_name:
-            company.title = company_name
-        if company_address:
-            company.location = company_address
-        if company_phone: 
-            company.phone_number = company_phone
-        if company_website: 
-            company.website_url = company_website
 
         db.session.commit()
         flash(_("Profil mis à jour avec succès."), "success")

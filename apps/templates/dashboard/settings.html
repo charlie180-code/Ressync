@@ -141,7 +141,7 @@
       </fieldset>
 
       <!-- Company Settings -->
-      {% if current_user.is_company_it_administrator() or current_user.is_it_administrator() %}
+      {% if current_user.is_company_it_administrator() or current_user.is_it_administrator() or current_user.is_hr_manager() %}
       <fieldset>
         <legend>{{ _('Paramètres de la Société') }}</legend>
         
@@ -169,13 +169,67 @@
           <input type="text" class="form-control" id="CompanyAddress" name="company_address" value="{{ company.location }}">
         </div>
         <div class="form-group">
+          <label for="CompanyDescription">{{ _("Description de la société") }}</label>
+          <textarea class="form-control" id="CompanyDescription" name="company_description">{{ company.description }}</textarea>
+        </div>
+        <div class="form-group">
           <label for="CompanyPhone">{{ _("Numéro de téléphone de la société") }}</label>
           <input type="text" class="form-control" id="CompanyPhone" name="company_phone" value="{{ company.phone_number or '' }}" placeholder="{{ _('Entrez le numéro de téléphone de la société') }}">
         </div>
         <div class="form-group">
           <label for="CompanyWebsite">{{ _("Site Web de la société") }}</label>
           <input type="text" class="form-control" id="CompanyWebsite" name="company_website" value="{{ company.website_url or '' }}" placeholder="{{ _('Entrez le site web de la société') }}">
-        </div>        
+        </div>
+        <div class="form-group">
+          <label for="CompanyNIF">{{ _("Numéro NIF") }}</label>
+          <input type="text" class="form-control" id="CompanyNIF" name="company_nif" value="{{ company.nif or '' }}">
+        </div>
+        <div class="form-group">
+          <label for="CompanyRCCM">{{ _("Numéro RCCM") }}</label>
+          <input type="text" class="form-control" id="CompanyRCCM" name="company_rccm" value="{{ company.rccm or '' }}">
+        </div>
+        <div class="form-group">
+          <label for="CompanyCapital">{{ _("Capital Social") }}</label>
+          <input type="text" class="form-control" id="CompanyCapital" name="company_capital" value="{{ company.capital_social or '' }}">
+        </div>
+        <div class="form-group">
+          <label for="CompanyNature">{{ _("Nature de l'entreprise") }}</label>
+          <input type="text" class="form-control" id="CompanyNature" name="company_nature" value="{{ company.nature or '' }}">
+        </div>
+        <div class="form-group">
+          <label for="CompanyLinkedIn">{{ _("LinkedIn") }}</label>
+          <input type="text" class="form-control" id="CompanyLinkedIn" name="company_linkedin" value="{{ company.linkedin_url or '' }}">
+        </div>
+        <div class="form-group">
+          <label for="CompanyTwitter">{{ _("Twitter") }}</label>
+          <input type="text" class="form-control" id="CompanyTwitter" name="company_twitter" value="{{ company.twitter_url or '' }}">
+        </div>
+        <div class="form-group">
+          <label for="CompanyFacebook">{{ _("Facebook") }}</label>
+          <input type="text" class="form-control" id="CompanyFacebook" name="company_facebook" value="{{ company.facebook_url or '' }}">
+        </div>
+        <div class="form-group">
+          <label for="CompanyEmployees">{{ _("Nombre d'employés") }}</label>
+          <input type="text" class="form-control" id="CompanyEmployees" name="company_employees" value="{{ company.number_of_employees or '' }}">
+        </div>
+        <div class="form-group">
+          <label for="CompanyYear">{{ _("Année de création") }}</label>
+          <input type="number" class="form-control" id="CompanyYear" name="company_year" value="{{ company.year_established or '' }}">
+        </div>
+        <div class="form-group">
+          <label for="CompanyRevenue">{{ _("Revenue annuel") }}</label>
+          <input type="text" class="form-control" id="CompanyRevenue" name="company_revenue" value="{{ company.annual_revenue or '' }}">
+        </div>
+        <div class="form-group">
+          <label for="CompanyCurrency">{{ _("Devise") }}</label>
+          <select class="form-select" id="CompanyCurrency" name="company_currency">
+            <option value="USD" {% if company.currency == 'USD' %}selected{% endif %}>{{ _('USD') }}</option>
+            <option value="EUR" {% if company.currency == 'EUR' %}selected{% endif %}>{{ _('EUR') }}</option>
+            <option value="XAF" {% if company.currency == 'XAF' %}selected{% endif %}>{{ _('XAF') }}</option>
+            <option value="XOF" {% if company.currency == 'XOF' %}selected{% endif %}>{{ _('XOF') }}</option>
+            <option value="NGN" {% if company.currency == 'NGN' %}selected{% endif %}>{{ _('NGN') }}</option>
+          </select>
+        </div>
       </fieldset>
       {% endif %}
 

@@ -25,6 +25,10 @@
         </button>
     </div>
 
+    <div class="mb-3 col-4 d-flex justify-content-end">
+        <input type="text" class="form-control" id="employee-search" oninput="filterEmployees()" placeholder="{{ _('Taper pour rechercher...') }}">
+    </div>
+
     {% if employees %}
         <div id="company-info" data-company-id="{{ company.id }}"></div>
         <div class="table-responsive">
@@ -50,7 +54,7 @@
                                          class="avatar avatar-sm me-3" 
                                          alt="{{ employee.first_name or '' }} image">
                                     <div class="d-flex flex-column">
-                                        <h6 class="mb-0 textto-xs" contenteditable="true" data-employee-id="{{ employee.id }}" data-field="name">
+                                        <h6 class="mb-0 text-xs" contenteditable="true" data-employee-id="{{ employee.id }}" data-field="name">
                                             {{ employee.first_name or '' }} {{ employee.last_name or '' }}
                                         </h6>
                                         <p class="text-xs text-secondary mb-0">{{ employee.email_address }}</p>
@@ -460,6 +464,40 @@
         };
         if (input.files[0]) {
             reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
+<script>
+    function filterEmployees() {
+        const searchInput = document.getElementById('employee-search').value.toLowerCase();
+        const tableBody = document.querySelector('tbody');
+        const rows = tableBody.getElementsByTagName('tr');
+        const noResultsMessage = document.getElementById('no-results-message');
+        let resultsFound = false;
+
+        for (let row of rows) {
+            let rowMatches = false;
+            
+            // Check each cell in the row (except the last one which is "Options")
+            for (let i = 0; i < row.cells.length - 1; i++) {
+                const cellText = row.cells[i].innerText.toLowerCase();
+                if (cellText.includes(searchInput)) {
+                    rowMatches = true;
+                    break; // No need to check other cells if one matches
+                }
+            }
+
+            if (rowMatches) {
+                row.style.display = '';
+                resultsFound = true;
+            } else {
+                row.style.display = 'none';
+            }
+        }
+
+        if (noResultsMessage) {
+            noResultsMessage.style.display = resultsFound ? 'none' : 'block';
         }
     }
 </script>
