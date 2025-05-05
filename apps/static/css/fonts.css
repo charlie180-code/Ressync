@@ -12,3 +12,8 @@
     font-family: 'Inter';
     src: url('../fonts/Inter/Inter_18pt-Medium.ttf') format('opentype');
 }
+
+@font-face {
+    font-family: 'Inter-Bold';
+    src: url('../fonts/Inter/Inter_18pt-Bold.ttf') format('opentype');
+}
