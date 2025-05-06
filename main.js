@@ -179,7 +179,7 @@ async function createMainWindow() {
             : `${LOCAL_SERVER_URL}/auth/login`;
 
         mainWindow = new BrowserWindow({
-            width: 1200,
+            width: 1400,
             height: 800,
             minWidth: 800,
             minHeight: 600,
@@ -294,15 +294,23 @@ app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit();
 });
 
-app.on('before-quit', () => {
-    if (global.localServerPid) {
-        killProcessTree(global.localServerPid, 'SIGTERM', (err) => {
-            if (err) {
-                console.error('Failed to kill local server process:', err);
-            } else {
-                console.log('Local server process terminated.');
-            }
-        });
+
+app.on('before-quit', async () => {
+    if (serverProcess) {
+        try {
+            await new Promise((resolve) => {
+                killProcessTree(serverProcess.pid, 'SIGTERM', (err) => {
+                    if (err) {
+                        console.error('Graceful shutdown failed, forcing:', err);
+                        killProcessTree(serverProcess.pid, 'SIGKILL', resolve);
+                    } else {
+                        resolve();
+                    }
+                });
+            });
+        } catch (err) {
+            console.error('Process cleanup error:', err);
+        }
     }
 });
 
